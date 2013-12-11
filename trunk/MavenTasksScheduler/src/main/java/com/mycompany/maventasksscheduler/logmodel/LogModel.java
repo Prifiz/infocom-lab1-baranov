@@ -28,13 +28,13 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         id = 0;
     }
 
-    @Override // нужно переписать
+    @Override
     public void showAll() {
         for(int i = 0; i < id; i++){
              if(log.get(i) instanceof Birthday)
-                System.out.println(log.get(i).getId()+" "+log.get(i).getStatus()+" "+log.get(i).getPriority()+" "+log.get(i).getContact().getName()+" "+log.get(i).getDate());
+                 System.out.println(log.get(i).toString());
              if(log.get(i) instanceof BusinessTask)
-                 System.out.println(log.get(i).getId()+" "+log.get(i).getStatus()+" "+log.get(i).getPriority()+" "+log.get(i).getDate());
+                 System.out.println(log.get(i).toString());
         }
     }
 
@@ -65,7 +65,9 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
 //                    foundTasks.add(iter.next());
 //            }
             for(int i = 0; i < log.size(); i++)
-                if(log.get(i).getDate() == date)
+                if(log.get(i).getDate().getYear() == date.getYear() &&
+                        log.get(i).getDate().getMonthOfYear() == date.getMonthOfYear() &&
+                        log.get(i).getDate().getDayOfMonth() == date.getDayOfMonth())
                     foundTasks.add(log.get(i));
             return foundTasks;
         }
