@@ -6,6 +6,9 @@ package com.mycompany.maventasksscheduler.logmodel;
 
 import com.mycompany.maventasksscheduler.exceptions.TaskFieldIndexOutOfBoundsException;
 import com.mycompany.maventasksscheduler.exceptions.TaskIndexOutOfBoundsException;
+import java.text.Collator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -31,7 +34,7 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
              if(log.get(i) instanceof Birthday)
                 System.out.println(log.get(i).getId()+" "+log.get(i).getStatus()+" "+log.get(i).getPriority()+" "+log.get(i).getContact().getName()+" "+log.get(i).getDate());
              if(log.get(i) instanceof BusinessTask)
-                 System.out.println(log.get(i).getId()+" "+log.get(i).getStatus()+" "+log.get(i).getPriority());
+                 System.out.println(log.get(i).getId()+" "+log.get(i).getStatus()+" "+log.get(i).getPriority()+" "+log.get(i).getDate());
         }
     }
 
@@ -68,10 +71,15 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         }
     }
 
+
     @Override
     public void sortByDate() {
-        // нужно дописать
-                
+        Comparator<Taskable> comparator = new Comparator<Taskable>() {
+            public int compare(Taskable c1, Taskable c2) {
+                return c2.getDate().compareTo(c1.getDate());
+            }
+        };
+        Collections.sort(log, comparator);
     }
 
     /**
