@@ -168,20 +168,32 @@ public class BusinessTask implements Taskable, Cloneable {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         if(taskName.length() > 0 && ! timeNotification.equals(new DateTime()))
-                return sb.append("id - " + id + "Your task - " + taskName +
-                     ", time notification - " + timeNotification).toString();
+                return sb.append("id - " + id + ", Your task - " + taskName +
+                     ", time notification - " + timeNotification.getYear()+"-"+
+                        timeNotification.getMonthOfYear()+"-"+
+                        timeNotification.getDayOfMonth()+ ", time notification - "+
+                        timeNotification.getHourOfDay()+":"+ 
+                        timeNotification.getMinuteOfHour()).toString();
         if(taskName.length() > 0 && description.length() > 0 && 
                 ! timeNotification.equals(new DateTime()))
-                        return sb.append("id - " + id + "Your task - " + taskName +
-                            ", description - " + description + 
-                            ", time notification - " + timeNotification).toString();
+                        return sb.append("id - " + id + ", Your task - " + taskName +
+                            ", description - " + description +", time notification - " +
+                                timeNotification.getYear()+"-"+
+                                timeNotification.getMonthOfYear()+"-"+
+                                timeNotification.getDayOfMonth()+ ", time notification - "+
+                                timeNotification.getHourOfDay()+":"+ 
+                                timeNotification.getMinuteOfHour()).toString();
         if(taskName.length() > 0 && description.length() > 0 && 
                 ! timeNotification.equals(new DateTime()) &&
                 ! contact.equals(new Contact()))
-                        return sb.append("id - " + id + "Your task - " + taskName +
+                        return sb.append("id - " + id + ", Your task - " + taskName +
                                 ", description - " + description + 
                                 ", it is connected with " + contact.toString() +
-                            ", time notification - "+timeNotification).toString();
+                            ", time notification - "+timeNotification.getYear()+"-"+
+                                timeNotification.getMonthOfYear()+"-"+
+                                timeNotification.getDayOfMonth()+ ", time notification - "+
+                                timeNotification.getHourOfDay()+":"+ 
+                                timeNotification.getMinuteOfHour()).toString();
         return sb.append("null").toString();
     }
 
