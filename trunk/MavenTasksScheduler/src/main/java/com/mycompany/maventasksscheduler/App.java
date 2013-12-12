@@ -1,11 +1,13 @@
 package com.mycompany.maventasksscheduler;
 
+import com.mycompany.maventasksscheduler.controller.Controller;
 import com.mycompany.maventasksscheduler.logmodel.Birthday;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.LogModel;
 import com.mycompany.maventasksscheduler.logmodel.Taskable;
 import java.util.LinkedList;
+import java.util.Scanner;
 import org.joda.time.DateTime;
 
 /**
@@ -16,36 +18,41 @@ public class App
 {
     public static void main( String[] args )
     {
-        //для проверки работы сортировки, вывода и поиска
-        LogModel lm = new LogModel();
-        Contact c1 = new Contact("raf");
-        Contact c2 = new Contact("max");
-        Contact c3 = new Contact("serg");
-        DateTime dt1 = new DateTime(2000,10,10, 21,10);
-        DateTime dt2 = new DateTime(2009,10,10, 11,10);
-        DateTime dt3 = new DateTime(2009,10,10, 21,10);
-        DateTime dt4 = new DateTime(3009,10,10, 21,10);
-        DateTime dt5 = new DateTime(1009,10,10, 21,10);
-        Birthday b1 = new Birthday(dt2,c1,5);
-        Birthday b2 = new Birthday(dt3,c2,5);
-        Birthday b3 = new Birthday(dt1,c3,5);
-        BusinessTask bt1 = new BusinessTask("kursach", dt3, 5);
-        BusinessTask bt2 = new BusinessTask("laba", dt5, 5);
-        BusinessTask bt3 = new BusinessTask("final basketball games", dt4, 5);
-        lm.add(b1);
-        lm.add(b2);
-        lm.add(b3);
-        lm.add(bt1);
-        lm.add(bt2);
-        lm.add(bt3);
-        lm.showAll();
-        lm.sortByDate();
-        System.out.println("отсортированные задачи");
-        lm.showAll();
-        System.out.println("поиск задач");
-        LinkedList<Taskable> ll = lm.search(dt2);
-        for(int i = 0; i < ll.size(); i++)
-            System.out.println(ll.get(i).toString());
-        
+        Scanner sc = new Scanner(System.in);
+        Controller c = new Controller();
+        menu:
+        for(;;){
+            System.out.println("\nYou in main menu, choose menu point:"
+                    + "\n1. Add task"
+                    + "\n2. Show tasks"
+                    + "\n3. Search tasks"
+                    + "\n4. Sort tasks by date"
+                    + "\n5. Edit all task's data"
+                    + "\n6. Remove task"
+                    + "\n0. Exit\n");
+            switch(sc.nextInt()){
+                case 1:
+                    c.add();
+                    break;
+                case 2:
+                    c.showAll();
+                    break;
+                case 3:
+                    c.searchTask();
+                    break;
+                case 4:
+                    c.sortTaslList();
+                    break;
+                case 5:
+                    c.editAllDataTask();
+                    break;
+                case 6:
+                    c.remove();
+                    break;
+                case 0:
+                   break menu; 
+            }
+        }
+    
     }
 }

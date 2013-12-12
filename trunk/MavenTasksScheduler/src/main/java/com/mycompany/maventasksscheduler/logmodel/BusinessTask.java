@@ -168,7 +168,7 @@ public class BusinessTask implements Taskable, Cloneable {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         if(taskName.length() > 0 && ! timeNotification.equals(new DateTime()))
-                return sb.append("id - " + id + ", Your task - " + taskName +
+                return sb.append("Your task - " + taskName +
                      ", time notification - " + timeNotification.getYear()+"-"+
                         timeNotification.getMonthOfYear()+"-"+
                         timeNotification.getDayOfMonth()+ ", time notification - "+
@@ -176,7 +176,7 @@ public class BusinessTask implements Taskable, Cloneable {
                         timeNotification.getMinuteOfHour()).toString();
         if(taskName.length() > 0 && description.length() > 0 && 
                 ! timeNotification.equals(new DateTime()))
-                        return sb.append("id - " + id + ", Your task - " + taskName +
+                        return sb.append("Your task - " + taskName +
                             ", description - " + description +", time notification - " +
                                 timeNotification.getYear()+"-"+
                                 timeNotification.getMonthOfYear()+"-"+
@@ -186,7 +186,7 @@ public class BusinessTask implements Taskable, Cloneable {
         if(taskName.length() > 0 && description.length() > 0 && 
                 ! timeNotification.equals(new DateTime()) &&
                 ! contact.equals(new Contact()))
-                        return sb.append("id - " + id + ", Your task - " + taskName +
+                        return sb.append("Your task - " + taskName +
                                 ", description - " + description + 
                                 ", it is connected with " + contact.toString() +
                             ", time notification - "+timeNotification.getYear()+"-"+

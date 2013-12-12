@@ -27,15 +27,19 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         log = new LinkedList();
         id = 0;
     }
-
+    
+    /**
+     * Returns count task in LogModel
+     * @return int - count task
+     */
+    public int getId(){
+        return id;
+    }
+   
     @Override
     public void showAll() {
-        for(int i = 0; i < id; i++){
-             if(log.get(i) instanceof Birthday)
-                 System.out.println(log.get(i).toString());
-             if(log.get(i) instanceof BusinessTask)
-                 System.out.println(log.get(i).toString());
-        }
+        for(int i = 0; i < id; i++)
+             System.out.println("id - "+i+", "+log.get(i).toString());
     }
 
     @Override
@@ -126,7 +130,7 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         Scanner sc = new Scanner(System.in);
         switch(fieldNumber){
                 case 1:
-                    log.get(taskId).setDate(setDate());
+                    log.get(taskId).setDate(createDate());
                     break;
                 case 2:
                     log.get(taskId).setContact(setContactInfo());
@@ -159,7 +163,7 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
                     bt1.setDescription(sc.nextLine());
                     break;
                 case 3:
-                    log.get(taskId).setDate(setDate());
+                    log.get(taskId).setDate(createDate());
                     break;
                 case 4:
                     log.get(taskId).setContact(setContactInfo());
@@ -179,8 +183,8 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    private DateTime setDate(){
-        System.out.println("Введите новую дату, например:\n9.12.2013 или 9-12-2013, или 9/12/2013");
+    public DateTime createDate(){
+        System.out.println("Введите дату, например:\n9.12.2013 или 9-12-2013, или 9/12/2013");
         Scanner sc = new Scanner(System.in);
         String date = sc.nextLine();
         String [] splitDate = new String[3];
@@ -207,7 +211,7 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
     private Contact setContactInfo(){
         Scanner sc = new Scanner(System.in);
         Contact contact = null;
-        System.out.println("Какую информацию о контакте хотите изменить?");
+        System.out.println("Какую информацию о контакте хотите ввести?");
                     System.out.println("1. Только имя.");
                     System.out.println("2. Имя и номер телефона.");
                     System.out.println("3. Имя, номер телефона и email.");
@@ -239,6 +243,27 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
                             contact = new Contact(name, phoneNumber, email);
                    }
     return contact;
+    }
+    
+    /**
+     * This method create new task and add it in log.
+     */
+    public void createTask(){
+        System.out.println("Choose task type:\n1. Birthday\n2. Business task");
+        Scanner sc = new Scanner(System.in);
+        switch(sc.nextInt()){
+            case 1:
+                sc.nextLine();
+                System.out.println("Введите приоритет:");
+                int priority = sc.nextInt();
+                add(new Birthday(createDate(), setContactInfo(), priority));
+                break;
+            case 2:
+                System.out.println("создание бизнес задачи");
+                break;
+            default:
+                System.out.println("Choose correctly task type ");
+        }
     }
     
 }

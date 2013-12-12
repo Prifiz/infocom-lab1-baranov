@@ -98,7 +98,7 @@ public class Birthday implements Taskable, Cloneable{
     public String toString() {
         StringBuffer sb = new StringBuffer();
         if(! (timeNotification.equals(new DateTime()) && contact.equals(new Contact())))
-            return sb.append("id - "+id+", "+"Birthday of "+ contact.toString() +" will be "+
+            return sb.append("Birthday of "+ contact.toString() +" will be "+
                    timeNotification.getYear()+"-"+timeNotification.getMonthOfYear()+
                     "-"+timeNotification.getDayOfMonth()+ ", time notification - "+
                     timeNotification.getHourOfDay()+":"+ timeNotification.getMinuteOfHour()).toString();
