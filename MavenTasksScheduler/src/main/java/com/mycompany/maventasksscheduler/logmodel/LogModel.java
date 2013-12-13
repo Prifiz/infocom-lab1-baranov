@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.logmodel;
 
+import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.exceptions.TaskFieldIndexOutOfBoundsException;
 import com.mycompany.maventasksscheduler.exceptions.TaskIndexOutOfBoundsException;
 import java.text.Collator;
@@ -136,11 +137,11 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
                     log.get(taskId).setContact(setContactInfo());
                     break;
                 case 3:
-                    System.out.println("Введите новый статус:");
+                    System.out.println("Enter the new status:");
                     log.get(taskId).setStatus(sc.nextShort());
                     break;
                 case 4:
-                    System.out.println("Введите новый приоритет:");
+                    System.out.println("Enter the new priority:");
                     log.get(taskId).setPriority(sc.nextInt());
                     break;
         }
@@ -153,12 +154,12 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         Scanner sc = new Scanner(System.in);
         switch(fieldNumber){
                 case 1:
-                    System.out.println("Введите новое название задачи:");
+                    System.out.println("Enter the new task's name:");
                     BusinessTask bt = (BusinessTask) log.get(taskId);
                     bt.setTaskName(sc.nextLine());
                     break;
                 case 2:
-                    System.out.println("Введите новое описание задачи:");
+                    System.out.println("Enter the new task's description:");
                     BusinessTask bt1 = (BusinessTask) log.get(taskId);
                     bt1.setDescription(sc.nextLine());
                     break;
@@ -169,11 +170,11 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
                     log.get(taskId).setContact(setContactInfo());
                     break;
                 case 5:
-                    System.out.println("Введите новый статус:");
+                    System.out.println("Enter the new status:");
                     log.get(taskId).setStatus(sc.nextShort());
                     break;
                 case 6:
-                    System.out.println("Введите новый приоритет:");
+                    System.out.println("Enter the new priority:");
                     log.get(taskId).setPriority(sc.nextInt());
                     break;
             }
@@ -183,23 +184,34 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    public DateTime createDate(){
-        System.out.println("Введите дату, например:\n9.12.2013 или 9-12-2013, или 9/12/2013");
+    public DateTime createDate() throws BadEnteredDate{
         Scanner sc = new Scanner(System.in);
-        String date = sc.nextLine();
+        String date;
         String [] splitDate = new String[3];
-        if(date.contains(""))
-            splitDate = date.split("\\.");
-        if(date.contains("-"))
-            splitDate = date.split("-");
-        if(date.contains("/"))
-            splitDate = date.split("/");
-        
-        System.out.println("Введите время оповещения, например:\n 20:44");
-        date = sc.nextLine();
+        while(true){
+            System.out.println("Enter correctly date, example:\n9.12.2013 or 9-12-2013, or 9/12/2013");
+            date = sc.nextLine();
+            if(date.contains(""))
+                splitDate = date.split("\\.");
+            if(date.contains("-"))
+                splitDate = date.split("-");
+            if(date.contains("/"))
+                splitDate = date.split("/");
+            if(Integer.parseInt(splitDate[2]) > 0 && Integer.parseInt(splitDate[1]) > 0 &&
+               Integer.parseInt(splitDate[1]) < 13 && Integer.parseInt(splitDate[0]) > 0 &&
+               Integer.parseInt(splitDate[0]) < 31)
+                break;
+        }
         String [] splitTime = new String[2];
-        if(date.contains(":"))
-            splitTime = date.split(":");
+        while(true){
+            System.out.println("Enter correctly time description, example:\n 20:44");
+            date = sc.nextLine();
+            if(date.contains(":"))
+                splitTime = date.split(":");
+            if(Integer.parseInt(splitTime[0]) >= 0 && Integer.parseInt(splitTime[0]) < 25 &&
+               Integer.parseInt(splitTime[1]) >= 0 && Integer.parseInt(splitTime[1]) < 60)
+                break;
+        }
         return new DateTime(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1]), 
                 Integer.parseInt(splitDate[0]), Integer.parseInt(splitTime[0]),Integer.parseInt(splitTime[1]));
     }
@@ -211,10 +223,10 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
     private Contact setContactInfo(){
         Scanner sc = new Scanner(System.in);
         Contact contact = null;
-        System.out.println("Какую информацию о контакте хотите ввести?");
-                    System.out.println("1. Только имя.");
-                    System.out.println("2. Имя и номер телефона.");
-                    System.out.println("3. Имя, номер телефона и email.");
+        System.out.println("What information on contact you want to enter?");
+                    System.out.println("1. Only name.");
+                    System.out.println("2. Name and phone number.");
+                    System.out.println("3. Name, phone number and email.");
                     String name;
                     int phoneNumber;
                     String email;
@@ -222,23 +234,23 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
                     sc.nextLine();
                     switch(read){
                         case 1:
-                            System.out.println("Введите имя:");
+                            System.out.println("Enter name:");
                             name = sc.nextLine();
                             contact = new Contact(name);
                             break;
                         case 2:
-                            System.out.println("Введите имя:");
+                            System.out.println("Enter name:");
                             name = sc.nextLine();
-                            System.out.println("Введите телефон:");
+                            System.out.println("Enter phone number:");
                             phoneNumber = sc.nextInt();
                             contact = new Contact(name, phoneNumber);
                             break;
                         case 3:
-                            System.out.println("Введите имя:");
+                            System.out.println("Enter name:");
                             name = sc.nextLine();
-                            System.out.println("Введите телефон:");
+                            System.out.println("Enter phone number:");
                             phoneNumber = Integer.parseInt(sc.nextLine());
-                            System.out.println("Введите email:");
+                            System.out.println("Enter email:");
                             email = sc.nextLine();
                             contact = new Contact(name, phoneNumber, email);
                    }
@@ -254,12 +266,12 @@ public class LogModel implements WorkWithLogModelable, Cloneable{
         switch(sc.nextInt()){
             case 1:
                 sc.nextLine();
-                System.out.println("Введите приоритет:");
+                System.out.println("Enter priority:");
                 int priority = sc.nextInt();
                 add(new Birthday(createDate(), setContactInfo(), priority));
                 break;
             case 2:
-                System.out.println("создание бизнес задачи");
+                System.out.println("Create business task");
                 break;
             default:
                 System.out.println("Choose correctly task type ");
