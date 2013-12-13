@@ -17,11 +17,6 @@ import org.joda.time.DateTime;
 public interface Log {
     
     /**
-     * This method show all tasks that include logModel.
-     */
-    void showAll();
-    
-    /**
      * This method add task in logModel.
      * @param task Task which has to be added.
      */
@@ -44,6 +39,11 @@ public interface Log {
      * This method sorts tasks of date.
      */
     void sortByDate();
+    
+    /**
+     * This method sorts tasks of a priority
+     */
+    void sortByPriority();
     
     /**
      * This method allows to edit all fields of the chosen task.

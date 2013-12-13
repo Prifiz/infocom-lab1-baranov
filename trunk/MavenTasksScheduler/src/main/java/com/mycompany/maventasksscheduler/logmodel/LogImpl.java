@@ -21,11 +21,9 @@ import org.joda.time.DateTime;
 public class LogImpl implements Log, Cloneable {
 
     private List<Task> log;
-    private int id;
 
     public LogImpl() {
         log = new LinkedList();
-        id = 0;
     }
 
     /**
@@ -33,31 +31,28 @@ public class LogImpl implements Log, Cloneable {
      *
      * @return int - count task
      */
-    public int getId() {
-        return id;
+    public int getSize() {
+        return log.size();
     }
 
-    @Override
+    
     public void showAll() {
-        for (int i = 0; i < id; i++) {
-            System.out.println("id - " + i + ", " + log.get(i).toString());
+        for (int i = 0; i < log.size(); i++) {
+            System.out.println("№ - " + i + ", " + log.get(i).toString());
         }
     }
 
     @Override
     public void add(Task task) {
-        task.setId(id);
         log.add(task);
-        id++;
     }
 
     @Override
     public void remove(int taskNumber) {
-        if (taskNumber < 0 || taskNumber >= id) {
+        if (taskNumber < 0 || taskNumber >= log.size()) {
             throw new TaskIndexOutOfBoundsException();
         }
         log.remove(taskNumber);
-        id--;
     }
 
     @Override
@@ -92,6 +87,17 @@ public class LogImpl implements Log, Cloneable {
         };
         Collections.sort(log, comparator);
     }
+    
+    @Override
+    public void sortByPriority() {
+        Comparator<Task> comparator = new Comparator<Task>() {
+            public int compare(Task c1, Task c2) {
+                return 0;// c2.getPriority().compareTo(c1.getPriority());
+            }
+        };
+        Collections.sort(log, comparator);
+    }
+    
 
     /**
      * Causes necessary number of times editSomeFieldOfTask.
@@ -100,7 +106,7 @@ public class LogImpl implements Log, Cloneable {
      */
     @Override
     public void editAllDataTask(int taskId) {
-        if (taskId < 0 || taskId > id) {
+        if (taskId < 0 || taskId > log.size()) {
             throw new TaskIndexOutOfBoundsException();
         }
 
@@ -118,7 +124,7 @@ public class LogImpl implements Log, Cloneable {
 
     @Override
     public void editSomeFieldOfTask(int taskId, int fieldNumber) {
-        if (taskId < 0 || taskId > id) {
+        if (taskId < 0 || taskId > log.size()) {
             throw new TaskIndexOutOfBoundsException();
         }
         if (log.get(taskId) instanceof BirthdayTask) {
@@ -206,15 +212,15 @@ public class LogImpl implements Log, Cloneable {
             if (date.contains("")) {
                 splitDate = date.split("\\.");
             }
-            if (date.contains("-")) {
+            else if (date.contains("-")) {
                 splitDate = date.split("-");
             }
-            if (date.contains("/")) {
+            else if (date.contains("/")) {
                 splitDate = date.split("/");
             }
-            if (Integer.parseInt(splitDate[2]) > 0 && Integer.parseInt(splitDate[1]) > 0
+            if (Integer.parseInt(splitDate[2]) >= 2013 && Integer.parseInt(splitDate[1]) > 0
                     && Integer.parseInt(splitDate[1]) < 13 && Integer.parseInt(splitDate[0]) > 0
-                    && Integer.parseInt(splitDate[0]) < 31) {
+                    && Integer.parseInt(splitDate[0]) < 32) {
                 break;
             }
         }
@@ -246,31 +252,36 @@ public class LogImpl implements Log, Cloneable {
         System.out.println("2. Name and phone number.");
         System.out.println("3. Name, phone number and email.");
         String name;
-        int phoneNumber;
+        long phoneNumber;
         String email;
         int read = sc.nextInt();
         sc.nextLine();
+        boolean flag = true;
         switch (read) {
             case 1:
                 System.out.println("Enter name:");
                 name = sc.nextLine();
                 contact = new Contact(name);
+                flag = false;
                 break;
             case 2:
                 System.out.println("Enter name:");
                 name = sc.nextLine();
                 System.out.println("Enter phone number:");
-                phoneNumber = sc.nextInt();
+                phoneNumber = sc.nextLong();
                 contact = new Contact(name, phoneNumber);
+                flag = false;
                 break;
             case 3:
                 System.out.println("Enter name:");
                 name = sc.nextLine();
                 System.out.println("Enter phone number:");
-                phoneNumber = Integer.parseInt(sc.nextLine());
+                phoneNumber = Long.parseLong(sc.nextLine());
                 System.out.println("Enter email:");
                 email = sc.nextLine();
                 contact = new Contact(name, phoneNumber, email);
+                flag = false;
+                break;
         }
         return contact;
     }

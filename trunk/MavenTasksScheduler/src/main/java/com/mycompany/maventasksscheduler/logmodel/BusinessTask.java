@@ -11,9 +11,8 @@ import org.joda.time.DateTime;
  *
  * @author Сергей остаётся конструкторы
  */
-public class BusinessTask implements Task, Cloneable {
+public class BusinessTask extends Task  implements Cloneable {
 
-    private int id;
     private String taskName;
     private String description;
     private DateTime timeNotification;
@@ -22,61 +21,57 @@ public class BusinessTask implements Task, Cloneable {
     private int priority;
 
     /**
-     * This constructor creates BusinessTask with id, taskName, date, priority.
+     * This constructor creates BusinessTask with taskName, date, priority.
      *
      * @param taskName BusinessTask's name.
-     * @param date BusinessTask's time notification.
+     * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, DateTime date, int priority) {
+    public BusinessTask(String taskName, DateTime timeNotification, int priority) {
         this.taskName = taskName;
-        description = null;
-        timeNotification = date;
-        contact = null;
+        description = "";
+        this.timeNotification = timeNotification;
+        contact = new Contact();
         status = 10;
         this.priority = priority;
     }
 
     /**
-     * This constructor creates BusinessTask with id, taskName, description,
+     * This constructor creates BusinessTask with taskName, description,
      * date, priority.
      *
      * @param taskName BusinessTask's name.
      * @param description BusinessTask's description.
-     * @param date BusinessTask's time notification.
+     * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, DateTime date, int priority) {
+    public BusinessTask(String taskName, String description, DateTime timeNotification, int priority) {
         this.taskName = taskName;
         this.description = description;
-        timeNotification = date;
-        contact = null;
+        this.timeNotification = timeNotification;
+        contact = new Contact();
         status = 10;
         this.priority = priority;
     }
 
     /**
-     * This constructor creates BusinessTask with id, taskName, description,
+     * This constructor creates BusinessTask with taskName, description,
      * date, contact, priority.
      *
      * @param taskName BusinessTask's name.
      * @param description BusinessTask's description.
-     * @param date BusinessTask's time notification.
+     * @param timeNotification BusinessTask's time notification.
      * @param contact BusinessTask's contact.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, DateTime date,
+    public BusinessTask(String taskName, String description, DateTime timeNotification,
             Contact contact, int priority) {
         this.taskName = taskName;
         this.description = description;
-        timeNotification = date;
+        this.timeNotification = timeNotification;
         this.contact = contact;
         status = 10;
         this.priority = priority;
-    }
-
-    public int getId() {
-        return id;
     }
 
     /**
@@ -97,26 +92,6 @@ public class BusinessTask implements Task, Cloneable {
         return description;
     }
 
-    public DateTime getDate() {
-        return timeNotification;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public short getStatus() {
-        return status;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     /**
      * This method set new task's name.
      *
@@ -135,73 +110,51 @@ public class BusinessTask implements Task, Cloneable {
         this.description = description;
     }
 
-    public void setDate(DateTime date) {
-        timeNotification = date;
-    }
-
-    public void setContact(Contact c) {
-        contact = c;
-    }
-
-    public void setContact(String name) {
-        contact = new Contact(name);
-    }
-
-    public void setContact(String name, int phoneNumber) {
-        contact = new Contact(name, phoneNumber);
-    }
-
-    public void setContact(String name, int phoneNumber, String email) {
-        contact = new Contact(name, phoneNumber, email);
-    }
-
-    public void setStatus(short status) {
-        this.status = status;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
     /**
      * Returns information about BusinessTask.
      *
-     * @return id and taskName and timeNotification or id and taskName and
-     * description and timeNotification or id and taskName and description and
+     * @return taskName and timeNotification or taskName and
+     * description and timeNotification or taskName and description and
      * contact and timeNotification
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (taskName.length() > 0 && !timeNotification.equals(new DateTime())) {
-            return sb.append("Your task - " + taskName
-                    + ", time notification - " + timeNotification.getYear() + "-"
-                    + timeNotification.getMonthOfYear() + "-"
-                    + timeNotification.getDayOfMonth() + ", time notification - "
-                    + timeNotification.getHourOfDay() + ":"
-                    + timeNotification.getMinuteOfHour()).toString();
+            return sb.append("Your task - ").append(taskName).
+                    append(", date notification - ").
+                    append(timeNotification.getDayOfMonth()).append("-").
+                    append(timeNotification.getMonthOfYear()).append("-").
+                    append(timeNotification.getYear()).
+                    append(", time notification - ").
+                    append(timeNotification.getHourOfDay()).append(":").
+                    append(timeNotification.getMinuteOfHour()).toString();
         }
         else if (taskName.length() > 0 && description.length() > 0
                 && !timeNotification.equals(new DateTime())) {
-            return sb.append("Your task - " + taskName
-                    + ", description - " + description + ", time notification - "
-                    + timeNotification.getYear() + "-"
-                    + timeNotification.getMonthOfYear() + "-"
-                    + timeNotification.getDayOfMonth() + ", time notification - "
-                    + timeNotification.getHourOfDay() + ":"
-                    + timeNotification.getMinuteOfHour()).toString();
+            return sb.append("Your task - ").append(taskName).
+                    append(", description - ").append(description).
+                    append(", date notification - ").
+                    append(timeNotification.getDayOfMonth()).append("-").
+                    append(timeNotification.getMonthOfYear()).append("-").
+                    append(timeNotification.getYear()).
+                    append(", time notification - ").
+                    append(timeNotification.getHourOfDay()).append(":").
+                    append(timeNotification.getMinuteOfHour()).toString();
         }
         else if (taskName.length() > 0 && description.length() > 0
                 && !timeNotification.equals(new DateTime())
                 && !contact.equals(new Contact())) {
-            return sb.append("Your task - " + taskName
-                    + ", description - " + description
-                    + ", it is connected with " + contact.toString()
-                    + ", time notification - " + timeNotification.getYear() + "-"
-                    + timeNotification.getMonthOfYear() + "-"
-                    + timeNotification.getDayOfMonth() + ", time notification - "
-                    + timeNotification.getHourOfDay() + ":"
-                    + timeNotification.getMinuteOfHour()).toString();
+            return sb.append("Your task - ").append(taskName).
+                    append(", description - ").append(description).
+                    append(", it is connected with ").append(contact.toString()).
+                    append(", date notification - ").
+                    append(timeNotification.getDayOfMonth()).append("-").
+                    append(timeNotification.getMonthOfYear()).append("-").
+                    append(timeNotification.getYear()).
+                    append(", time notification - ").
+                    append(timeNotification.getHourOfDay()).append(":").
+                    append(timeNotification.getMinuteOfHour()).toString();
         }
         return sb.append("null").toString();
     }
@@ -215,8 +168,8 @@ public class BusinessTask implements Task, Cloneable {
      */
     @Override
     public boolean equals(Object o) {
-        return o instanceof BusinessTask && this.id == ((BusinessTask) o).id
-                && this.taskName.equals(((BusinessTask) o).taskName)
+        return o instanceof BusinessTask && 
+                this.taskName.equals(((BusinessTask) o).taskName)
                 && this.description.equals(((BusinessTask) o).description)
                 && this.timeNotification.equals(((BusinessTask) o).timeNotification)
                 && this.contact.equals(((BusinessTask) o).contact)
@@ -231,7 +184,7 @@ public class BusinessTask implements Task, Cloneable {
      */
     @Override
     public int hashCode() {
-        return id + (taskName == null ? 0 : taskName.hashCode())
+        return (taskName == null ? 0 : taskName.hashCode())
                 + (description == null ? 0 : description.hashCode()) + timeNotification.hashCode()
                 + contact.hashCode() + status + priority;
     }
