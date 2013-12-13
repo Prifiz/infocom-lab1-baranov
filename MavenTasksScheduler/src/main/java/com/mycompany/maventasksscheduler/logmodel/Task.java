@@ -10,25 +10,28 @@ import org.joda.time.DateTime;
  * This interface describes tasks.
  * @author Сергей
  */
-public interface Task {
+public abstract class Task {
     
-    /**
-     * Returns task's id.
-     * @return int - task's id.
-     */
-    int getId();
-    
+    private DateTime timeNotification;
+    private Contact contact;
+    private short status;
+    //private enum Grade {active, postponed, complete};
+    private int priority;
+       
     /**
      * Returns date and time notification about task.
      * @return A Date notification.
      */
-    DateTime getDate();
-    
+    public DateTime getDate(){
+        return timeNotification;
+    }
     /**
      * Returns contact with whom the task is connected.
      * @return A Contact.
      */
-    Contact getContact();
+    public Contact getContact(){
+        return contact;
+    }
     
     /**
      * Returns task's status: 
@@ -37,38 +40,43 @@ public interface Task {
      * 30 - complete.
      * @return A short containing 10|20|30.
      */
-    short getStatus();
+    public short getStatus() {
+        return status;
+    }
     
     /**
      * Returns task's Priority.
      * @return A int containing task's priority.
      */
-    int getPriority();
+    public int getPriority() {
+        return priority;
+    }
     
-    /**
-     * This method set task's id.
-     * @param id Id of task.
-     */
-    void setId(int id);
     
     /**
      * This method set task's date notification.
      * @param date Date notification about task.
      */
-    void setDate(DateTime date);
+    public void setDate(DateTime d){
+        timeNotification = d;
+    }
     
     /**
      * This method edits contact with whom the task is connected.
      * @param contact Task's contact.
      */
-    void setContact(Contact contact);
+    public void setContact(Contact c){
+        contact = c;
+    }
     
     /**
      * This method edits contact with whom the task is connected. 
      * The constructor - Contact(name) is called.
      * @param name Contact's name.
      */
-    void setContact(String name);
+    public void setContact(String name){
+        contact = new Contact(name);
+    }
     
     /**
      * This method edits contact with whom the task is connected.
@@ -76,7 +84,9 @@ public interface Task {
      * @param name Contact's name.
      * @param phoneNumber Contact's phone number.
      */
-    void setContact(String name, int phoneNumber);
+    public void setContact(String name, long phoneNumber){
+        contact = new Contact(name,phoneNumber);
+    }
     
     /**
      * This method edits contact with whom the task is connected.
@@ -85,7 +95,9 @@ public interface Task {
      * @param phoneNumber Contact's phone number.
      * @param email Contact's email.
      */
-    void setContact(String name, int phoneNumber, String email);
+    public void setContact(String name, long phoneNumber, String email){
+        contact = new Contact(name, phoneNumber, email);
+    }
     
     /**
      * This method set task's status:
@@ -94,12 +106,16 @@ public interface Task {
      * 30 - complete.
      * @param Status New task's status.
      */
-    void setStatus(short Status);
+    public void setStatus(short status) {
+       this.status = status;
+    }
     
     /**
      * This method set task's priority.
      * @param priority New task's priority.
      */
-    void setPriority(int priority);
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
     
 }

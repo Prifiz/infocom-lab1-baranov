@@ -12,16 +12,15 @@ import org.joda.time.DateTime;
  * This class describes task - birthday.
  * @author Сергей осталось конструкторы
  */
-public class BirthdayTask implements Task, Cloneable{
+public class BirthdayTask extends Task implements Cloneable{
     
-    private int id; 
     private DateTime timeNotification;
     private Contact contact;
     private short status;
     private int priority;
    
     /**
-     * This constructor creates object Birthday with id, date, contact, priority.
+     * This constructor creates object Birthday with date, contact, priority.
      * @param date Birthday's time notification.
      * @param contact Birthday of the contact.
      * @param priority Birthday's priority.
@@ -32,77 +31,23 @@ public class BirthdayTask implements Task, Cloneable{
         status = 10;
         this.priority = priority;
     }
-       
-    public int getId() {
-        return id;
-    }
-    
-    public DateTime getDate(){
-        return timeNotification;
-    }
-    
-    public Contact getContact(){
-        return contact;
-    }
-    
-    @Override
-    public short getStatus() {
-        return status;
-    }
-
-    @Override
-    public int getPriority() {
-        return priority;
-    }
-    
-   @Override
-    public void setId(int id) {
-       this.id = id;
-    }
-    
-    public void setDate(DateTime d){
-        timeNotification = d;
-    }
-    
-    public void setContact(Contact c){
-        contact = c;
-    }
-    
-    public void setContact(String name){
-        contact = new Contact(name);
-    }
-    
-    public void setContact(String name, int phoneNumber){
-        contact = new Contact(name,phoneNumber);
-    }
-    
-    public void setContact(String name, int phoneNumber, String email){
-        contact = new Contact(name, phoneNumber, email);
-    }
-
-   @Override
-    public void setStatus(short status) {
-       this.status = status;
-    }
-
-    @Override
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-    
+  
     /**
      * Returns information about Birthday.
-     * @return id and contact and timeNotification
+     * @return contact and timeNotification
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if(! (timeNotification.equals(new DateTime()) && contact.equals(new Contact())))
-            return sb.append("Birthday of "+ contact.toString() +" will be "+
-                   timeNotification.getYear()+"-"+timeNotification.getMonthOfYear()+
-                    "-"+timeNotification.getDayOfMonth()+ ", time notification - "+
-                    timeNotification.getHourOfDay()+":"+ timeNotification.getMinuteOfHour()).toString();
-                    
+            return sb.append("Birthday of ").append(contact.toString()).
+                    append(" will be ").
+                    append(timeNotification.getDayOfMonth()).append("-").
+                    append(timeNotification.getMonthOfYear()).append("-").
+                    append(timeNotification.getYear()).
+                    append(", time notification - ").
+                    append(timeNotification.getHourOfDay()).append(":").
+                    append(timeNotification.getMinuteOfHour()).toString();              
         return sb.append("null").toString();
     }
 
@@ -114,7 +59,7 @@ public class BirthdayTask implements Task, Cloneable{
      */
     @Override
     public boolean equals(Object o) {
-        return o instanceof BirthdayTask && this.id == ((BirthdayTask) o).id && 
+        return o instanceof BirthdayTask && 
                  this.timeNotification.equals(((BirthdayTask) o).timeNotification) &&
                  this.contact.equals(((BirthdayTask) o).contact) && 
                  this.status == ((BirthdayTask) o).status &&
@@ -127,7 +72,7 @@ public class BirthdayTask implements Task, Cloneable{
      */
     @Override
     public int hashCode() {
-        return id + timeNotification.hashCode() + contact.hashCode() + status + priority;
+        return timeNotification.hashCode() + contact.hashCode() + status + priority;
     }
 
     /**

@@ -12,7 +12,7 @@ package com.mycompany.maventasksscheduler.logmodel;
 public class Contact implements Cloneable {
     
     private String name;
-    private int phoneNumber;
+    private long phoneNumber;
     private String email;
     
     
@@ -20,9 +20,9 @@ public class Contact implements Cloneable {
      * This constructor creates empty contact.
      */
     public Contact(){
-        name = null;
+        name = "";
         phoneNumber = 0;
-        email = null;
+        email = "";
     }
     
     /**
@@ -40,9 +40,9 @@ public class Contact implements Cloneable {
      * @param name Contact's name.
      * @param number Contact's phone number.
      */
-    public Contact(String name, int number){
+    public Contact(String name, long phoneNumber){
         this.name = name;
-        phoneNumber = number;
+        this.phoneNumber = phoneNumber;
         email = "";
     }
     
@@ -52,9 +52,9 @@ public class Contact implements Cloneable {
      * @param number Contact's phone number.
      * @param email  Contact's email.
      */
-    public Contact(String name, int number, String email){
+    public Contact(String name, long phoneNumber, String email){
         this.name = name;
-        phoneNumber = number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
     
@@ -70,7 +70,7 @@ public class Contact implements Cloneable {
      * Returns contact's phone number.
      * @return int - phone number 
      */
-    public int getPhoneNumber(){
+    public long getPhoneNumber(){
         return phoneNumber;
     }
     
@@ -94,7 +94,7 @@ public class Contact implements Cloneable {
      * This method set contact's phone number.
      * @param number The contact's phone number.
      */
-    public void setPhoneNumber(int number){
+    public void setPhoneNumber(long number){
         this.phoneNumber = number;
     }
     
@@ -147,7 +147,8 @@ public class Contact implements Cloneable {
      */
     @Override
     public int hashCode() {
-        return phoneNumber + (name == null ? 0 : name.hashCode()) + (email == null ? 0 : email.hashCode());
+        return (int)phoneNumber + (name == null ? 0 : name.hashCode()) +
+                (email == null ? 0 : email.hashCode());
     }
 
     /**

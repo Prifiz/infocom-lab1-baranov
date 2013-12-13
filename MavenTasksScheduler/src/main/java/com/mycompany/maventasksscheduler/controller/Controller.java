@@ -26,7 +26,7 @@ public class Controller {
     }
     
     public void remove(){
-        if(logModel.getId() == 0)
+        if(logModel.getSize() == 0)
             return;
         logModel.showAll();
         System.out.println("\nChoose task's id");
@@ -35,7 +35,7 @@ public class Controller {
     }
     
     public void editAllDataTask(){
-        if(logModel.getId() == 0)
+        if(logModel.getSize() == 0)
             return;
         logModel.showAll();
         System.out.println("\nChoose task's id");
