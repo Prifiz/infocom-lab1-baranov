@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
  * This interface describes tasks.
  * @author Сергей
  */
-public interface Taskable {
+public interface Task {
     
     /**
      * Returns task's id.

@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
  * This interface describes possible manipulations over log.
  * @author Сергей
  */
-public interface WorkWithLogModelable {
+public interface Log {
     
     /**
      * This method show all tasks that include logModel.
@@ -25,7 +25,7 @@ public interface WorkWithLogModelable {
      * This method add task in logModel.
      * @param task Task which has to be added.
      */
-    void add(Taskable task);
+    void add(Task task);
     
     /**
      * This method remove chosen task.
@@ -38,7 +38,7 @@ public interface WorkWithLogModelable {
      * @param date Date by which search will be run.
      * @return A LinkedList<Taskable> containing the found dates.
      */
-    LinkedList<Taskable> search(DateTime date);
+    LinkedList<Task> search(DateTime date);
     
     /**
      * This method sorts tasks of date.

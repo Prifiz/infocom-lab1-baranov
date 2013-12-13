@@ -4,24 +4,24 @@
  */
 package com.mycompany.maventasksscheduler.datastorage;
 
-import com.mycompany.maventasksscheduler.logmodel.LogModel;
+import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 
 /**
  *
  * @author Сергей
  */
-public interface DataStorageable {
+public interface Storage {
     
     /**
      * This method keeps LogModel on a hard disk.
      * @param logModel The kept LogModel.
      */
-    void saveData(LogModel logModel);
+    void saveData(LogImpl logModel);
     
     /**
      * Returns LogModel from a hard disk.
      * @return A LogModel containing on a hard disk.
      */
-    LogModel uploadData();
+    LogImpl uploadData();
     
 }

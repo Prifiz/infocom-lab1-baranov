@@ -4,14 +4,10 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.logmodel.Birthday;
-import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
-import com.mycompany.maventasksscheduler.logmodel.Contact;
-import com.mycompany.maventasksscheduler.logmodel.LogModel;
-import com.mycompany.maventasksscheduler.logmodel.Taskable;
+import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import com.mycompany.maventasksscheduler.logmodel.Task;
 import java.util.LinkedList;
 import java.util.Scanner;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -19,10 +15,10 @@ import org.joda.time.DateTime;
  */
 public class Controller {
     
-    private LogModel logModel;
+    private LogImpl logModel;
     
     public Controller(){
-        logModel = new LogModel();
+        logModel = new LogImpl();
     }
     
     public void add(){
@@ -56,7 +52,7 @@ public class Controller {
     }
     
     public void searchTask(){
-        LinkedList<Taskable> foundTasks = logModel.search(logModel.createDate());
+        LinkedList<Task> foundTasks = logModel.search(logModel.createDate());
         for(int i = 0; i < foundTasks.size(); i++)
                 System.out.println(foundTasks.get(i).toString());
     }

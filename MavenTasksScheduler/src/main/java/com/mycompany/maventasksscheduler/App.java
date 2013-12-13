@@ -1,14 +1,7 @@
 package com.mycompany.maventasksscheduler;
 
 import com.mycompany.maventasksscheduler.controller.Controller;
-import com.mycompany.maventasksscheduler.logmodel.Birthday;
-import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
-import com.mycompany.maventasksscheduler.logmodel.Contact;
-import com.mycompany.maventasksscheduler.logmodel.LogModel;
-import com.mycompany.maventasksscheduler.logmodel.Taskable;
-import java.util.LinkedList;
 import java.util.Scanner;
-import org.joda.time.DateTime;
 
 /**
  * Hello world!
@@ -19,7 +12,7 @@ public class App
     public static void main( String[] args )
     {
         Scanner sc = new Scanner(System.in);
-        Controller c = new Controller();
+        Controller c = new Controller();       
         menu:
         for(;;){
             System.out.println("\nYou in main menu, choose menu point:"
