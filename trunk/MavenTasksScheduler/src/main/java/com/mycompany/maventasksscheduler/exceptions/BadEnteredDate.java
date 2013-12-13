@@ -8,8 +8,8 @@ package com.mycompany.maventasksscheduler.exceptions;
  *
  * @author Сергей
  */
-public class TaskIndexOutOfBoundsException extends IndexOutOfBoundsException {
-    public TaskIndexOutOfBoundsException(){
-        super("The task with such number doesn't exist");
-    }
+public class BadEnteredDate extends IllegalArgumentException{
+    public BadEnteredDate(){
+        super("date or time isn't correctly entered");
+    }  
 }
