@@ -12,9 +12,9 @@ import org.joda.time.DateTime;
  * This class describes task - birthday.
  * @author Сергей осталось конструкторы
  */
-public class Birthday implements Taskable, Cloneable{
+public class BirthdayTask implements Task, Cloneable{
     
-    private int id;
+    private int id; 
     private DateTime timeNotification;
     private Contact contact;
     private short status;
@@ -26,8 +26,8 @@ public class Birthday implements Taskable, Cloneable{
      * @param contact Birthday of the contact.
      * @param priority Birthday's priority.
      */
-    public Birthday(DateTime date, Contact contact, int priority){
-        timeNotification = date;
+    public BirthdayTask(DateTime timeNotification, Contact contact, int priority){
+        this.timeNotification = timeNotification;
         this.contact = contact;
         status = 10;
         this.priority = priority;
@@ -114,11 +114,11 @@ public class Birthday implements Taskable, Cloneable{
      */
     @Override
     public boolean equals(Object o) {
-        return o instanceof Birthday && this.id == ((Birthday) o).id && 
-                 this.timeNotification.equals(((Birthday) o).timeNotification) &&
-                 this.contact.equals(((Birthday) o).contact) && 
-                 this.status == ((Birthday) o).status &&
-                 this.priority == ((Birthday) o).priority;
+        return o instanceof BirthdayTask && this.id == ((BirthdayTask) o).id && 
+                 this.timeNotification.equals(((BirthdayTask) o).timeNotification) &&
+                 this.contact.equals(((BirthdayTask) o).contact) && 
+                 this.status == ((BirthdayTask) o).status &&
+                 this.priority == ((BirthdayTask) o).priority;
     }
 
     /**
@@ -136,9 +136,9 @@ public class Birthday implements Taskable, Cloneable{
      */
     @Override
     public Object clone() {
-        Birthday result = null;
+        BirthdayTask result = null;
          try {
-             result = (Birthday) super.clone();
+             result = (BirthdayTask) super.clone();
              result.contact = (Contact) contact.clone();
          } catch (CloneNotSupportedException ex) {
          }
