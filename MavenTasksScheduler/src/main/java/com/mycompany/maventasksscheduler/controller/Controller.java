@@ -6,6 +6,7 @@ package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
+import com.mycompany.maventasksscheduler.userinterface.ConsoleUserInterface;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -16,9 +17,11 @@ import java.util.Scanner;
 public class Controller {
     
     private LogImpl logModel;
+    private ConsoleUserInterface userInterface;
     
     public Controller(){
         logModel = new LogImpl();
+        userInterface = new ConsoleUserInterface();
     }
     
     public void add(){

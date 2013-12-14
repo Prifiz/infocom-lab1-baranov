@@ -12,11 +12,12 @@ import org.joda.time.DateTime;
  */
 public abstract class Task {
     
-    private DateTime timeNotification;
-    private Contact contact;
-    private short status;
-    //private enum Grade {active, postponed, complete};
-    private int priority;
+    public DateTime timeNotification;
+    public Contact contact;
+    public enum Status {ACTIVE, POSTPONED, COMPLETE};
+    public Status status;
+    public enum Priority { URGENT_IMPORTANT, URGENT, IMPORTANT};
+    public Priority priority;
        
     /**
      * Returns date and time notification about task.
@@ -35,12 +36,12 @@ public abstract class Task {
     
     /**
      * Returns task's status: 
-     * 10 - active,
-     * 20 - postponed,
-     * 30 - complete.
+     * active,
+     * postponed,
+     * complete.
      * @return A short containing 10|20|30.
      */
-    public short getStatus() {
+    public Status getStatus() {
         return status;
     }
     
@@ -48,7 +49,7 @@ public abstract class Task {
      * Returns task's Priority.
      * @return A int containing task's priority.
      */
-    public int getPriority() {
+    public Priority getPriority() {
         return priority;
     }
     
@@ -106,7 +107,7 @@ public abstract class Task {
      * 30 - complete.
      * @param Status New task's status.
      */
-    public void setStatus(short status) {
+    public void setStatus(Status status) {
        this.status = status;
     }
     
@@ -114,8 +115,8 @@ public abstract class Task {
      * This method set task's priority.
      * @param priority New task's priority.
      */
-    public void setPriority(int priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
-    
+      
 }

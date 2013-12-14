@@ -19,27 +19,24 @@ public class App
                     + "\n1. Add task"
                     + "\n2. Show tasks"
                     + "\n3. Search tasks"
-                    + "\n4. Sort tasks by date"
-                    + "\n5. Edit all task's data"
-                    + "\n6. Remove task"
+                    + "\n4. Edit all task's data"
+                    + "\n5. Remove task"
                     + "\n0. Exit\n");
             switch(sc.nextInt()){
                 case 1:
                     c.add();
                     break;
                 case 2:
+                    c.sortTaslList();
                     c.showAll();
                     break;
                 case 3:
                     c.searchTask();
                     break;
                 case 4:
-                    c.sortTaslList();
-                    break;
-                case 5:
                     c.editAllDataTask();
                     break;
-                case 6:
+                case 5:
                     c.remove();
                     break;
                 case 0:
