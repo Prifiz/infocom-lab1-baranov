@@ -50,8 +50,12 @@ public class Controller {
         logModel.showAll();
     }
     
-    public void sortTaslList(){
+    public void sortTaskListByDate(){
         logModel.sortByDate();
+    }
+    
+    public void sortTaskListByPriority(){
+        logModel.sortByPriority();
     }
     
     public void searchTask(){
