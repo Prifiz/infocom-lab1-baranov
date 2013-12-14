@@ -15,11 +15,8 @@ public class BusinessTask extends Task  implements Cloneable {
 
     private String taskName;
     private String description;
-    private DateTime timeNotification;
-    private Contact contact;
-    private short status;
-    private int priority;
-
+  
+    
     /**
      * This constructor creates BusinessTask with taskName, date, priority.
      *
@@ -27,12 +24,13 @@ public class BusinessTask extends Task  implements Cloneable {
      * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, DateTime timeNotification, int priority) {
+    public BusinessTask(String taskName, DateTime timeNotification, 
+            Priority priority) {
         this.taskName = taskName;
-        description = "";
+        this.description = "";
         this.timeNotification = timeNotification;
-        contact = new Contact();
-        status = 10;
+        this.contact = new Contact();
+        this.status = Status.ACTIVE;
         this.priority = priority;
     }
 
@@ -45,12 +43,13 @@ public class BusinessTask extends Task  implements Cloneable {
      * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, DateTime timeNotification, int priority) {
+    public BusinessTask(String taskName, String description, 
+            DateTime timeNotification, Priority priority) {
         this.taskName = taskName;
         this.description = description;
         this.timeNotification = timeNotification;
-        contact = new Contact();
-        status = 10;
+        this.contact = new Contact();
+        this.status = Status.ACTIVE;
         this.priority = priority;
     }
 
@@ -64,13 +63,13 @@ public class BusinessTask extends Task  implements Cloneable {
      * @param contact BusinessTask's contact.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, DateTime timeNotification,
-            Contact contact, int priority) {
+    public BusinessTask(String taskName, String description, 
+            DateTime timeNotification, Contact contact, Priority priority) {
         this.taskName = taskName;
         this.description = description;
         this.timeNotification = timeNotification;
         this.contact = contact;
-        status = 10;
+        this.status = Status.ACTIVE;
         this.priority = priority;
     }
 
@@ -186,7 +185,7 @@ public class BusinessTask extends Task  implements Cloneable {
     public int hashCode() {
         return (taskName == null ? 0 : taskName.hashCode())
                 + (description == null ? 0 : description.hashCode()) + timeNotification.hashCode()
-                + contact.hashCode() + status + priority;
+                + contact.hashCode();
     }
 
     /**

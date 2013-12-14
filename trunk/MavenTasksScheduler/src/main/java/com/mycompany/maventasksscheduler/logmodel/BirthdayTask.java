@@ -14,10 +14,6 @@ import org.joda.time.DateTime;
  */
 public class BirthdayTask extends Task implements Cloneable{
     
-    private DateTime timeNotification;
-    private Contact contact;
-    private short status;
-    private int priority;
    
     /**
      * This constructor creates object Birthday with date, contact, priority.
@@ -25,10 +21,10 @@ public class BirthdayTask extends Task implements Cloneable{
      * @param contact Birthday of the contact.
      * @param priority Birthday's priority.
      */
-    public BirthdayTask(DateTime timeNotification, Contact contact, int priority){
+    public BirthdayTask(DateTime timeNotification, Contact contact, Priority priority){
         this.timeNotification = timeNotification;
         this.contact = contact;
-        status = 10;
+        this.status = Status.ACTIVE;
         this.priority = priority;
     }
   
@@ -72,7 +68,7 @@ public class BirthdayTask extends Task implements Cloneable{
      */
     @Override
     public int hashCode() {
-        return timeNotification.hashCode() + contact.hashCode() + status + priority;
+        return timeNotification.hashCode() + contact.hashCode();
     }
 
     /**

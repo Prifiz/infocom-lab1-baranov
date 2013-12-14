@@ -7,6 +7,8 @@ package com.mycompany.maventasksscheduler.logmodel;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.exceptions.TaskFieldIndexOutOfBoundsException;
 import com.mycompany.maventasksscheduler.exceptions.TaskIndexOutOfBoundsException;
+import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
+import com.mycompany.maventasksscheduler.logmodel.Task.Status;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -154,12 +156,10 @@ public class LogImpl implements Log, Cloneable {
                 log.get(taskId).setContact(setContactInfo());
                 break;
             case 3:
-                System.out.println("Enter the new status:");
-                log.get(taskId).setStatus(sc.nextShort());
+                log.get(taskId).setStatus(setStatus());
                 break;
             case 4:
-                System.out.println("Enter the new priority:");
-                log.get(taskId).setPriority(sc.nextInt());
+                log.get(taskId).setPriority(setPriority());
                 break;
                 default:
         }
@@ -188,12 +188,10 @@ public class LogImpl implements Log, Cloneable {
                 log.get(taskId).setContact(setContactInfo());
                 break;
             case 5:
-                System.out.println("Enter the new status:");
-                log.get(taskId).setStatus(sc.nextShort());
+                log.get(taskId).setStatus(setStatus());
                 break;
             case 6:
-                System.out.println("Enter the new priority:");
-                log.get(taskId).setPriority(sc.nextInt());
+                log.get(taskId).setPriority(setPriority());
                 break;
         }
     }
@@ -285,6 +283,69 @@ public class LogImpl implements Log, Cloneable {
         }
         return contact;
     }
+    
+    
+    private Status setStatus(){
+        Scanner sc = new Scanner(System.in);
+        Status status = null;
+        boolean flag = true;
+        while (flag) {
+            System.out.println("Choose new status:");
+            System.out.println("1. ACTIVE.");
+            System.out.println("2. POSTPONED.");
+            System.out.println("3. COMPLETE.");
+            int read = sc.nextInt();
+            sc.nextLine();
+            switch (read) {
+                case 1:
+                    status = Status.ACTIVE;
+                    flag = false;
+                    break ;
+                case 2:
+                    status = Status.POSTPONED;
+                    flag = false;
+                    break;
+                case 3:
+                    status = Status.COMPLETE;
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("choose correctly the status.");
+            }
+        }
+        return status;
+    }
+    
+    private Priority setPriority(){
+        Scanner sc = new Scanner(System.in);
+        Priority priority = null;
+        boolean flag = true;
+        while (flag) {
+            System.out.println("Choose new priority:");
+            System.out.println("1. URGENT_IMPORTANT.");
+            System.out.println("2. URGENT.");
+            System.out.println("3. IMPORTANT.");
+            int read = sc.nextInt();
+            sc.nextLine();
+            switch (read) {
+                case 1:
+                    priority = Priority.URGENT_IMPORTANT;
+                    flag = false;
+                    break ;
+                case 2:
+                    priority = Priority.URGENT;
+                    flag = false;
+                    break;
+                case 3:
+                    priority = Priority.IMPORTANT;
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("choose correctly the status.");
+            }
+        }
+        return priority;
+    }
 
     /**
      * This method create new task and add it in log.
@@ -294,10 +355,7 @@ public class LogImpl implements Log, Cloneable {
         Scanner sc = new Scanner(System.in);
         switch (sc.nextInt()) {
             case 1:
-                sc.nextLine();
-                System.out.println("Enter priority:");
-                int priority = sc.nextInt();
-                add(new BirthdayTask(createDate(), setContactInfo(), priority));
+                add(new BirthdayTask(createDate(), setContactInfo(), setPriority()));
                 break;
             case 2:
                 System.out.println("Create business task");
