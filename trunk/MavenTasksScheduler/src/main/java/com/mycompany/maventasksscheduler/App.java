@@ -27,7 +27,7 @@ public class App
                     c.add();
                     break;
                 case 2:
-                    c.sortTaslList();
+                    c.sortTaskListByDate();
                     c.showAll();
                     break;
                 case 3:

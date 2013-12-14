@@ -118,5 +118,17 @@ public abstract class Task {
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
+    
+    public int compareTo(Priority priority){
+        if((this.priority == Priority.URGENT_IMPORTANT &&
+            (priority == Priority.URGENT || priority == Priority.IMPORTANT))|| 
+             (this.priority == Priority.URGENT && priority == Priority.IMPORTANT))
+            return -1;
+        else if((this.priority == Priority.IMPORTANT &&
+            (priority == Priority.URGENT || priority == Priority.URGENT_IMPORTANT))|| 
+             (this.priority == Priority.URGENT && priority == Priority.URGENT_IMPORTANT))
+            return 1;
+        return 0;
+    }
       
 }

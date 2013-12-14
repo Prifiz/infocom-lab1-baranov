@@ -94,7 +94,7 @@ public class LogImpl implements Log, Cloneable {
     public void sortByPriority() {
         Comparator<Task> comparator = new Comparator<Task>() {
             public int compare(Task c1, Task c2) {
-                return 0;// c2.getPriority().compareTo(c1.getPriority());
+                return c1.getPriority().compareTo(c2.getPriority());
             }
         };
         Collections.sort(log, comparator);
