@@ -71,7 +71,7 @@ public class MainController {
                     addController.start();
                     break;
                 case 0:
-                   break menu; 
+                   System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
             }
