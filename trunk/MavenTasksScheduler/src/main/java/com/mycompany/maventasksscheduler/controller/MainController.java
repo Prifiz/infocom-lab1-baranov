@@ -7,7 +7,7 @@ package com.mycompany.maventasksscheduler.controller;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.ConsoleUserInterface;
+import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import java.util.LinkedList;
 import java.util.Scanner;
 import org.joda.time.DateTime;
@@ -16,20 +16,52 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public class Controller {
+public class MainController {
     
     private LogImpl logModel;
-    private ConsoleUserInterface userInterface;
+    private MainConsoleUI userInterface;
+    private FileController fileController;
+    private HelpController helpController;
+    private AddController addController;
     
-    public Controller(){
+    public MainController(){
         logModel = new LogImpl();
-        userInterface = new ConsoleUserInterface();
+        userInterface = new MainConsoleUI();
     }
     
-    public void add(){
-        logModel.createTask();
+    public void start(){
+        Scanner sc = new Scanner(System.in);
+        menu:
+        for(;;){
+            userInterface.showMainMenu();
+            switch(sc.nextInt()){
+                case 1:
+                    helpController = new HelpController();
+                    helpController.start();
+                    break;
+                case 2:
+                    fileController = new FileController(logModel);
+                    fileController.start();
+                    break;
+                case 3:
+                    logModel.sortByDate();
+                    userInterface.showAll(logModel);
+                    break;
+                case 4:
+                    searchTask();
+                    break;
+                case 5:
+                    addController = new AddController(logModel);
+                    addController.start();
+                    break;
+                case 0:
+                   break menu; 
+                default:
+                    userInterface.chooseCorrectly();
+            }
+        }
     }
-    
+
     public void remove(){
         if(logModel.getSize() == 0)
             return;
@@ -42,18 +74,6 @@ public class Controller {
             return;
         userInterface.showAll(logModel);
         logModel.editAllDataTask(userInterface.chooseTaskId());
-    }
-    
-    public void showAll() {
-        userInterface.showAll(logModel);
-    }
-    
-    public void sortTaskListByDate(){
-        logModel.sortByDate();
-    }
-    
-    public void sortTaskListByPriority(){
-        logModel.sortByPriority();
     }
     
     public void searchTask(){

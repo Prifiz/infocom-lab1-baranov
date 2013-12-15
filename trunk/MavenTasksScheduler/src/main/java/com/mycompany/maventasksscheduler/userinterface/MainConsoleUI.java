@@ -11,7 +11,27 @@ import java.util.Scanner;
  *
  * @author Сергей
  */
-public class ConsoleUserInterface {
+public class MainConsoleUI {
+    
+    
+    public MainConsoleUI(){
+    }
+    
+    public void showMainMenu(){
+        System.out.println("\nYou in main menu, choose menu point:"
+                    + "\n1. Help"
+                    + "\n2. File"
+                    + "\n3. Show tasks"
+                    + "\n4. search task"
+                    + "\n5. add task"
+                    + "\n0. Exit\n");
+    }
+
+    
+    public void chooseCorrectly(){
+        System.out.println("Please, choose correctly menu point");
+    }
+    
     
     
     
