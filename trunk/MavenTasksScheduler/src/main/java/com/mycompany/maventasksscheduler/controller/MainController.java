@@ -5,6 +5,7 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
+import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
@@ -23,10 +24,13 @@ public class MainController {
     private FileController fileController;
     private HelpController helpController;
     private AddController addController;
+    private ControlEnteredInformation control;
+    private ChooseTaskController chooseTask;
     
     public MainController(){
         logModel = new LogImpl();
         userInterface = new MainConsoleUI();
+        control = new ControlEnteredInformation(logModel);
     }
     
     public void start(){
@@ -46,9 +50,15 @@ public class MainController {
                 case 3:
                     logModel.sortByDate();
                     userInterface.showAll(logModel);
+                    chooseTask = new ChooseTaskController(logModel);
+                    chooseTask.start();
                     break;
                 case 4:
-                    searchTask();
+                    LinkedList<Task> foundTasks = logModel.search(
+                            control.createDate(control.controlDate()));
+                    userInterface.foundTasks(foundTasks);
+                    chooseTask = new ChooseTaskController(new LogImpl(foundTasks));
+                    chooseTask.start();
                     break;
                 case 5:
                     addController = new AddController(logModel);
@@ -76,38 +86,6 @@ public class MainController {
         logModel.editAllDataTask(userInterface.chooseTaskId());
     }
     
-    public void searchTask(){
-        LinkedList<Task> foundTasks = logModel.search(createDate());
-        for(int i = 0; i < foundTasks.size(); i++)
-                System.out.println(foundTasks.get(i).toString());
-    }
-    
-    
-    public DateTime createDate() throws BadEnteredDate {
-        Scanner sc = new Scanner(System.in);
-        String date;
-        String[] splitDate = new String[3];
-        while (true) {
-            System.out.println("Enter correctly date, example:\n9.12.2013 or 9-12-2013, or 9/12/2013");
-            date = sc.nextLine();
-            if (date.contains("")) {
-                splitDate = date.split("\\.");
-            }
-            else if (date.contains("-")) {
-                splitDate = date.split("-");
-            }
-            else if (date.contains("/")) {
-                splitDate = date.split("/");
-            }
-            if (Integer.parseInt(splitDate[2]) >= 2013 && Integer.parseInt(splitDate[1]) > 0
-                    && Integer.parseInt(splitDate[1]) < 13 && Integer.parseInt(splitDate[0]) > 0
-                    && Integer.parseInt(splitDate[0]) < 32) {
-                break;
-            }
-        }
-         return new DateTime(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1]),
-                Integer.parseInt(splitDate[0]), 0, 0);
-    }
-    
-    
+
+   
 }

@@ -5,46 +5,48 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
-import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
+import com.mycompany.maventasksscheduler.logmodel.Task;
+import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.ShowChoosenTaskConsoleUI;
 import java.util.Scanner;
 
 /**
  *
  * @author Сергей
  */
-public class FileController {
+public class ShowChoosenTaskController {
     
     private LogImpl logModel;
-    private FileConsoleUI fileUI;
+    private Task task;
     private MainConsoleUI userInterface;
+    private ShowChoosenTaskConsoleUI choosetask;
+    private int taskNumber;
     
-    public FileController(LogImpl logModel){
+    
+    public ShowChoosenTaskController(LogImpl logModel, Task task, int taskNumber){
         this.logModel = logModel;
-        fileUI = new FileConsoleUI();
+        this.task = task;
         userInterface = new MainConsoleUI();
+        choosetask = new ShowChoosenTaskConsoleUI();
+        this.taskNumber = taskNumber;
     }
     
     public void start(){
         Scanner sc = new Scanner(System.in);
         menu:
         for(;;){
-            fileUI.showFileMenu();
-            switch(sc.nextInt()){
+           choosetask.showFileMenu();
+           switch(sc.nextInt()){
                 case 1:
                     break menu;
                 case 2:
-                    fileUI.taskSaved();
+                    
                     break;
                 case 3:
-                    fileUI.taskLoaded();
+                    logModel.remove(taskNumber);
+                    choosetask.taskRemoved();
                     break;
-                case 4:
-                    logModel.removeAll();
-                    fileUI.allTaskRemoved();
-                    break;
-                case 0://реализовать закрытие программы
-                   break menu; 
                 default:
                     userInterface.chooseCorrectly();
             }

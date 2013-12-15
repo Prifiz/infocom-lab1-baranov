@@ -5,46 +5,44 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import com.mycompany.maventasksscheduler.logmodel.Task;
+import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
  *
  * @author Сергей
  */
-public class FileController {
+public class ChooseTaskController {
     
     private LogImpl logModel;
-    private FileConsoleUI fileUI;
     private MainConsoleUI userInterface;
+    private ChooseTaskConsoleUI choosetask;
+    private ShowChoosenTaskController showChoosenTask;
     
-    public FileController(LogImpl logModel){
+    public ChooseTaskController(LogImpl logModel){
         this.logModel = logModel;
-        fileUI = new FileConsoleUI();
         userInterface = new MainConsoleUI();
+        choosetask = new ChooseTaskConsoleUI();
     }
-    
+  
     public void start(){
         Scanner sc = new Scanner(System.in);
         menu:
         for(;;){
-            fileUI.showFileMenu();
-            switch(sc.nextInt()){
+           choosetask.showFileMenu();
+           switch(sc.nextInt()){
                 case 1:
                     break menu;
                 case 2:
-                    fileUI.taskSaved();
+                    int number = 0;
+                    number = userInterface.chooseTaskId();
+                    showChoosenTask = new ShowChoosenTaskController(logModel, logModel.get(number), number);
+                    showChoosenTask.start();
                     break;
-                case 3:
-                    fileUI.taskLoaded();
-                    break;
-                case 4:
-                    logModel.removeAll();
-                    fileUI.allTaskRemoved();
-                    break;
-                case 0://реализовать закрытие программы
-                   break menu; 
                 default:
                     userInterface.chooseCorrectly();
             }
