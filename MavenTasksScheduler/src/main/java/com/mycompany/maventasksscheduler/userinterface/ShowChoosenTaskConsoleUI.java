@@ -17,8 +17,16 @@ public class ShowChoosenTaskConsoleUI {
                     + "\n3. Remove task\n");
     }
     
+    public void showBackTO(){
+        System.out.println("\n Back to:"
+                    + "\n1. Main menu"
+                    + "\n2. The previous point of the menu\n");
+    }
+    
+    
     public void taskRemoved(){
         System.out.println("Task removed\n");
     }
+    
     
 }
