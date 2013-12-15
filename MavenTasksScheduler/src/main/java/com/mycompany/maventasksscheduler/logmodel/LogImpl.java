@@ -28,10 +28,6 @@ public class LogImpl implements Log, Cloneable {
         log = new LinkedList();
     }
 
-    public LogImpl(LinkedList<Task> foundTasks) {
-        log = foundTasks;
-    }
-
     /**
      * Returns count task in LogModel
      *
@@ -41,6 +37,9 @@ public class LogImpl implements Log, Cloneable {
         return log.size();
     }
 
+    public void setLog(LinkedList<Task> log){
+        this.log = log;
+    }
     
     public Task get(int i) {
         return log.get(i);

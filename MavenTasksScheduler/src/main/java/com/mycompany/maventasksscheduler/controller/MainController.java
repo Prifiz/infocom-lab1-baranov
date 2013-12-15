@@ -57,7 +57,7 @@ public class MainController {
                     LinkedList<Task> foundTasks = logModel.search(
                             control.createDate(control.controlDate()));
                     userInterface.foundTasks(foundTasks);
-                    chooseTask = new ChooseTaskController(new LogImpl(foundTasks));
+                    chooseTask = new ChooseTaskController(foundTasks);
                     chooseTask.start();
                     break;
                 case 5:

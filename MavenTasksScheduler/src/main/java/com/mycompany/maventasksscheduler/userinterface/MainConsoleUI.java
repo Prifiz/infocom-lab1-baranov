@@ -79,7 +79,7 @@ public class MainConsoleUI {
      
      public void foundTasks(LinkedList<Task> foundTasks){
          for(int i = 0; i < foundTasks.size(); i++)
-             System.out.println(foundTasks.get(i).toString());
+             System.out.println("№ - " + i + ", " + foundTasks.get(i).toString());
      }
      
                 
