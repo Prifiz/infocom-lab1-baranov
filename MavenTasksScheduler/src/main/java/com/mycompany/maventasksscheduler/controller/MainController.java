@@ -10,6 +10,7 @@ import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
@@ -54,13 +55,21 @@ public class MainController {
                     fileController.start();
                     break;
                 case 3:
+                    if(logModel.getSize() == 0){
+                        userInterface.logIsEmpty();
+                        break;
+                    }
                     logModel.sortByDate();
                     userInterface.showAll(logModel);
                     chooseTask = new ChooseTaskController(logModel);
                     chooseTask.start();
                     break;
                 case 4:
-                    LinkedList<Task> foundTasks = logModel.search(
+                    if(logModel.getSize() == 0){
+                        userInterface.logIsEmpty();
+                        break;
+                    }
+                    List <Task> foundTasks = logModel.search(
                             control.createDate(control.controlDate()));
                     userInterface.foundTasks(foundTasks);
                     chooseTask = new ChooseTaskController(foundTasks);
