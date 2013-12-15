@@ -38,12 +38,10 @@ public class LogImpl implements Log, Cloneable {
     }
 
     
-    public void showAll() {
-        for (int i = 0; i < log.size(); i++) {
-            System.out.println("№ - " + i + ", " + log.get(i).toString());
-        }
+    public Task get(int i) {
+        return log.get(i);
     }
-
+   
     @Override
     public void add(Task task) {
         log.add(task);
@@ -108,49 +106,32 @@ public class LogImpl implements Log, Cloneable {
      */
     @Override
     public void editAllDataTask(int taskId) {
-        if (taskId < 0 || taskId > log.size()) {
+        if (taskId < 0 || taskId > log.size()) 
             throw new TaskIndexOutOfBoundsException();
-        }
-
-        if (log.get(taskId) instanceof BirthdayTask) {
-            for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < log.get(taskId).getFieldCount(); i++) 
                 editSomeFieldOfTask(taskId, i + 1);
-            }
-        }
-        if (log.get(taskId) instanceof BusinessTask) {
-            for (int i = 0; i < 6; i++) {
-                editSomeFieldOfTask(taskId, i + 1);
-            }
-        }
     }
 
     @Override
     public void editSomeFieldOfTask(int taskId, int fieldNumber) {
-        if (taskId < 0 || taskId > log.size()) {
+        if (taskId < 0 || taskId > log.size()) 
             throw new TaskIndexOutOfBoundsException();
-        }
-        if (log.get(taskId) instanceof BirthdayTask) {
-            if (fieldNumber < 1 || fieldNumber > 4) {
+        if (fieldNumber < 1 || fieldNumber > log.get(taskId).getFieldCount()) 
                 throw new TaskFieldIndexOutOfBoundsException();
-            }
+        if (log.get(taskId) instanceof BirthdayTask)
             setEditSomeFieldOfBirthday(taskId, fieldNumber);
-        }
-        if (log.get(taskId) instanceof BusinessTask) {
-            if (fieldNumber < 1 || fieldNumber > 6) {
-                throw new TaskFieldIndexOutOfBoundsException();
-            }
+        if (log.get(taskId) instanceof BusinessTask)
             setEditSomeFieldOfBusinessTask(taskId, fieldNumber);
-        }
+
     }
 
     /*
      * module for edit some field of Birthday
      */
     private void setEditSomeFieldOfBirthday(int taskId, int fieldNumber) {
-        Scanner sc = new Scanner(System.in);
         switch (fieldNumber) {
             case 1:
-                log.get(taskId).setDate(createDate());
+                log.get(taskId).setDate(setDate());
                 break;
             case 2:
                 log.get(taskId).setContact(setContactInfo());
@@ -161,7 +142,7 @@ public class LogImpl implements Log, Cloneable {
             case 4:
                 log.get(taskId).setPriority(setPriority());
                 break;
-                default:
+            default: 
         }
     }
 
@@ -182,7 +163,7 @@ public class LogImpl implements Log, Cloneable {
                 bt1.setDescription(sc.nextLine());
                 break;
             case 3:
-                log.get(taskId).setDate(createDate());
+                log.get(taskId).setDate(setDate());
                 break;
             case 4:
                 log.get(taskId).setContact(setContactInfo());
@@ -200,7 +181,7 @@ public class LogImpl implements Log, Cloneable {
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    public DateTime createDate() throws BadEnteredDate {
+    private DateTime setDate() throws BadEnteredDate {
         Scanner sc = new Scanner(System.in);
         String date;
         String[] splitDate = new String[3];
@@ -237,7 +218,8 @@ public class LogImpl implements Log, Cloneable {
         return new DateTime(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1]),
                 Integer.parseInt(splitDate[0]), Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[1]));
     }
-
+    
+    
     /*
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
@@ -355,7 +337,7 @@ public class LogImpl implements Log, Cloneable {
         Scanner sc = new Scanner(System.in);
         switch (sc.nextInt()) {
             case 1:
-                add(new BirthdayTask(createDate(), setContactInfo(), setPriority()));
+                add(new BirthdayTask(setDate(), setContactInfo(), setPriority()));
                 break;
             case 2:
                 System.out.println("Create business task");
@@ -364,4 +346,6 @@ public class LogImpl implements Log, Cloneable {
                 System.out.println("Choose correctly task type ");
         }
     }
+    
+    
 }

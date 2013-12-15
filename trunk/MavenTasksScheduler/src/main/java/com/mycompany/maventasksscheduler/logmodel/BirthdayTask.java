@@ -15,6 +15,8 @@ import org.joda.time.DateTime;
 public class BirthdayTask extends Task implements Cloneable{
     
    
+   
+    
     /**
      * This constructor creates object Birthday with date, contact, priority.
      * @param date Birthday's time notification.
@@ -26,6 +28,7 @@ public class BirthdayTask extends Task implements Cloneable{
         this.contact = contact;
         this.status = Status.ACTIVE;
         this.priority = priority;
+        this.fieldCount = 4;
     }
   
     /**

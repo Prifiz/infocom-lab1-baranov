@@ -18,7 +18,13 @@ public abstract class Task {
     public Status status;
     public enum Priority { URGENT_IMPORTANT, URGENT, IMPORTANT};
     public Priority priority;
-       
+    public int fieldCount;
+      
+    
+    public int getFieldCount(){
+        return fieldCount;
+    }
+    
     /**
      * Returns date and time notification about task.
      * @return A Date notification.
