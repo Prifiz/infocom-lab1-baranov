@@ -17,7 +17,7 @@ public class FileConsoleUI {
                     + "\n2. Save tasks"
                     + "\n3. Load tasks"
                     + "\n4. Remove all"
-                    + "\n5. Exit program\n");
+                    + "\n0. Exit program\n");
     }
     
     public void taskSaved(){

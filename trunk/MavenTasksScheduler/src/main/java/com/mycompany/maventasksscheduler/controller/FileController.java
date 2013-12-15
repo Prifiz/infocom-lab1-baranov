@@ -43,8 +43,8 @@ public class FileController {
                     logModel.removeAll();
                     fileUI.allTaskRemoved();
                     break;
-                case 0://реализовать закрытие программы
-                   break menu; 
+                case 0:
+                   System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
             }
