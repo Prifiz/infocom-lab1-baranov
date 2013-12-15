@@ -15,6 +15,7 @@ public class BusinessTask extends Task  implements Cloneable {
 
     private String taskName;
     private String description;
+    
   
     
     /**
@@ -32,6 +33,7 @@ public class BusinessTask extends Task  implements Cloneable {
         this.contact = new Contact();
         this.status = Status.ACTIVE;
         this.priority = priority;
+        this.fieldCount = 6;
     }
 
     /**
@@ -51,6 +53,7 @@ public class BusinessTask extends Task  implements Cloneable {
         this.contact = new Contact();
         this.status = Status.ACTIVE;
         this.priority = priority;
+        this.fieldCount = 6;
     }
 
     /**
@@ -71,8 +74,11 @@ public class BusinessTask extends Task  implements Cloneable {
         this.contact = contact;
         this.status = Status.ACTIVE;
         this.priority = priority;
+        this.fieldCount = 6;
     }
 
+    
+    
     /**
      * Returns task's name.
      *
