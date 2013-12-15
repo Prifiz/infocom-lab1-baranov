@@ -10,6 +10,7 @@ import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -22,7 +23,7 @@ public class ChooseTaskController {
     private MainConsoleUI userInterface;
     private ChooseTaskConsoleUI choosetask;
     private ShowChoosenTaskController showChoosenTask;
-    private LinkedList<Task> foundTasks;
+    private List<Task> foundTasks;
     
     public ChooseTaskController(LogImpl logModel){
         this.logModel = logModel;
@@ -30,7 +31,7 @@ public class ChooseTaskController {
         choosetask = new ChooseTaskConsoleUI();
     }
     
-    public ChooseTaskController(LinkedList<Task> foundTasks){
+    public ChooseTaskController(List<Task> foundTasks){
         this.foundTasks = foundTasks;
         userInterface = new MainConsoleUI();
         choosetask = new ChooseTaskConsoleUI();

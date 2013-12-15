@@ -7,6 +7,7 @@ package com.mycompany.maventasksscheduler.userinterface;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -77,11 +78,15 @@ public class MainConsoleUI {
          System.out.println("Enter the new task's description:");
      }
      
-     public void foundTasks(LinkedList<Task> foundTasks){
+     public void foundTasks(List<Task> foundTasks){
          for(int i = 0; i < foundTasks.size(); i++)
              System.out.println("№ - " + i + ", " + foundTasks.get(i).toString());
      }
      
+     
+     public void logIsEmpty(){
+         System.out.println("In the magazine there is no task");
+     }
                 
      
      
