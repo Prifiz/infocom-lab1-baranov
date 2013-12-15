@@ -33,6 +33,12 @@ public class MainController {
         control = new ControlEnteredInformation(logModel);
     }
     
+    public MainController(LogImpl logModel){
+        this.logModel = logModel;
+        userInterface = new MainConsoleUI();
+        control = new ControlEnteredInformation(this.logModel);
+    }
+    
     public void start(){
         Scanner sc = new Scanner(System.in);
         menu:

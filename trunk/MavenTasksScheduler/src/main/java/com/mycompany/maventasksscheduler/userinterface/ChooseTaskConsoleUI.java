@@ -11,7 +11,7 @@ package com.mycompany.maventasksscheduler.userinterface;
 public class ChooseTaskConsoleUI {
     
     public void showFileMenu(){
-        System.out.println("\nYou in file menu, choose menu point:"
+        System.out.println("\nYou see task list choose task or back to main menu:"
                     + "\n1. Back to main menu"
                     + "\n2. Choose task number\n");
     }
