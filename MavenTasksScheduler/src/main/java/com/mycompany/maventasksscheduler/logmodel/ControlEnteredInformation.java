@@ -114,7 +114,8 @@ public class ControlEnteredInformation {
     }
     
     public DateTime createDate(int [] date) throws BadEnteredDate{
-        return new DateTime(date[2], date[1], date[0], 0, 0);
+        DateTime dt = new DateTime(date[2], date[1], date[0], 0, 0);
+        return dt;
     }
     
     public DateTime createDate(int [] date, int [] time) throws BadEnteredDate{

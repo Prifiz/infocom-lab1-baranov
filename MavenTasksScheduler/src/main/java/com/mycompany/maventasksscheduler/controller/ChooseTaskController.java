@@ -48,7 +48,8 @@ public class ChooseTaskController {
                 case 2:
                     int number = 0;
                     number = userInterface.chooseTaskId();
-                    showChoosenTask = new ShowChoosenTaskController(logModel, logModel.get(number), number);
+                    showChoosenTask = new ShowChoosenTaskController(
+                            logModel, logModel.get(number), number);
                     showChoosenTask.start();
                     break;
                 default:

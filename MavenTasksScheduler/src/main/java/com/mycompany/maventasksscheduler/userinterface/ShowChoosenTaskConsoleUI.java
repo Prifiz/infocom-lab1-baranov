@@ -24,6 +24,13 @@ public class ShowChoosenTaskConsoleUI {
     }
     
     
+    public void chooseEditType(){
+        System.out.println("\n Choose edit type:"
+                    + "\n1. edit all data task"
+                    + "\n2. edit some field of task\n");
+    }
+    
+    
     public void taskRemoved(){
         System.out.println("Task removed\n");
     }
