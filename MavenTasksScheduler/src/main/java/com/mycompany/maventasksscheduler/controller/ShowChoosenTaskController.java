@@ -45,6 +45,7 @@ public class ShowChoosenTaskController {
                     nextMenu:
                     for(;;){
                         choosetask.showBackTO();
+                        sc.nextLine();
                         backTo = sc.nextInt();
                         switch(backTo){
                             case 1:
