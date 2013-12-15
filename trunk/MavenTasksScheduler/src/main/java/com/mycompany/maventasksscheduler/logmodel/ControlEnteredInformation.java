@@ -229,11 +229,13 @@ public class ControlEnteredInformation {
     }
     
     public String controlTaskName(){
+        addConsoleUI.enterTaskName();
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
     
     public String controlDescription(){
+        addConsoleUI.enterDescription();
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }

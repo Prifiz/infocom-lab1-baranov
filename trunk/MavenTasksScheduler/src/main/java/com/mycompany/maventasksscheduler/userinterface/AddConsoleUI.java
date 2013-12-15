@@ -44,6 +44,18 @@ public class AddConsoleUI {
      public void enterContactMail(){
          System.out.println("Enter email:");
      }
-             
-            
+     
+     public void chooseBusinessType(){
+         System.out.println("\nWhach information about business task want add:"
+                    + "\n1. taskName, timeNotification,Priority priority"
+                    + "\n2. StaskName, description, timeNotification, priority"
+                    + "\n3. taskName, description, timeNotification, contact, priority");
+     }
+     
+     public void enterTaskName(){
+         System.out.println("Enter task's name:");
+     }       
+
+    public void enterDescription() {
+        System.out.println("Enter task's description:");}
 }

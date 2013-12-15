@@ -5,6 +5,7 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
+import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -43,35 +44,56 @@ public class AddController {
                     break menu;
                 case 2:
                     addConsoleUI.showTasksType();
-                    int [] splitDate = new int [3];
-                    int [] splitTime = new int [2];
-                    Task.Priority priority;
                     Contact contact;
                     int read;
                     switch (sc.nextInt()) {
                         case 1:
-                            splitDate = control.controlDate();
-                            splitTime = control.controlTime();
-                            contact = control.controlContact();
-                            priority = control.controlPriority();
-                            logModel.add(new BirthdayTask(new DateTime(
-                                    splitDate[2],splitDate[1], splitDate[0], 
-                                    splitTime[0], splitTime[1]), 
-                                    contact, priority));
+                            logModel.add(new BirthdayTask(control.createDate(
+                        control.controlDate(), control.controlTime()), 
+                                    control.controlContact(), control.controlPriority()));
                             addConsoleUI.taskAdded();
                             break;
                         case 2:
+                            int backTo = 0;
                             
-                            splitDate = control.controlDate();
-                            splitTime = control.controlTime();
-                            contact = control.controlContact();
-                            priority = control.controlPriority();
-                            logModel.add(new BirthdayTask(new DateTime(
-                                    splitDate[2],splitDate[1], splitDate[0], 
-                                    splitTime[0], splitTime[1]), 
-                                    contact, priority));
+                            nextMenu:
+                            for(;;){
+                                addConsoleUI.chooseBusinessType();
+                                sc.nextLine();
+                                backTo = sc.nextInt();
+                                switch(backTo){
+                                    case 1:
+                                        logModel.add(new BusinessTask(
+                                                control.controlTaskName(),
+                                                control.createDate(
+                                                control.controlDate(), 
+                                                control.controlTime()),
+                                                control.controlPriority()));
+                                        break nextMenu;
+                                    case 2:
+                                        logModel.add(new BusinessTask(
+                                                control.controlTaskName(),
+                                                control.controlDescription(),
+                                                control.createDate(
+                                                control.controlDate(), 
+                                                control.controlTime()),
+                                                control.controlPriority()));
+                                        break nextMenu;
+                                    case 3:
+                                        logModel.add(new BusinessTask(
+                                                control.controlTaskName(),
+                                                control.controlDescription(),
+                                                control.createDate(
+                                                control.controlDate(), 
+                                                control.controlTime()),
+                                                control.controlContact(),
+                                                control.controlPriority()));
+                                        break nextMenu;
+                                    default:
+                                        userInterface.chooseCorrectly();
+                                }
+                            }
                             addConsoleUI.taskAdded();
-                            System.out.println("Create business task");
                             break;
                         default:
                             System.out.println("Choose correctly task type ");
