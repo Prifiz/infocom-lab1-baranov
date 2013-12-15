@@ -23,9 +23,11 @@ import org.joda.time.DateTime;
 public class LogImpl implements Log, Cloneable {
 
     private List<Task> log;
+    private ControlEnteredInformation control;
     
     public LogImpl() {
         log = new LinkedList();
+        control = new ControlEnteredInformation(this);
     }
 
     /**
@@ -139,16 +141,17 @@ public class LogImpl implements Log, Cloneable {
     public void setEditSomeFieldOfBirthday(int taskId, int fieldNumber) {
         switch (fieldNumber) {
             case 1:
-               // log.get(taskId).setDate(setDate());
+                log.get(taskId).setDate(control.createDate(
+                        control.controlDate(), control.controlTime()));
                 break;
             case 2:
-               // log.get(taskId).setContact(setContactInfo());
+                log.get(taskId).setContact(control.controlContact());
                 break;
             case 3:
-               // log.get(taskId).setStatus(setStatus());
+                log.get(taskId).setStatus(control.controlStatus());
                 break;
             case 4:
-               // log.get(taskId).setPriority(setPriority());
+                log.get(taskId).setPriority(control.controlPriority());
                 break;
             default: 
         }
@@ -161,26 +164,23 @@ public class LogImpl implements Log, Cloneable {
         Scanner sc = new Scanner(System.in);
         switch (fieldNumber) {
             case 1:
-                System.out.println("Enter the new task's name:");
-                BusinessTask bt = (BusinessTask) log.get(taskId);
-                bt.setTaskName(sc.nextLine());
+                control.setTaskName(taskId, control.controlTaskName());
                 break;
             case 2:
-                System.out.println("Enter the new task's description:");
-                BusinessTask bt1 = (BusinessTask) log.get(taskId);
-                bt1.setDescription(sc.nextLine());
+                control.setDescription(taskId, control.controlDescription());
                 break;
             case 3:
-                //log.get(taskId).setDate(setDate());
+                log.get(taskId).setDate(control.createDate(
+                        control.controlDate(), control.controlTime()));
                 break;
             case 4:
-                //log.get(taskId).setContact(setContactInfo());
+                log.get(taskId).setContact(control.controlContact());
                 break;
             case 5:
-                //log.get(taskId).setStatus(setStatus());
+                log.get(taskId).setStatus(control.controlStatus());
                 break;
             case 6:
-                //log.get(taskId).setPriority(setPriority());
+                log.get(taskId).setPriority(control.controlPriority());
                 break;
         }
     }

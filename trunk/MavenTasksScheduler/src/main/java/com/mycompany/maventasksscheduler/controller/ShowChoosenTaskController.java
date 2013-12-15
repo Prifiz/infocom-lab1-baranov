@@ -58,7 +58,22 @@ public class ShowChoosenTaskController {
                     }
                     break menu;
                 case 2:
-                    
+                    nextMenu:
+                    for(;;){
+                        choosetask.chooseEditType();
+                        sc.nextLine();
+                        backTo = sc.nextInt();
+                        switch(backTo){
+                            case 1:
+                                logModel.editAllDataTask(taskNumber);
+                                break nextMenu;
+                            case 2:
+                                
+                                break nextMenu;
+                            default:
+                                userInterface.chooseCorrectly();
+                        }
+                    }
                     break;
                 case 3:
                     logModel.remove(taskNumber);
