@@ -54,6 +54,11 @@ public class LogImpl implements Log, Cloneable {
         }
         log.remove(taskNumber);
     }
+    
+    public void removeAll(){
+        for(int i = 0; i < log.size(); i++)
+            log.remove(i);
+    }
 
     @Override
     public LinkedList<Task> search(DateTime date) {
@@ -128,7 +133,7 @@ public class LogImpl implements Log, Cloneable {
     /*
      * module for edit some field of Birthday
      */
-    private void setEditSomeFieldOfBirthday(int taskId, int fieldNumber) {
+    public void setEditSomeFieldOfBirthday(int taskId, int fieldNumber) {
         switch (fieldNumber) {
             case 1:
                 log.get(taskId).setDate(setDate());
@@ -149,7 +154,7 @@ public class LogImpl implements Log, Cloneable {
     /*
      * module for edit some field of BusinessTask
      */
-    private void setEditSomeFieldOfBusinessTask(int taskId, int fieldNumber) {
+    public void setEditSomeFieldOfBusinessTask(int taskId, int fieldNumber) {
         Scanner sc = new Scanner(System.in);
         switch (fieldNumber) {
             case 1:
@@ -181,7 +186,7 @@ public class LogImpl implements Log, Cloneable {
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    private DateTime setDate() throws BadEnteredDate {
+    public DateTime setDate() throws BadEnteredDate {
         Scanner sc = new Scanner(System.in);
         String date;
         String[] splitDate = new String[3];
@@ -224,7 +229,7 @@ public class LogImpl implements Log, Cloneable {
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    private Contact setContactInfo() {
+    public Contact setContactInfo() {
         Scanner sc = new Scanner(System.in);
         Contact contact = null;
         System.out.println("What information on contact you want to enter?");
@@ -267,7 +272,7 @@ public class LogImpl implements Log, Cloneable {
     }
     
     
-    private Status setStatus(){
+    public Status setStatus(){
         Scanner sc = new Scanner(System.in);
         Status status = null;
         boolean flag = true;
@@ -298,7 +303,7 @@ public class LogImpl implements Log, Cloneable {
         return status;
     }
     
-    private Priority setPriority(){
+    public Priority setPriority(){
         Scanner sc = new Scanner(System.in);
         Priority priority = null;
         boolean flag = true;
@@ -333,7 +338,7 @@ public class LogImpl implements Log, Cloneable {
      * This method create new task and add it in log.
      */
     public void createTask() {
-        System.out.println("Choose task type:\n1. Birthday\n2. Business task");
+        System.out.println("\n1. Birthday\n2. Business task");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextInt()) {
             case 1:
