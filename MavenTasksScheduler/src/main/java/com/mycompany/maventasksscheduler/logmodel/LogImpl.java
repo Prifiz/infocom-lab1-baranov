@@ -23,9 +23,13 @@ import org.joda.time.DateTime;
 public class LogImpl implements Log, Cloneable {
 
     private List<Task> log;
-
+    
     public LogImpl() {
         log = new LinkedList();
+    }
+
+    public LogImpl(LinkedList<Task> foundTasks) {
+        log = foundTasks;
     }
 
     /**
@@ -136,16 +140,16 @@ public class LogImpl implements Log, Cloneable {
     public void setEditSomeFieldOfBirthday(int taskId, int fieldNumber) {
         switch (fieldNumber) {
             case 1:
-                log.get(taskId).setDate(setDate());
+               // log.get(taskId).setDate(setDate());
                 break;
             case 2:
-                log.get(taskId).setContact(setContactInfo());
+               // log.get(taskId).setContact(setContactInfo());
                 break;
             case 3:
-                log.get(taskId).setStatus(setStatus());
+               // log.get(taskId).setStatus(setStatus());
                 break;
             case 4:
-                log.get(taskId).setPriority(setPriority());
+               // log.get(taskId).setPriority(setPriority());
                 break;
             default: 
         }
@@ -168,16 +172,16 @@ public class LogImpl implements Log, Cloneable {
                 bt1.setDescription(sc.nextLine());
                 break;
             case 3:
-                log.get(taskId).setDate(setDate());
+                //log.get(taskId).setDate(setDate());
                 break;
             case 4:
-                log.get(taskId).setContact(setContactInfo());
+                //log.get(taskId).setContact(setContactInfo());
                 break;
             case 5:
-                log.get(taskId).setStatus(setStatus());
+                //log.get(taskId).setStatus(setStatus());
                 break;
             case 6:
-                log.get(taskId).setPriority(setPriority());
+                //log.get(taskId).setPriority(setPriority());
                 break;
         }
     }
@@ -186,171 +190,91 @@ public class LogImpl implements Log, Cloneable {
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    public DateTime setDate() throws BadEnteredDate {
-        Scanner sc = new Scanner(System.in);
-        String date;
-        String[] splitDate = new String[3];
-        while (true) {
-            System.out.println("Enter correctly date, example:\n9.12.2013 or 9-12-2013, or 9/12/2013");
-            date = sc.nextLine();
-            if (date.contains("")) {
-                splitDate = date.split("\\.");
-            }
-            else if (date.contains("-")) {
-                splitDate = date.split("-");
-            }
-            else if (date.contains("/")) {
-                splitDate = date.split("/");
-            }
-            if (Integer.parseInt(splitDate[2]) >= 2013 && Integer.parseInt(splitDate[1]) > 0
-                    && Integer.parseInt(splitDate[1]) < 13 && Integer.parseInt(splitDate[0]) > 0
-                    && Integer.parseInt(splitDate[0]) < 32) {
-                break;
-            }
-        }
-        String[] splitTime = new String[2];
-        while (true) {
-            System.out.println("Enter correctly time description, example:\n 20:44");
-            date = sc.nextLine();
-            if (date.contains(":")) {
-                splitTime = date.split(":");
-            }
-            if (Integer.parseInt(splitTime[0]) >= 0 && Integer.parseInt(splitTime[0]) < 25
-                    && Integer.parseInt(splitTime[1]) >= 0 && Integer.parseInt(splitTime[1]) < 60) {
-                break;
-            }
-        }
-        return new DateTime(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1]),
-                Integer.parseInt(splitDate[0]), Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[1]));
-    }
+//    public DateTime setDate() throws BadEnteredDate {
+//        Scanner sc = new Scanner(System.in);
+//        String date;
+//        String[] splitDate = new String[3];
+//        while (true) {
+//            System.out.println("Enter correctly date, example:\n9.12.2013 or 9-12-2013, or 9/12/2013");
+//            date = sc.nextLine();
+//            if (date.contains("")) {
+//                splitDate = date.split("\\.");
+//            }
+//            else if (date.contains("-")) {
+//                splitDate = date.split("-");
+//            }
+//            else if (date.contains("/")) {
+//                splitDate = date.split("/");
+//            }
+//            if (Integer.parseInt(splitDate[2]) >= 2013 && Integer.parseInt(splitDate[1]) > 0
+//                    && Integer.parseInt(splitDate[1]) < 13 && Integer.parseInt(splitDate[0]) > 0
+//                    && Integer.parseInt(splitDate[0]) < 32) {
+//                break;
+//            }
+//        }
+//        String[] splitTime = new String[2];
+//        while (true) {
+//            System.out.println("Enter correctly time description, example:\n 20:44");
+//            date = sc.nextLine();
+//            if (date.contains(":")) {
+//                splitTime = date.split(":");
+//            }
+//            if (Integer.parseInt(splitTime[0]) >= 0 && Integer.parseInt(splitTime[0]) < 25
+//                    && Integer.parseInt(splitTime[1]) >= 0 && Integer.parseInt(splitTime[1]) < 60) {
+//                break;
+//            }
+//        }
+//        return new DateTime(Integer.parseInt(splitDate[2]), Integer.parseInt(splitDate[1]),
+//                Integer.parseInt(splitDate[0]), Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[1]));
+//    }
+    
+    
+
     
     
     /*
      * for not to duplicate general part in setEditSomeFieldOfBusinessTask and 
      * setEditSomeFieldOfBirthday took out in a separate method
      */
-    public Contact setContactInfo() {
-        Scanner sc = new Scanner(System.in);
-        Contact contact = null;
-        System.out.println("What information on contact you want to enter?");
-        System.out.println("1. Only name.");
-        System.out.println("2. Name and phone number.");
-        System.out.println("3. Name, phone number and email.");
-        String name;
-        long phoneNumber;
-        String email;
-        int read = sc.nextInt();
-        sc.nextLine();
-        boolean flag = true;
-        switch (read) {
-            case 1:
-                System.out.println("Enter name:");
-                name = sc.nextLine();
-                contact = new Contact(name);
-                flag = false;
-                break;
-            case 2:
-                System.out.println("Enter name:");
-                name = sc.nextLine();
-                System.out.println("Enter phone number:");
-                phoneNumber = sc.nextLong();
-                contact = new Contact(name, phoneNumber);
-                flag = false;
-                break;
-            case 3:
-                System.out.println("Enter name:");
-                name = sc.nextLine();
-                System.out.println("Enter phone number:");
-                phoneNumber = Long.parseLong(sc.nextLine());
-                System.out.println("Enter email:");
-                email = sc.nextLine();
-                contact = new Contact(name, phoneNumber, email);
-                flag = false;
-                break;
-        }
-        return contact;
-    }
+//    public Contact setContactInfo(int read) {
+//        Scanner sc = new Scanner(System.in);
+//        Contact contact;
+//        String name;
+//        long phoneNumber;
+//        String email;
+//        
+//        sc.nextLine();
+//        switch (read) {
+//            case 1:
+//                System.out.println("Enter name:");
+//                name = sc.nextLine();
+//                contact = new Contact(name);
+//                break;
+//            case 2:
+//                System.out.println("Enter name:");
+//                name = sc.nextLine();
+//                System.out.println("Enter phone number:");
+//                phoneNumber = sc.nextLong();
+//                contact = new Contact(name, phoneNumber);
+//                break;
+//            case 3:
+//                System.out.println("Enter name:");
+//                name = sc.nextLine();
+//                System.out.println("Enter phone number:");
+//                phoneNumber = Long.parseLong(sc.nextLine());
+//                System.out.println("Enter email:");
+//                email = sc.nextLine();
+//                contact = new Contact(name, phoneNumber, email);
+//                break;
+//            default:
+//                contact = new Contact();
+//        }
+//        return contact;
+//    }
     
     
-    public Status setStatus(){
-        Scanner sc = new Scanner(System.in);
-        Status status = null;
-        boolean flag = true;
-        while (flag) {
-            System.out.println("Choose new status:");
-            System.out.println("1. ACTIVE.");
-            System.out.println("2. POSTPONED.");
-            System.out.println("3. COMPLETE.");
-            int read = sc.nextInt();
-            sc.nextLine();
-            switch (read) {
-                case 1:
-                    status = Status.ACTIVE;
-                    flag = false;
-                    break ;
-                case 2:
-                    status = Status.POSTPONED;
-                    flag = false;
-                    break;
-                case 3:
-                    status = Status.COMPLETE;
-                    flag = false;
-                    break;
-                default:
-                    System.out.println("choose correctly the status.");
-            }
-        }
-        return status;
-    }
-    
-    public Priority setPriority(){
-        Scanner sc = new Scanner(System.in);
-        Priority priority = null;
-        boolean flag = true;
-        while (flag) {
-            System.out.println("Choose new priority:");
-            System.out.println("1. URGENT_IMPORTANT.");
-            System.out.println("2. URGENT.");
-            System.out.println("3. IMPORTANT.");
-            int read = sc.nextInt();
-            sc.nextLine();
-            switch (read) {
-                case 1:
-                    priority = Priority.URGENT_IMPORTANT;
-                    flag = false;
-                    break ;
-                case 2:
-                    priority = Priority.URGENT;
-                    flag = false;
-                    break;
-                case 3:
-                    priority = Priority.IMPORTANT;
-                    flag = false;
-                    break;
-                default:
-                    System.out.println("choose correctly the status.");
-            }
-        }
-        return priority;
-    }
 
-    /**
-     * This method create new task and add it in log.
-     */
-    public void createTask() {
-        System.out.println("\n1. Birthday\n2. Business task");
-        Scanner sc = new Scanner(System.in);
-        switch (sc.nextInt()) {
-            case 1:
-                add(new BirthdayTask(setDate(), setContactInfo(), setPriority()));
-                break;
-            case 2:
-                System.out.println("Create business task");
-                break;
-            default:
-                System.out.println("Choose correctly task type ");
-        }
-    }
+
     
     
 }

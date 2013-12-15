@@ -5,6 +5,8 @@
 package com.mycompany.maventasksscheduler.userinterface;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import com.mycompany.maventasksscheduler.logmodel.Task;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -34,12 +36,11 @@ public class MainConsoleUI {
     
     
     
-    
-     public void showAll(LogImpl log) {
+    public void showAll(LogImpl log) {
         for (int i = 0; i < log.getSize(); i++) {
             System.out.println("№ - " + i + ", " + log.get(i).toString());
         }
-     }
+    }
      
      public int chooseTaskId(){
          System.out.println("\nChoose task's №");
@@ -48,11 +49,40 @@ public class MainConsoleUI {
      }
      
      public void contactInfo(){
-         System.out.println("What information on contact you want to enter?\n"
-                 + "1. Only name."
-                 + "2. Name and phone number."
-                 + "3. Name, phone number and email.");
+         System.out.println("What information on contact you want to enter?"
+                 + "\n1. Only name."
+                 + "\n2. Name and phone number."
+                 + "\n3. Name, phone number and email.\n");
      }
+     
+     public void priority(){
+         System.out.println("Choose new priority:"
+                 + "\n 1. URGENT_IMPORTANT."
+                 + "\n 2. URGENT."
+                 + "\n 3. IMPORTANT.");
+     }
+     
+     public void status(){
+         System.out.println("Choose new priority:"
+                 + "\n 1. ACTIVE."
+                 + "\n 2. POSTPONED."
+                 + "\n 3. COMPLETE.");
+     }
+     
+     public void taskName(){
+         System.out.println("Enter the new task's name:");
+     }
+     
+     public void taskDescription(){
+         System.out.println("Enter the new task's description:");
+     }
+     
+     public void foundTasks(LinkedList<Task> foundTasks){
+         for(int i = 0; i < foundTasks.size(); i++)
+             System.out.println(foundTasks.get(i).toString());
+     }
+     
+                
      
      
      
