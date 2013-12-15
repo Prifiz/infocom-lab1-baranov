@@ -22,9 +22,16 @@ public class ChooseTaskController {
     private MainConsoleUI userInterface;
     private ChooseTaskConsoleUI choosetask;
     private ShowChoosenTaskController showChoosenTask;
+    private LinkedList<Task> foundTasks;
     
     public ChooseTaskController(LogImpl logModel){
         this.logModel = logModel;
+        userInterface = new MainConsoleUI();
+        choosetask = new ChooseTaskConsoleUI();
+    }
+    
+    public ChooseTaskController(LinkedList<Task> foundTasks){
+        this.foundTasks = foundTasks;
         userInterface = new MainConsoleUI();
         choosetask = new ChooseTaskConsoleUI();
     }
