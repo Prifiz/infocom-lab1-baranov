@@ -67,7 +67,7 @@ public class ChooseTaskController {
              }
             if(foundTasks.size() == 0)
                 userInterface.showAll(logModel);
-            if(foundTasks.size() > 0)
+            else if(foundTasks.size() > 0)
                 userInterface.foundTasks(foundTasks);
              
         }

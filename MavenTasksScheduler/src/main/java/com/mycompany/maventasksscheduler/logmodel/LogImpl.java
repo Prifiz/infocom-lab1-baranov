@@ -54,10 +54,10 @@ public class LogImpl implements Log, Cloneable {
 
     @Override
     public void remove(int taskNumber) {
-        if (taskNumber < 0 || taskNumber >= log.size()) {
+        if (taskNumber < 0 || taskNumber >= log.size()) 
             throw new TaskIndexOutOfBoundsException();
-        }
-        log.remove(taskNumber);
+        else
+            log.remove(taskNumber);
     }
     
     public void removeAll(){
@@ -67,9 +67,9 @@ public class LogImpl implements Log, Cloneable {
 
     @Override
     public List<Task> search(DateTime date) {
-        if (log.isEmpty()) {
+        if (log.isEmpty())
             return log;
-        } else {
+        else {
             //Iterator<Taskable> iter = log.iterator();
             LinkedList<Task> foundTasks = new LinkedList();
             //for(Taskable task : foundTasks)
@@ -118,7 +118,8 @@ public class LogImpl implements Log, Cloneable {
     public void editAllDataTask(int taskId) {
         if (taskId < 0 || taskId > log.size()) 
             throw new TaskIndexOutOfBoundsException();
-        for (int i = 0; i < log.get(taskId).getFieldCount(); i++) 
+        else
+            for (int i = 0; i < log.get(taskId).getFieldCount(); i++) 
                 editSomeFieldOfTask(taskId, i + 1);
     }
 
@@ -126,13 +127,12 @@ public class LogImpl implements Log, Cloneable {
     public void editSomeFieldOfTask(int taskId, int fieldNumber) {
         if (taskId < 0 || taskId > log.size()) 
             throw new TaskIndexOutOfBoundsException();
-        if (fieldNumber < 1 || fieldNumber > log.get(taskId).getFieldCount()) 
-                throw new TaskFieldIndexOutOfBoundsException();
-        if (log.get(taskId) instanceof BirthdayTask)
+        else if (fieldNumber < 1 || fieldNumber > log.get(taskId).getFieldCount())
+            throw new TaskFieldIndexOutOfBoundsException();
+        else if (log.get(taskId) instanceof BirthdayTask)
             setEditSomeFieldOfBirthday(taskId, fieldNumber);
-        if (log.get(taskId) instanceof BusinessTask)
+        else if (log.get(taskId) instanceof BusinessTask)
             setEditSomeFieldOfBusinessTask(taskId, fieldNumber);
-
     }
 
     /*
@@ -182,6 +182,7 @@ public class LogImpl implements Log, Cloneable {
             case 6:
                 log.get(taskId).setPriority(control.controlPriority());
                 break;
+            default: 
         }
     }
 

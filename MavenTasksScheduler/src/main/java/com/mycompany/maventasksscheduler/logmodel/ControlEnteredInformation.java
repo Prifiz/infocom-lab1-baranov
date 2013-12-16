@@ -158,7 +158,6 @@ public class ControlEnteredInformation {
                     break;
                 default:
                      userInterface.chooseCorrectly();
-
             }
         }
         return contact;
@@ -249,14 +248,16 @@ public class ControlEnteredInformation {
     
     public String readContactName(){
         Scanner sc = new Scanner(System.in);
-        String contactName = "";
+        StringBuilder contactName = new StringBuilder();
         for(;;){
             addConsoleUI.enterContactName();
-            contactName = sc.nextLine();
+            contactName.append(sc.nextLine());
             if(contactName.length() > 0 && contactName.length() < 41)
                 break;
+            contactName.delete(0, contactName.length());
         }
-        return contactName;
+        //contactName.;
+        return contactName.toString();
     }
     
     public long readContatcPhoneNumber(){
@@ -296,7 +297,7 @@ public class ControlEnteredInformation {
     }
     
     public Status setStatus(int read){
-        Status status = null;
+        Status status = Status.ACTIVE;
         switch (read) {
                 case 1:
                     status = Status.ACTIVE;
@@ -313,7 +314,7 @@ public class ControlEnteredInformation {
     }
     
     public Priority setPriority(int read){
-        Priority priority = null;
+        Priority priority = Priority.URGENT_IMPORTANT;
         switch (read) {
                 case 1:
                     priority = Priority.URGENT_IMPORTANT;
