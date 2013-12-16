@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
+import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
@@ -24,37 +25,51 @@ public class ChooseTaskController {
     private ChooseTaskConsoleUI choosetask;
     private ShowChoosenTaskController showChoosenTask;
     private List<Task> foundTasks;
+    private ControlEnteredInformation control;
+    
+    
     
     public ChooseTaskController(LogImpl logModel){
         this.logModel = logModel;
         userInterface = new MainConsoleUI();
         choosetask = new ChooseTaskConsoleUI();
+        this.foundTasks = new LinkedList();
+        control = new ControlEnteredInformation(logModel);
+    
     }
     
-    public ChooseTaskController(List<Task> foundTasks){
+    public ChooseTaskController(LogImpl logModel, List<Task> foundTasks){
+        this.logModel = logModel;
         this.foundTasks = foundTasks;
         userInterface = new MainConsoleUI();
         choosetask = new ChooseTaskConsoleUI();
+        control = new ControlEnteredInformation(logModel);
+    
     }
-  
+ 
     public void start(){
         Scanner sc = new Scanner(System.in);
         menu:
         for(;;){
-           choosetask.showFileMenu();
-           switch(sc.nextInt()){
-                case 1:
-                    break menu;
-                case 2:
-                    int number = 0;
-                    number = userInterface.chooseTaskId();
-                    showChoosenTask = new ShowChoosenTaskController(
-                            logModel, logModel.get(number), number);
-                    showChoosenTask.start();
-                    break;
-                default:
-                    userInterface.chooseCorrectly();
-            }
+            choosetask.showFileMenu();
+            switch(sc.nextInt()){
+                 case 1:
+                     break menu;
+                 case 2:
+                     int number = 0;
+                     number = control.chooseTaskId();
+                     showChoosenTask = new ShowChoosenTaskController(
+                             logModel, logModel.get(number), number);
+                     showChoosenTask.start();
+                     break;
+                 default:
+                     userInterface.chooseCorrectly();
+             }
+            if(foundTasks.size() == 0)
+                userInterface.showAll(logModel);
+            if(foundTasks.size() > 0)
+                userInterface.foundTasks(foundTasks);
+             
         }
     }
     

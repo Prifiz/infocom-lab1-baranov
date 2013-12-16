@@ -6,6 +6,7 @@ package com.mycompany.maventasksscheduler.logmodel;
 
 
 import java.util.LinkedList;
+import java.util.List;
 import org.joda.time.DateTime;
 
 
@@ -33,7 +34,7 @@ public interface Log {
      * @param date Date by which search will be run.
      * @return A LinkedList<Taskable> containing the found dates.
      */
-    LinkedList<Task> search(DateTime date);
+    List<Task> search(DateTime date);
     
     /**
      * This method sorts tasks of date.

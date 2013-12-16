@@ -10,6 +10,7 @@ import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
+import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
 import com.mycompany.maventasksscheduler.userinterface.AddConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import java.util.Scanner;
@@ -45,12 +46,19 @@ public class AddController {
                 case 2:
                     addConsoleUI.showTasksType();
                     Contact contact;
+                    String taskName;
+                    DateTime date;
+                    String description;
+                    Priority priority;
                     int read;
                     switch (sc.nextInt()) {
                         case 1:
-                            logModel.add(new BirthdayTask(control.createDate(
-                        control.controlDate(), control.controlTime()), 
-                                    control.controlContact(), control.controlPriority()));
+                            date = control.createDate(
+                                                control.controlDate(), 
+                                                control.controlTime());
+                            contact = control.controlContact();
+                            priority = control.controlPriority();
+                            logModel.add(new BirthdayTask(date, contact, priority));
                             addConsoleUI.taskAdded();
                             break;
                         case 2:
@@ -63,31 +71,36 @@ public class AddController {
                                 backTo = sc.nextInt();
                                 switch(backTo){
                                     case 1:
-                                        logModel.add(new BusinessTask(
-                                                control.controlTaskName(),
-                                                control.createDate(
+                                        taskName = control.controlTaskName();
+                                        date = control.createDate(
                                                 control.controlDate(), 
-                                                control.controlTime()),
-                                                control.controlPriority()));
+                                                control.controlTime());
+                                        priority = control.controlPriority();
+                                        logModel.add(new BusinessTask(
+                                                taskName, date, priority));
                                         break nextMenu;
                                     case 2:
-                                        logModel.add(new BusinessTask(
-                                                control.controlTaskName(),
-                                                control.controlDescription(),
-                                                control.createDate(
+                                        taskName = control.controlTaskName();
+                                        description = control.controlDescription();
+                                        date = control.createDate(
                                                 control.controlDate(), 
-                                                control.controlTime()),
-                                                control.controlPriority()));
+                                                control.controlTime());
+                                        priority = control.controlPriority();
+                                        logModel.add(new BusinessTask(
+                                                taskName, description, date,
+                                                priority));
                                         break nextMenu;
                                     case 3:
-                                        logModel.add(new BusinessTask(
-                                                control.controlTaskName(),
-                                                control.controlDescription(),
-                                                control.createDate(
+                                        taskName = control.controlTaskName();
+                                        description = control.controlDescription();
+                                        date = control.createDate(
                                                 control.controlDate(), 
-                                                control.controlTime()),
-                                                control.controlContact(),
-                                                control.controlPriority()));
+                                                control.controlTime());
+                                        contact = control.controlContact();
+                                        priority = control.controlPriority();
+                                        logModel.add(new BusinessTask(
+                                                taskName,description, date,
+                                                contact,priority));
                                         break nextMenu;
                                     default:
                                         userInterface.chooseCorrectly();

@@ -137,35 +137,29 @@ public class ControlEnteredInformation {
         }
         boolean flag = true;
         while (flag) {
-        switch(read){
-            case 1:
-                addConsoleUI.enterContactName();
-                name = readContactName();
-                contact = createContact(name);
-                flag = false;
-                break;
-            case 2:
-                addConsoleUI.enterContactName();
-                name = readContactName();
-                addConsoleUI.enterContactPhoneNumber();
-                phoneNumber = readContatcPhoneNumber();
-                contact = createContact(name,phoneNumber);
-                flag = false;
-                break;
-            case 3: 
-                addConsoleUI.enterContactName();
-                name = readContactName();
-                addConsoleUI.enterContactPhoneNumber();
-                phoneNumber = readContatcPhoneNumber();
-                addConsoleUI.enterContactMail();
-                email = readContatcMail();
-                contact = createContact(name,phoneNumber, email);
-                flag = false;
-                break;
-            default:
-                 userInterface.chooseCorrectly();
+            switch(read){
+                case 1:
+                    name = readContactName();
+                    contact = createContact(name);
+                    flag = false;
+                    break;
+                case 2:
+                    name = readContactName();
+                    phoneNumber = readContatcPhoneNumber();
+                    contact = createContact(name,phoneNumber);
+                    flag = false;
+                    break;
+                case 3: 
+                    name = readContactName();
+                    phoneNumber = readContatcPhoneNumber();
+                    email = readContatcMail();
+                    contact = createContact(name,phoneNumber, email);
+                    flag = false;
+                    break;
+                default:
+                     userInterface.chooseCorrectly();
 
-        }
+            }
         }
         return contact;
     }
@@ -229,30 +223,63 @@ public class ControlEnteredInformation {
     }
     
     public String controlTaskName(){
-        addConsoleUI.enterTaskName();
         Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
+        String taskName = "";
+        for(;;){
+            addConsoleUI.enterTaskName();
+            taskName = sc.nextLine();
+            if(taskName.length() > 0 && taskName.length() < 41)
+                break;
+        }
+        return taskName;
     }
     
     public String controlDescription(){
-        addConsoleUI.enterDescription();
         Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
+        String description = "";
+        for(;;){
+            addConsoleUI.enterDescription();
+            description = sc.nextLine();
+            if(description.length() > 0 && description.length() < 150)
+                break;
+        }
+        return description;
     }
     
     
     public String readContactName(){
         Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
+        String contactName = "";
+        for(;;){
+            addConsoleUI.enterContactName();
+            contactName = sc.nextLine();
+            if(contactName.length() > 0 && contactName.length() < 41)
+                break;
+        }
+        return contactName;
     }
     
     public long readContatcPhoneNumber(){
         Scanner sc = new Scanner(System.in);
-        return sc.nextLong();
+        long phoneNumber = 0;
+        for(;;){
+            addConsoleUI.enterContactPhoneNumber();
+            phoneNumber = sc.nextLong();
+            if(phoneNumber > 0 && phoneNumber < 50)
+                break;
+        }
+        return phoneNumber;
     }
     
     public String readContatcMail(){
         Scanner sc = new Scanner(System.in);
+        String email = "";
+        for(;;){
+            addConsoleUI.enterContactMail();
+            email = sc.nextLine();
+            if(email.length() > 0 && email.length() < 50)
+                break;
+        }
         return sc.nextLine();
     }
     
@@ -314,6 +341,18 @@ public class ControlEnteredInformation {
             BusinessTask bt = (BusinessTask) logModel.get(taskId);
             bt.setTaskName(description);
         }
+    }
+    
+    public int chooseTaskId(){
+        Scanner sc = new Scanner(System.in);
+        int phoneNumber = 0;
+        for(;;){
+            userInterface.chooseTaskId();
+            phoneNumber = sc.nextInt();
+            if(phoneNumber >= 0 && phoneNumber < logModel.getSize())
+                break;
+        }
+        return phoneNumber;
     }
     
 }

@@ -66,9 +66,9 @@ public class LogImpl implements Log, Cloneable {
     }
 
     @Override
-    public LinkedList<Task> search(DateTime date) {
+    public List<Task> search(DateTime date) {
         if (log.isEmpty()) {
-            return null;
+            return log;
         } else {
             //Iterator<Taskable> iter = log.iterator();
             LinkedList<Task> foundTasks = new LinkedList();
