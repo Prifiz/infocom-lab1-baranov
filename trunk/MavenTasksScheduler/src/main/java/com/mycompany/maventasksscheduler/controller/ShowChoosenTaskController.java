@@ -39,6 +39,7 @@ public class ShowChoosenTaskController {
         int backTo = 0;
         menu:
         for(;;){
+           System.out.println("\nChoosen task:\n"+logModel.get(taskNumber).toString());
            choosetask.showFileMenu();
            switch(sc.nextInt()){
                 case 1:
@@ -78,14 +79,26 @@ public class ShowChoosenTaskController {
                 case 3:
                     logModel.remove(taskNumber);
                     choosetask.taskRemoved();
-                    break;
+                    nextMenu:
+                    for(;;){
+                        choosetask.showBackTO();
+                        sc.nextLine();
+                        backTo = sc.nextInt();
+                        switch(backTo){
+                            case 1:
+                                break menu;
+                            case 2:
+                                break menu;
+                            default:
+                                userInterface.chooseCorrectly();
+                        }
+                    }
+                    //break;
                 default:
                     userInterface.chooseCorrectly();
             }
         }
         if(backTo == 1)
-            mainController.start();
-        else
             mainController.start();
     }
     

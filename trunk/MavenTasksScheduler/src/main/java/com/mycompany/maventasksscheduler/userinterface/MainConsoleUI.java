@@ -25,17 +25,14 @@ public class MainConsoleUI {
                     + "\n1. Help"
                     + "\n2. File"
                     + "\n3. Show tasks"
-                    + "\n4. search task"
-                    + "\n5. add task"
+                    + "\n4. Search task"
+                    + "\n5. Add task"
                     + "\n0. Exit\n");
     }
 
-    
     public void chooseCorrectly(){
         System.out.println("Please, choose correctly menu point");
     }
-    
-    
     
     public void showAll(LogImpl log) {
         for (int i = 0; i < log.getSize(); i++) {
@@ -43,10 +40,8 @@ public class MainConsoleUI {
         }
     }
      
-     public int chooseTaskId(){
-         System.out.println("\nChoose task's №");
-         Scanner sc = new Scanner(System.in);
-         return sc.nextInt();
+     public void chooseTaskId(){
+         System.out.println("\nChoose correctly task's №");
      }
      
      public void contactInfo(){
@@ -83,16 +78,8 @@ public class MainConsoleUI {
              System.out.println("№ - " + i + ", " + foundTasks.get(i).toString());
      }
      
-     
      public void logIsEmpty(){
          System.out.println("In the magazine there is no task");
      }
                 
-     
-     
-     
-     
-     
-     
-    
 }

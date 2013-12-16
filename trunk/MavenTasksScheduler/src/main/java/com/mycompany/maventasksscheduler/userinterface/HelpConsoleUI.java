@@ -18,7 +18,7 @@ public class HelpConsoleUI {
     }
     
     public void infAboutProgram(){
-        System.out.println("infa");
+        System.out.println("Task scheduler version 0.0.0.");
     }
     
 }

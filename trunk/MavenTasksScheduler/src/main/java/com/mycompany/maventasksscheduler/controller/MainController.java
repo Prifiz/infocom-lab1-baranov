@@ -72,7 +72,7 @@ public class MainController {
                     List <Task> foundTasks = logModel.search(
                             control.createDate(control.controlDate()));
                     userInterface.foundTasks(foundTasks);
-                    chooseTask = new ChooseTaskController(foundTasks);
+                    chooseTask = new ChooseTaskController(logModel, foundTasks);
                     chooseTask.start();
                     break;
                 case 5:
@@ -85,22 +85,5 @@ public class MainController {
                     userInterface.chooseCorrectly();
             }
         }
-    }
-
-    public void remove(){
-        if(logModel.getSize() == 0)
-            return;
-        userInterface.showAll(logModel);
-        logModel.remove(userInterface.chooseTaskId());
-    }
-    
-    public void editAllDataTask(){
-        if(logModel.getSize() == 0)
-            return;
-        userInterface.showAll(logModel);
-        logModel.editAllDataTask(userInterface.chooseTaskId());
-    }
-    
-
-   
+    } 
 }

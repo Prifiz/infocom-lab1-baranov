@@ -13,7 +13,5 @@ public class App
     {
         MainController c = new MainController();
         c.start();
-        
-    
     }
 }
