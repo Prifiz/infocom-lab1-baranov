@@ -52,7 +52,7 @@ public class MainController {
                     break;
                 case 2:
                     fileController = new FileController(logModel);
-                    fileController.start();
+                    logModel = fileController.start();
                     break;
                 case 3:
                     if(logModel.getSize() == 0){
