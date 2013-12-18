@@ -125,7 +125,8 @@ public class BusinessTask extends Task  implements Cloneable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (taskName.length() > 0 && !timeNotification.equals(new DateTime())) {
+        if (taskName.length() > 0 && !timeNotification.equals(new DateTime())
+                && description.length() <= 0) {
             return sb.append("Your task - ").append(taskName).
                     append(", date notification - ").
                     append(timeNotification.getDayOfMonth()).append("-").
@@ -136,7 +137,8 @@ public class BusinessTask extends Task  implements Cloneable {
                     append(timeNotification.getMinuteOfHour()).toString();
         }
         else if (taskName.length() > 0 && description.length() > 0
-                && !timeNotification.equals(new DateTime())) {
+                && !timeNotification.equals(new DateTime()) && 
+                contact.equals(new Contact())) {
             return sb.append("Your task - ").append(taskName).
                     append(", description - ").append(description).
                     append(", date notification - ").

@@ -29,6 +29,11 @@ public class LogImpl implements Log, Cloneable {
         log = new LinkedList();
         control = new ControlEnteredInformation(this);
     }
+    
+    public LogImpl(List<Task> log) {
+        this.log = log;
+        control = new ControlEnteredInformation(this);
+    }
 
     /**
      * Returns count task in LogModel

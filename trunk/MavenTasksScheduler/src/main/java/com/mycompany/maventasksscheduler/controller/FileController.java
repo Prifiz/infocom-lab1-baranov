@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
@@ -18,14 +19,18 @@ public class FileController {
     private LogImpl logModel;
     private FileConsoleUI fileUI;
     private MainConsoleUI userInterface;
+    private XMLStorage xml;
+       
+        
     
     public FileController(LogImpl logModel){
         this.logModel = logModel;
         fileUI = new FileConsoleUI();
         userInterface = new MainConsoleUI();
+        xml = new XMLStorage();
     }
     
-    public void start(){
+    public LogImpl start(){
         Scanner sc = new Scanner(System.in);
         menu:
         for(;;){
@@ -34,9 +39,11 @@ public class FileController {
                 case 1:
                     break menu;
                 case 2:
+                    xml.saveData(logModel);
                     fileUI.taskSaved();
                     break;
                 case 3:
+                    logModel = xml.uploadData();
                     fileUI.taskLoaded();
                     break;
                 case 4:
@@ -49,6 +56,7 @@ public class FileController {
                     userInterface.chooseCorrectly();
             }
         }
+        return logModel;
     }
     
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<tasks>
+	<birthdaytask>
+		<timeNotification>2013,12,18,23,11</timeNotification>
+		<contact>Name</contact>
+		<priority>Priority.URGENT</priority>
+	</birthdaytask>
+	<birthdaytask>
+		<timeNotification>2013,12,18,23,11</timeNotification>
+		<contact>Name</contact>
+		<priority>Priority.URGENT_IMPORTANT</priority>
+	</birthdaytask>
+	<businesstask>
+		<taskName>laba</taskName>
+		<timeNotification>2013,12,18,23,11</timeNotification>
+		<priority>Priority.URGENT</priority>
+	</businesstask>
+	<businesstask>
+		<taskName>laba</taskName>
+		<description>laba - complete</description>
+		<timeNotification>2013,12,18,23,11</timeNotification>
+		<priority>Priority.URGENT</priority>
+	</businesstask>
+	<businesstask>
+		<taskName>laba</taskName>
+		<description>laba - complete</description>
+		<timeNotification>2013,12,18,23,11</timeNotification>
+		<contact>Name</contact>
+		<priority>Priority.URGENT</priority>
+	</businesstask>
+</tasks>
