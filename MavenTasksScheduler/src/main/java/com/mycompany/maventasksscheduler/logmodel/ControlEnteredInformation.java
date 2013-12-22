@@ -43,7 +43,7 @@ public class ControlEnteredInformation {
         if(date.length() < 7)
             return intSplitDate;
         String[] splitDate = new String[3];
-        if (date.contains("")) {
+        if (date.contains("\\.")) {
             splitDate = date.split("\\.");
         }
         else if (date.contains("-")) {
@@ -256,7 +256,6 @@ public class ControlEnteredInformation {
                 break;
             contactName.delete(0, contactName.length());
         }
-        //contactName.;
         return contactName.toString();
     }
     
@@ -266,7 +265,7 @@ public class ControlEnteredInformation {
         for(;;){
             addConsoleUI.enterContactPhoneNumber();
             phoneNumber = sc.nextLong();
-            if(phoneNumber > 0 && phoneNumber < 50)
+            if(phoneNumber > 0)
                 break;
         }
         return phoneNumber;
@@ -274,14 +273,15 @@ public class ControlEnteredInformation {
     
     public String readContatcMail(){
         Scanner sc = new Scanner(System.in);
-        String email = "";
+        StringBuilder contactMail = new StringBuilder();
         for(;;){
             addConsoleUI.enterContactMail();
-            email = sc.nextLine();
-            if(email.length() > 0 && email.length() < 50)
+            contactMail.append(sc.nextLine());
+            if(contactMail.length() > 0 && contactMail.length() < 50)
                 break;
+            contactMail.delete(0, contactMail.length());
         }
-        return sc.nextLine();
+        return contactMail.toString();
     }
     
     public Contact createContact(String name){

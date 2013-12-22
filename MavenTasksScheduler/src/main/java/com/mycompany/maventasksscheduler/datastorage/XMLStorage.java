@@ -34,34 +34,56 @@ public class XMLStorage implements Storage {
 
     public void saveData(LogImpl logModel) {
         try {  
-            Element tasks = new Element("tasks");  
-            Document document = new Document(tasks);
+            Element businessTasks = new Element("tasks");  
+            Element birthdayTasks = new Element("tasks");  
+            Document businessTask = new Document(businessTasks);
+            Document birthdayTask = new Document(birthdayTasks);
             Integer i;
             StringBuilder sb = new StringBuilder();
             for(i = 0; i < logModel.getSize(); i++){
                 Element task = new Element(logModel.get(i).getClass().
                         getSimpleName().toLowerCase());  
-                task.setAttribute(new Attribute("id", i.toString()));  
+                task.setAttribute(new Attribute("id", i.toString()));
+                
                 if(logModel.get(i) instanceof BirthdayTask){
                     BirthdayTask birthday = (BirthdayTask)logModel.get(i);
-                    sb.append(birthday.getDate().getYear()).append(",").
+                    sb.append(birthday.getDate().getDayOfMonth()).append("-").
                             append(birthday.getDate().getMonthOfYear()).
-                            append(",").append(birthday.getDate().getDayOfMonth()).
-                            append(",").append(birthday.getDate().getHourOfDay()).
-                            append(",").append(birthday.getDate().getMinuteOfHour());
-                    task.addContent(new Element("timeNotification").
-                            setText(sb.toString()));
+                            append("-").append(birthday.getDate().getYear());
+                    task.addContent(new Element("date").setText(sb.toString()));
                     sb.delete(0, sb.length());
-                    sb.append(birthday.getContact().getName()).append(",").
+                    sb.append(birthday.getDate().getHourOfDay()).append(":").
+                            append(birthday.getDate().getMinuteOfHour());
+                    task.addContent(new Element("time").setText(sb.toString()));
+                    sb.delete(0, sb.length());
+                    
+                    if(birthday.getContact().getName().equals("") && 
+                            birthday.getContact().getPhoneNumber() == 0 &&
+                            birthday.getContact().getMail().equals(""))
+                        sb.append("");
+                    
+                    else if (birthday.getContact().getPhoneNumber() == 0 &&
+                            birthday.getContact().getMail().equals(""))
+                        sb.append(birthday.getContact().getName());
+                    
+                    else if (birthday.getContact().getPhoneNumber() != 0 &&
+                            birthday.getContact().getMail().equals(""))
+                        sb.append(birthday.getContact().getName()).append(",").
+                            append(birthday.getContact().getPhoneNumber());
+                    else
+                        sb.append(birthday.getContact().getName()).append(",").
                             append(birthday.getContact().getPhoneNumber()).
                             append(",").append(birthday.getContact().getMail());
+                    
                     task.addContent(new Element("contact").
                             setText(sb.toString()));
-                    sb.delete(0, sb.length());
-                    sb.append("Priority.").append(birthday.getPriority());
+                    sb.delete(0, sb.length());   
+                    
+                    sb.append(birthday.getPriority());
                     task.addContent(new Element("priority").
                             setText(sb.toString()));
                     sb.delete(0, sb.length());
+                    birthdayTask.getRootElement().addContent(task);
                 }
                 if(logModel.get(i) instanceof BusinessTask){
                     BusinessTask business = (BusinessTask)logModel.get(i);
@@ -69,33 +91,55 @@ public class XMLStorage implements Storage {
                             setText(business.getTaskName()));
                     task.addContent(new Element("description").
                             setText(business.getDescription()));
-                    sb.append(business.getDate().getYear()).append(",").
+                    sb.append(business.getDate().getDayOfMonth()).append("-").
                             append(business.getDate().getMonthOfYear()).
-                            append(",").append(business.getDate().getDayOfMonth()).
-                            append(",").append(business.getDate().getHourOfDay()).
-                            append(",").append(business.getDate().getMinuteOfHour());
-                    task.addContent(new Element("timeNotification").
-                            setText(sb.toString()));
+                            append("-").append(business.getDate().getYear());
+                    task.addContent(new Element("date").setText(sb.toString()));
                     sb.delete(0, sb.length());
-                    sb.append(business.getContact().getName()).append(",").
+                    sb.append(business.getDate().getHourOfDay()).append(":").
+                            append(business.getDate().getMinuteOfHour());
+                    task.addContent(new Element("time").setText(sb.toString()));
+                    sb.delete(0, sb.length());
+                    
+                    if(business.getContact().getName().equals("") && 
+                            business.getContact().getPhoneNumber() == 0 &&
+                            business.getContact().getMail().equals(""))
+                        sb.append("");
+                    
+                    else if (business.getContact().getPhoneNumber() == 0 &&
+                            business.getContact().getMail().equals(""))
+                        sb.append(business.getContact().getName());
+                    
+                    else if (business.getContact().getPhoneNumber() != 0 &&
+                            business.getContact().getMail().equals(""))
+                        sb.append(business.getContact().getName()).append(",").
+                            append(business.getContact().getPhoneNumber());
+                    else
+                        sb.append(business.getContact().getName()).append(",").
                             append(business.getContact().getPhoneNumber()).
                             append(",").append(business.getContact().getMail());
+                    
                     task.addContent(new Element("contact").
                             setText(sb.toString()));
-                    sb.delete(0, sb.length());
-                    sb.append("Priority.").append(business.getPriority());
+                    sb.delete(0, sb.length());                    
+                    sb.append(business.getPriority());
                     task.addContent(new Element("priority").
                             setText(sb.toString()));
                     sb.delete(0, sb.length());
+                    businessTask.getRootElement().addContent(task);
                 }
-                document.getRootElement().addContent(task);
             }
             XMLOutputter xmlOutput = new XMLOutputter();  
-            xmlOutput.output(document, System.out);  
+            xmlOutput.output(birthdayTask, System.out);  
             xmlOutput.setFormat(Format.getPrettyFormat());  
-            xmlOutput.output(document, new FileWriter(  
-              "C:\\Games\\mydocuments\\NetBeansProjects\\MavenTasksScheduler"
-                    + "\\generatedXml.xml"));  
+            xmlOutput.output(birthdayTask, new FileWriter(
+                    "target\\distributive\\birthdays\\"
+                    + "birthdayTasks.xml"));  
+            xmlOutput.output(businessTask, System.out);  
+            xmlOutput.setFormat(Format.getPrettyFormat());  
+            xmlOutput.output(businessTask, new FileWriter(
+                    "target\\distributive\\business\\"
+                    + "businessTasks.xml"));  
            } catch (IOException io) {  
             System.out.println(io.getMessage());  
            }  
