@@ -66,11 +66,8 @@ public class LogImpl implements Log, Cloneable {
     }
     
     public void removeAll(){
-        System.out.println(log.size());
-        for(int i = 0; i < log.size(); i++){
+        for(int i = 0; i < log.size(); i++)
             log.remove(i);
-        }
-            
     }
 
     @Override
