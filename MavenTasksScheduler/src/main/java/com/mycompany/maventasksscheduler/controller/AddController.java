@@ -49,72 +49,80 @@ public class AddController {
                 case 1:
                     break menu;
                 case 2:
-                    addConsoleUI.showTasksType();
-                    Contact contact;
-                    String taskName;
-                    DateTime date;
-                    String description;
-                    Priority priority;
-                    int read;
-                    switch (sc.nextInt()) {
-                        case 1:
-                            date = control.createDate(
-                                                control.controlDate(), 
-                                                control.controlTime());
-                            contact = control.controlContact();
-                            priority = control.controlPriority();
-                            logModel.add(new BirthdayTask(date, contact, priority));
-                            addConsoleUI.taskAdded();
-                            break;
-                        case 2:
-                            int backTo = 0;
-                            
-                            nextMenu:
-                            for(;;){
-                                addConsoleUI.chooseBusinessType();
-                                sc.nextLine();
-                                backTo = sc.nextInt();
-                                switch(backTo){
-                                    case 1:
-                                        taskName = control.controlTaskName();
-                                        date = control.createDate(
-                                                control.controlDate(), 
-                                                control.controlTime());
-                                        priority = control.controlPriority();
-                                        logModel.add(new BusinessTask(
-                                                taskName, date, priority));
-                                        break nextMenu;
-                                    case 2:
-                                        taskName = control.controlTaskName();
-                                        description = control.controlDescription();
-                                        date = control.createDate(
-                                                control.controlDate(), 
-                                                control.controlTime());
-                                        priority = control.controlPriority();
-                                        logModel.add(new BusinessTask(
-                                                taskName, description, date,
-                                                priority));
-                                        break nextMenu;
-                                    case 3:
-                                        taskName = control.controlTaskName();
-                                        description = control.controlDescription();
-                                        date = control.createDate(
-                                                control.controlDate(), 
-                                                control.controlTime());
-                                        contact = control.controlContact();
-                                        priority = control.controlPriority();
-                                        logModel.add(new BusinessTask(
-                                                taskName,description, date,
-                                                contact,priority));
-                                        break nextMenu;
-                                    default:
-                                        userInterface.chooseCorrectly();
+                    menu2:
+                    for(;;){
+                        addConsoleUI.showTasksType();
+                        Contact contact;
+                        String taskName;
+                        DateTime date;
+                        String description;
+                        Priority priority;
+                        int read;
+                        key = 33;
+                        enteringString = sc.nextLine();
+                        if(control.checkString(enteringString))
+                            key = Integer.parseInt(enteringString);
+                        switch (key) {
+                            case 1:
+                                date = control.createDate(
+                                                    control.controlDate(), 
+                                                    control.controlTime());
+                                contact = control.controlContact();
+                                priority = control.controlPriority();
+                                logModel.add(new BirthdayTask(date, contact, priority));
+                                addConsoleUI.taskAdded();
+                                break menu2;
+                            case 2:
+                                int backTo = 33;
+
+                                nextMenu:
+                                for(;;){
+                                    addConsoleUI.chooseBusinessType();
+                                    enteringString = sc.nextLine();
+                                    if(control.checkString(enteringString))
+                                        backTo = Integer.parseInt(enteringString);
+                                    switch(backTo){
+                                        case 1:
+                                            taskName = control.controlTaskName();
+                                            date = control.createDate(
+                                                    control.controlDate(), 
+                                                    control.controlTime());
+                                            priority = control.controlPriority();
+                                            logModel.add(new BusinessTask(
+                                                    taskName, date, priority));
+                                            break nextMenu;
+                                        case 2:
+                                            taskName = control.controlTaskName();
+                                            description = control.controlDescription();
+                                            date = control.createDate(
+                                                    control.controlDate(), 
+                                                    control.controlTime());
+                                            priority = control.controlPriority();
+                                            logModel.add(new BusinessTask(
+                                                    taskName, description, date,
+                                                    priority));
+                                            break nextMenu;
+                                        case 3:
+                                            taskName = control.controlTaskName();
+                                            description = control.controlDescription();
+                                            date = control.createDate(
+                                                    control.controlDate(), 
+                                                    control.controlTime());
+                                            contact = control.controlContact();
+                                            priority = control.controlPriority();
+                                            logModel.add(new BusinessTask(
+                                                    taskName,description, date,
+                                                    contact,priority));
+                                            break nextMenu;
+                                        default:
+                                            userInterface.chooseCorrectly();
+                                    }
                                 }
-                            }
-                            addConsoleUI.taskAdded();
-                            break;
-                        default:
-                            System.out.println("Choose correctly task type ");
+                                addConsoleUI.taskAdded();
+                                break menu2;
+                            default:
+                                System.out.println("Choose correctly task type ");
+                        }
                     }
                     break;
                 default:

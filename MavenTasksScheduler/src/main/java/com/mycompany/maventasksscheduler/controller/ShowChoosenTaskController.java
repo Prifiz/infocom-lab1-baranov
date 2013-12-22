@@ -79,7 +79,7 @@ public class ShowChoosenTaskController {
                                 logModel.editAllDataTask(taskNumber);
                                 break nextMenu;
                             case 2:
-                                
+                                System.out.println("This function in this version doesn't work");
                                 break nextMenu;
                             default:
                                 userInterface.chooseCorrectly();
