@@ -85,7 +85,7 @@ public class XMLStorage implements Storage {
                     sb.delete(0, sb.length());
                     birthdayTask.getRootElement().addContent(task);
                 }
-                if(logModel.get(i) instanceof BusinessTask){
+                else if(logModel.get(i) instanceof BusinessTask){
                     BusinessTask business = (BusinessTask)logModel.get(i);
                     task.addContent(new Element("taskName").
                             setText(business.getTaskName()));
@@ -133,13 +133,11 @@ public class XMLStorage implements Storage {
             xmlOutput.output(birthdayTask, System.out);  
             xmlOutput.setFormat(Format.getPrettyFormat());  
             xmlOutput.output(birthdayTask, new FileWriter(
-                    "target\\distributive\\birthdays\\"
-                    + "birthdayTasks.xml"));  
+                    "target\\distributive\\birthdays\\birthdayTasks.xml"));  
             xmlOutput.output(businessTask, System.out);  
             xmlOutput.setFormat(Format.getPrettyFormat());  
             xmlOutput.output(businessTask, new FileWriter(
-                    "target\\distributive\\business\\"
-                    + "businessTasks.xml"));  
+                    "target\\distributive\\business\\businessTasks.xml"));  
            } catch (IOException io) {  
             System.out.println(io.getMessage());  
            }  
@@ -150,45 +148,52 @@ public class XMLStorage implements Storage {
     public LogImpl uploadData() {
         SAXBuilder saxBuilder = new SAXBuilder();  
         LogImpl log = new LogImpl();
-        File file = new File("C:\\Games\\mydocuments\\NetBeansProjects\\"
-                + "MavenTasksScheduler\\tasks.xml");  
+        File fileBirthdays = new File("target\\distributive\\birthdays\\"
+                + "birthdayTasks.xml"); 
+        File fileBusiness = new File("target\\distributive\\business\\"
+                + "businessTasks.xml"); 
         try {  
-           Document document = saxBuilder.build(file);  
-           Element rootNode = document.getRootElement();  
+           Document birthdayTask = saxBuilder.build(fileBirthdays);
+           Document businessTask = saxBuilder.build(fileBusiness);
+           Element rootNode = birthdayTask.getRootElement();
            List<Task> task = new LinkedList();
            List birthdays = rootNode.getChildren("birthdaytask");  
-           String[] timeNotifications;
+           String[] date;
+           String[] time;
            String[] contacts;
-           String strpriority;
+           StringBuilder sb = new StringBuilder();
            Contact contact = new Contact();
            DateTime dt;
            for(int i = 0;i <= birthdays.size()-1; i++){  
                Element element = (Element)birthdays.get(i);  
-               timeNotifications = element.getChildText
-                       ("timeNotification").split(",");
+               date = element.getChildText("date").split("-");
+               time = element.getChildText("time").split(":");
                contacts = element.getChildText("contact").split(",");
-               strpriority = element.getChildText("priority");
-               dt = new DateTime(Integer.parseInt(timeNotifications[0]), 
-                       Integer.parseInt(timeNotifications[1]),
-                       Integer.parseInt(timeNotifications[2]),
-                       Integer.parseInt(timeNotifications[3]),
-                       Integer.parseInt(timeNotifications[4]));
-               if(contacts.length == 1)
+               sb.append("Priority").append(element.getChildText("priority"));
+               dt = new DateTime(Integer.parseInt(date[2]), 
+                       Integer.parseInt(date[1]),
+                       Integer.parseInt(date[0]),
+                       Integer.parseInt(time[0]),
+                       Integer.parseInt(time[1]));
+               if(contacts.length == 0 && element.getChildText("contact").length() > 0)
                    contact = new Contact(contacts[0]);
                else if(contacts.length == 2)
                    contact = new Contact(contacts[0], Long.parseLong(contacts[1]));
                else if(contacts.length == 3)
-                   contact = new Contact(contacts[0], Long.parseLong(contacts[0]), contacts[2]);
+                   contact = new Contact(contacts[0], Long.parseLong(contacts[1]), contacts[2]);
                Priority priority = Priority.URGENT_IMPORTANT;
-               if(strpriority.equals("Priority.URGENT_IMPORTANT"))
+               if(sb.toString().equals("Priority.URGENT_IMPORTANT"))
                    priority = Priority.URGENT_IMPORTANT;
-               else if(strpriority.equals("Priority.URGENT"))
+               else if(sb.toString().equals("Priority.URGENT"))
                    priority = Priority.URGENT;
-               else if(strpriority.equals("Priority.IMPORTANT"))
+               else if(sb.toString().equals("Priority.IMPORTANT"))
                    priority = Priority.IMPORTANT;
                BirthdayTask birthday = new BirthdayTask(dt, contact, priority);
+               sb.delete(0, sb.length());
                task.add(birthday);
            } 
+           
+           rootNode = businessTask.getRootElement();
            List business = rootNode.getChildren("businesstask");  
            String taskName;
            String description = "";
@@ -198,18 +203,18 @@ public class XMLStorage implements Storage {
                taskName = element.getChildText("taskName");
                if(element.getChildText("description") != null)
                    description = element.getChildText("description");
-               timeNotifications = element.getChildText
-                       ("timeNotification").split(",");
+               date = element.getChildText("date").split("-");
+               time = element.getChildText("time").split(":");
                if(element.getChildText("contact") != null)
                     contacts = element.getChildText("contact").split(",");
                else 
                    contacts = null;
-               strpriority = element.getChildText("priority");
-               dt = new DateTime(Integer.parseInt(timeNotifications[0]), 
-                       Integer.parseInt(timeNotifications[1]),
-                       Integer.parseInt(timeNotifications[2]),
-                       Integer.parseInt(timeNotifications[3]),
-                       Integer.parseInt(timeNotifications[4]));
+               sb.append("Priority").append(element.getChildText("priority"));
+               dt = new DateTime(Integer.parseInt(date[2]), 
+                       Integer.parseInt(date[1]),
+                       Integer.parseInt(date[0]),
+                       Integer.parseInt(time[0]),
+                       Integer.parseInt(time[1]));
                if(contacts == null);
                else if (contacts.length == 1)
                    contact = new Contact(contacts[0]);
@@ -218,24 +223,26 @@ public class XMLStorage implements Storage {
                else if(contacts.length == 3)
                    contact = new Contact(contacts[0], Long.parseLong(contacts[0]), contacts[2]);
                Priority priority = Priority.URGENT_IMPORTANT;
-               if(strpriority.equals("Priority.URGENT_IMPORTANT"))
+               if(sb.toString().equals("Priority.URGENT_IMPORTANT"))
                    priority = Priority.URGENT_IMPORTANT;
-               else if(strpriority.equals("Priority.URGENT"))
+               else if(sb.toString().equals("Priority.URGENT"))
                    priority = Priority.URGENT;
-               else if(strpriority.equals("Priority.IMPORTANT"))
+               else if(sb.toString().equals("Priority.IMPORTANT"))
                    priority = Priority.IMPORTANT;
-               BusinessTask businessTask;
+               BusinessTask businessTasks;
                if(description.equals("") && contacts == null)
-                    businessTask = new BusinessTask(taskName, dt, priority);
+                    businessTasks = new BusinessTask(taskName, dt, priority);
                else if(contacts == null)
-                   businessTask = new BusinessTask(taskName, description, dt, 
+                   businessTasks = new BusinessTask(taskName, description, dt, 
                             priority);
                else
-                    businessTask = new BusinessTask(taskName, description, dt, 
+                    businessTasks = new BusinessTask(taskName, description, dt, 
                             contact, priority);
-               task.add(businessTask);
-           } 
-           log = new LogImpl(task);
+               sb.delete(0, sb.length());
+               task.add(businessTasks);
+           }
+           if(!task.isEmpty())
+                log = new LogImpl(task);
            } catch (JDOMException e) {  
            // TODO Auto-generated catch block  
            e.printStackTrace();  
@@ -244,6 +251,5 @@ public class XMLStorage implements Storage {
            e.printStackTrace();  
           }    
         return log;
-    }
-    
+    }   
 }

@@ -43,7 +43,7 @@ public class ControlEnteredInformation {
         if(date.length() < 7)
             return intSplitDate;
         String[] splitDate = new String[3];
-        if (date.contains("\\.")) {
+        if (date.contains(".")) {
             splitDate = date.split("\\.");
         }
         else if (date.contains("-")) {
