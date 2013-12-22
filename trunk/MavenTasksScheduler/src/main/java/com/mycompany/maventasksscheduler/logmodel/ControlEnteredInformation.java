@@ -129,20 +129,23 @@ public class ControlEnteredInformation {
     
     public Contact controlContact(){
         Scanner sc = new Scanner(System.in);
-        int read;
+        int key = 33;
+        String enteringString = "";
         String name;
         long phoneNumber;
         String email;
         Contact contact = new Contact();
         while(true){
             userInterface.contactInfo();
-            read = sc.nextInt();
-            if(read > 0 && read < 4)
+            enteringString = sc.nextLine();
+            if(checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            if(key > 0 && key < 4)
                 break;
         }
         boolean flag = true;
         while (flag) {
-            switch(read){
+            switch(key){
                 case 1:
                     name = readContactName();
                     contact = createContact(name);
@@ -170,14 +173,16 @@ public class ControlEnteredInformation {
     
     public Priority controlPriority(){
         Scanner sc = new Scanner(System.in);
-        int read;
+        int key = 33;
+        String enteringString = "";
         Task.Priority priority = null;
         boolean flag = true;
         while (flag) {
             userInterface.priority();
-            read = sc.nextInt();
-            sc.nextLine();
-            switch (read) {
+            enteringString = sc.nextLine();
+            if(checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            switch (key) {
                 case 1:
                     priority = setPriority(1);
                     flag = false;
@@ -199,14 +204,16 @@ public class ControlEnteredInformation {
     
     public Status controlStatus(){
         Scanner sc = new Scanner(System.in);
-        int read;
+        int key = 33;
+        String enteringString = "";
         Task.Status status = null;
         boolean flag = true;
         while (flag) {
             userInterface.status();
-            read = sc.nextInt();
-            sc.nextLine();
-            switch (read) {
+            enteringString = sc.nextLine();
+            if(checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            switch (key) {
                 case 1:
                     status = setStatus(1);
                     flag = false;
@@ -267,9 +274,12 @@ public class ControlEnteredInformation {
     public long readContatcPhoneNumber(){
         Scanner sc = new Scanner(System.in);
         long phoneNumber = 0;
+        String enteringString = "";
         for(;;){
             addConsoleUI.enterContactPhoneNumber();
-            phoneNumber = sc.nextLong();
+            enteringString = sc.nextLine();
+            if(checkString(enteringString))
+                phoneNumber = Integer.parseInt(enteringString);
             if(phoneNumber > 0)
                 break;
         }
@@ -351,17 +361,20 @@ public class ControlEnteredInformation {
     
     public int chooseTaskId(){
         Scanner sc = new Scanner(System.in);
-        int phoneNumber = 0;
+        String enteringString = "";
+        int phoneNumber = -1;
         for(;;){
             userInterface.chooseTaskId();
-            phoneNumber = sc.nextInt();
+            enteringString = sc.nextLine();
+            if(checkString(enteringString))
+                phoneNumber = Integer.parseInt(enteringString);
             if(phoneNumber >= 0 && phoneNumber < logModel.getSize())
                 break;
         }
         return phoneNumber;
     }
     
-    public boolean checkString(String string) {
+    public static boolean checkString(String string) {
         try {
             Integer.parseInt(string);
         } catch (Exception e) {
