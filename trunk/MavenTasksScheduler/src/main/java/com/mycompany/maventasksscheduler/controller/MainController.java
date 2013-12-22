@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -27,9 +28,11 @@ public class MainController {
     private AddController addController;
     private ControlEnteredInformation control;
     private ChooseTaskController chooseTask;
+    private XMLStorage xml;
     
     public MainController(){
-        logModel = new LogImpl();
+        xml = new XMLStorage();
+        logModel = xml.uploadData();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
     }
@@ -38,6 +41,7 @@ public class MainController {
         this.logModel = logModel;
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(this.logModel);
+        xml = new XMLStorage();
     }
     
     public void start(){
@@ -80,7 +84,8 @@ public class MainController {
                     addController.start();
                     break;
                 case 0:
-                   System.exit(0);
+                    xml.saveData(logModel);
+                    System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
             }

@@ -51,7 +51,8 @@ public class FileController {
                     fileUI.allTaskRemoved();
                     break;
                 case 0:
-                   System.exit(0);
+                    xml.saveData(logModel);
+                    System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
             }
