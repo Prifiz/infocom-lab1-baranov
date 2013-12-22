@@ -132,12 +132,14 @@ public class XMLStorage implements Storage {
             XMLOutputter xmlOutput = new XMLOutputter();  
             xmlOutput.output(birthdayTask, System.out);  
             xmlOutput.setFormat(Format.getPrettyFormat());  
-            xmlOutput.output(birthdayTask, new FileWriter("birthdays\\birthdayTasks.xml"));
-                   // "target\\distributive\\birthdays\\birthdayTasks.xml"));  
+            xmlOutput.output(birthdayTask, new FileWriter(
+                    "birthdays\\birthdayTasks.xml"));
+                    //"target\\distributive\\birthdays\\birthdayTasks.xml"));  
             xmlOutput.output(businessTask, System.out);  
             xmlOutput.setFormat(Format.getPrettyFormat());  
-            xmlOutput.output(businessTask, new FileWriter("business\\businessTasks.xml"));
-                  //  "target\\distributive\\business\\businessTasks.xml"));  
+            xmlOutput.output(businessTask, new FileWriter(
+                    "business\\businessTasks.xml"));
+                    //"target\\distributive\\business\\businessTasks.xml"));  
            } catch (IOException io) {  
             System.out.println(io.getMessage());  
            }  
@@ -148,12 +150,12 @@ public class XMLStorage implements Storage {
     public LogImpl uploadData() {
         SAXBuilder saxBuilder = new SAXBuilder();  
         LogImpl log = new LogImpl();
-        File fileBirthdays = new File("birthdays\\birthdayTasks.xml");
-//                "target\\distributive\\birthdays\\"
-//                + "birthdayTasks.xml"); 
-        File fileBusiness = new File("business\\businessTasks.xml");
-//                "target\\distributive\\business\\"
-//                + "businessTasks.xml"); 
+        File fileBirthdays = new File(
+                "birthdays\\birthdayTasks.xml");
+                //"target\\distributive\\birthdays\\birthdayTasks.xml"); 
+        File fileBusiness = new File(
+                "business\\businessTasks.xml");
+                //"target\\distributive\\business\\businessTasks.xml"); 
         try {  
            Document birthdayTask = saxBuilder.build(fileBirthdays);
            Document businessTask = saxBuilder.build(fileBusiness);

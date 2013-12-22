@@ -46,10 +46,15 @@ public class MainController {
     
     public void start(){
         Scanner sc = new Scanner(System.in);
+        int key = 33;
+        String enteringString = "";
         menu:
         for(;;){
             userInterface.showMainMenu();
-            switch(sc.nextInt()){
+            enteringString = sc.nextLine();
+            if(control.checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            switch(key){
                 case 1:
                     helpController = new HelpController();
                     helpController.start();

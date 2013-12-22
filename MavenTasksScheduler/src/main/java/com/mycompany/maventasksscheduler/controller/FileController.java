@@ -5,6 +5,7 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
@@ -20,6 +21,7 @@ public class FileController {
     private FileConsoleUI fileUI;
     private MainConsoleUI userInterface;
     private XMLStorage xml;
+    private ControlEnteredInformation control;
        
         
     
@@ -28,14 +30,20 @@ public class FileController {
         fileUI = new FileConsoleUI();
         userInterface = new MainConsoleUI();
         xml = new XMLStorage();
+        control = new ControlEnteredInformation(logModel);
     }
     
     public LogImpl start(){
         Scanner sc = new Scanner(System.in);
+        int key = 33;
+        String enteringString = "";
         menu:
         for(;;){
             fileUI.showFileMenu();
-            switch(sc.nextInt()){
+            enteringString = sc.nextLine();
+            if(control.checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            switch(key){
                 case 1:
                     break menu;
                 case 2:
