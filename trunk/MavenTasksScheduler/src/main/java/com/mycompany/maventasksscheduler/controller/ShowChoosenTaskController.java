@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
+import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
@@ -23,6 +24,7 @@ public class ShowChoosenTaskController {
     private MainController mainController;
     private ShowChoosenTaskConsoleUI choosetask;
     private int taskNumber;
+    private ControlEnteredInformation control;
     
     
     public ShowChoosenTaskController(LogImpl logModel, Task task, int taskNumber){
@@ -32,22 +34,29 @@ public class ShowChoosenTaskController {
         choosetask = new ShowChoosenTaskConsoleUI();
         this.taskNumber = taskNumber;
         mainController = new MainController(this.logModel);
+        control = new ControlEnteredInformation(logModel);
     }
     
     public void start(){
         Scanner sc = new Scanner(System.in);
         int backTo = 0;
+        int key = 33;
+        String enteringString = "";
         menu:
         for(;;){
            System.out.println("\nChoosen task:\n"+logModel.get(taskNumber).toString());
            choosetask.showFileMenu();
-           switch(sc.nextInt()){
+           enteringString = sc.nextLine();
+           if(control.checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+           switch(key){
                 case 1:
                     nextMenu:
                     for(;;){
                         choosetask.showBackTO();
-                        sc.nextLine();
-                        backTo = sc.nextInt();
+                        enteringString = sc.nextLine();
+                        if(control.checkString(enteringString))
+                             backTo = Integer.parseInt(enteringString);
                         switch(backTo){
                             case 1:
                                 break nextMenu;
@@ -62,8 +71,9 @@ public class ShowChoosenTaskController {
                     nextMenu:
                     for(;;){
                         choosetask.chooseEditType();
-                        sc.nextLine();
-                        backTo = sc.nextInt();
+                        enteringString = sc.nextLine();
+                        if(control.checkString(enteringString))
+                             backTo = Integer.parseInt(enteringString);
                         switch(backTo){
                             case 1:
                                 logModel.editAllDataTask(taskNumber);
@@ -82,8 +92,9 @@ public class ShowChoosenTaskController {
                     nextMenu:
                     for(;;){
                         choosetask.showBackTO();
-                        sc.nextLine();
-                        backTo = sc.nextInt();
+                        enteringString = sc.nextLine();
+                        if(control.checkString(enteringString))
+                             backTo = Integer.parseInt(enteringString);
                         switch(backTo){
                             case 1:
                                 break menu;

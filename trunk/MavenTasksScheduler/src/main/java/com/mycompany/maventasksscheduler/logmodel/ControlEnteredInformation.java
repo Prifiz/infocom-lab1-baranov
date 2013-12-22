@@ -28,12 +28,17 @@ public class ControlEnteredInformation {
     private AddController addController;
     private AddConsoleUI addConsoleUI;
     
+    public ControlEnteredInformation (){
+        addConsoleUI = new AddConsoleUI();
+        userInterface = new MainConsoleUI();
+    }
     
     public ControlEnteredInformation (LogImpl logModel){
         this.logModel = logModel;
         addConsoleUI = new AddConsoleUI();
         userInterface = new MainConsoleUI();
     }
+    
     
     
     public int[] readAndSplitDate() {
@@ -354,6 +359,15 @@ public class ControlEnteredInformation {
                 break;
         }
         return phoneNumber;
+    }
+    
+    public boolean checkString(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
     
 }

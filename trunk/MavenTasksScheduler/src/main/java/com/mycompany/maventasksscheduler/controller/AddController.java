@@ -37,10 +37,15 @@ public class AddController {
     
     public void start(){
         Scanner sc = new Scanner(System.in);
+        int key = 33;
+        String enteringString = "";
         menu:
         for(;;){
             addConsoleUI.showAddMenu();
-            switch(sc.nextInt()){
+            enteringString = sc.nextLine();
+            if(control.checkString(enteringString))
+                key = Integer.parseInt(enteringString);
+            switch(key){
                 case 1:
                     break menu;
                 case 2:
