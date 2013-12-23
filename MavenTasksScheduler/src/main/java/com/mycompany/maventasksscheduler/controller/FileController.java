@@ -55,7 +55,8 @@ public class FileController {
                     fileUI.taskLoaded();
                     break;
                 case 4:
-                    logModel.removeAll();
+                    while(logModel.getSize() > 0)
+                        logModel.removeAll();
                     fileUI.allTaskRemoved();
                     break;
                 case 0:
