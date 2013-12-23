@@ -12,8 +12,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        XMLStorage xml = new XMLStorage();
-        //xml.saveData(null);
+        System.out.println("\nWelcome to your scheduler of tasks");
         MainController c = new MainController();
         c.start();
     }
