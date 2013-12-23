@@ -36,12 +36,12 @@ public class MainConsoleUI {
     
     public void showAll(LogImpl log) {
         for (int i = 0; i < log.getSize(); i++) {
-            System.out.println("№ - " + i + ", " + log.get(i).toString());
+            System.out.println("No " + i + " | " + log.get(i).toString());
         }
     }
      
      public void chooseTaskId(){
-         System.out.println("\nChoose correctly task's №");
+         System.out.println("\nChoose correctly task's number");
      }
      
      public void contactInfo(){
