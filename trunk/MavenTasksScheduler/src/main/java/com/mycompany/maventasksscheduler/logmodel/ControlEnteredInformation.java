@@ -57,6 +57,8 @@ public class ControlEnteredInformation {
         else if (date.contains("/")) {
             splitDate = date.split("/");
         }
+        else
+            return intSplitDate;
         if (Integer.parseInt(splitDate[1]) < 2013 && Integer.parseInt(splitDate[1]) <= 0
                 && Integer.parseInt(splitDate[1]) >= 13 && Integer.parseInt(splitDate[0]) <= 0
                 && Integer.parseInt(splitDate[0]) > 31) {
@@ -68,7 +70,6 @@ public class ControlEnteredInformation {
             return intSplitDate;
         }
     }
-    
     
     public int [] controlDate(){
         int [] splitDate = new int [3];
@@ -83,23 +84,16 @@ public class ControlEnteredInformation {
         }
         return splitDate;
     }
-    
-    
-        
+       
     public int[] readAndSplitTime() {
         Scanner sc = new Scanner(System.in);
+        int [] intSplitTime = {-1,-1};
         String time = sc.nextLine();
-        int [] intSplitTime = new int[3];
         if(time.length() < 3)
             return intSplitTime;
-        String[] splitTime = new String[2];
-        if (time.contains(":")) {
+        String[] splitTime = {"-1","-1"};
+        if(time.contains(":"))
             splitTime = time.split(":");
-        }
-        if (Integer.parseInt(splitTime[0]) < 0 && Integer.parseInt(splitTime[0]) > 24
-                && Integer.parseInt(splitTime[1]) < 0 && Integer.parseInt(splitTime[1]) > 60) {
-            return intSplitTime;
-        }
         for(int i = 0; i < splitTime.length; i++)
             intSplitTime[i] = Integer.parseInt(splitTime[i]);
         return intSplitTime;
@@ -109,7 +103,7 @@ public class ControlEnteredInformation {
         int [] splitTime = new int [2];
         while (true) {
             addConsoleUI.enterCorrectlyTime();
-            splitTime = readAndSplitTime();
+            splitTime = readAndSplitTime();                    
             if (splitTime[0] >= 0 && splitTime[0] < 25 && 
                     splitTime[1] >= 0 && splitTime[1] < 60) {
                 break;
