@@ -7,7 +7,6 @@ package com.mycompany.maventasksscheduler.controller;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.ShowChoosenTaskConsoleUI;
 import java.util.Scanner;

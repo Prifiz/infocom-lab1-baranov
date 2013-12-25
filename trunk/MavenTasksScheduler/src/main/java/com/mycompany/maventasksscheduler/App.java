@@ -1,8 +1,7 @@
 package com.mycompany.maventasksscheduler;
 
 import com.mycompany.maventasksscheduler.controller.MainController;
-import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import java.util.Scanner;
+
 
 /**
  * Hello world!

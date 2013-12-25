@@ -4,6 +4,9 @@
  */
 package com.mycompany.maventasksscheduler.systemnotification;
 
+import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import java.util.List;
+
 /**
  * 
  * @author Сергей
@@ -13,5 +16,5 @@ public interface SystemNotification {
     /**
      * This method notifies on approach of the planned task.
      */
-    void notification();
+    LogImpl notification();
 }

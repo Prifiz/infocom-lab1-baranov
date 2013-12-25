@@ -9,7 +9,6 @@ import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
-import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
 import com.mycompany.maventasksscheduler.userinterface.AddConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;

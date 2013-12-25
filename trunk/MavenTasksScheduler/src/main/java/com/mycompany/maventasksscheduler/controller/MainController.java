@@ -5,15 +5,12 @@
 package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -29,12 +26,14 @@ public class MainController {
     private ControlEnteredInformation control;
     private ChooseTaskController chooseTask;
     private XMLStorage xml;
+    private NotificationController notificationController;
     
     public MainController(){
         xml = new XMLStorage();
         logModel = xml.uploadData();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
+        notificationController = new NotificationController();
     }
     
     public MainController(LogImpl logModel){
@@ -42,9 +41,11 @@ public class MainController {
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(this.logModel);
         xml = new XMLStorage();
+        notificationController = new NotificationController();
     }
     
     public void start(){
+        //notificationController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -95,5 +96,9 @@ public class MainController {
                     userInterface.chooseCorrectly();
             }
         }
-    } 
+    }
+    
+    public LogImpl getLog(){
+        return logModel;
+    }
 }
