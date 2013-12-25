@@ -8,7 +8,6 @@ import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
-import com.mycompany.maventasksscheduler.userinterface.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import java.util.LinkedList;
 import java.util.List;

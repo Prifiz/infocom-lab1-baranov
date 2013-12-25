@@ -47,7 +47,7 @@ public class BirthdayTask extends Task implements Cloneable{
                     append(", time notification - ").
                     append(timeNotification.getHourOfDay()).append(":").
                     append(timeNotification.getMinuteOfHour()).toString();              
-        return sb.append("null").toString();
+        return sb.append("werwerw").toString();
     }
 
     /**

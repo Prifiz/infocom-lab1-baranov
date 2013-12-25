@@ -48,13 +48,13 @@ public class ControlEnteredInformation {
         if(date.length() < 7)
             return intSplitDate;
         String[] splitDate = new String[3];
-        if (date.contains(".")) {
+        if (date.contains(".") && !date.contains("-") && !date.contains("/")) {
             splitDate = date.split("\\.");
         }
-        else if (date.contains("-")) {
+        else if (date.contains("-") && !date.contains(".") && !date.contains("/")) {
             splitDate = date.split("-");
         }
-        else if (date.contains("/")) {
+        else if (date.contains("/") && !date.contains(".") && !date.contains("-")) {
             splitDate = date.split("/");
         }
         else
@@ -255,11 +255,24 @@ public class ControlEnteredInformation {
     public String readContactName(){
         Scanner sc = new Scanner(System.in);
         StringBuilder contactName = new StringBuilder();
+        String str;
+        
         for(;;){
             addConsoleUI.enterContactName();
             contactName.append(sc.nextLine());
-            if(contactName.length() > 0 && contactName.length() < 41)
+            if(contactName.length() > 0 && contactName.length() < 41){
+                str = contactName.substring(0, 1);
+                contactName.insert(0, str.toUpperCase());
+                contactName.deleteCharAt(1);
+                for(int i = 0; i < contactName.length(); i++){
+                    if(contactName.charAt(i) == ' '){
+                        str = contactName.substring(i+1, i+2);
+                        contactName.insert(i+1, str.toUpperCase());
+                        contactName.deleteCharAt(i+2);
+                    }
+                }
                 break;
+            }
             contactName.delete(0, contactName.length());
         }
         return contactName.toString();
