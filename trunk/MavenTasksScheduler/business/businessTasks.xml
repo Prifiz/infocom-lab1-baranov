@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+  <businesstask id="0">
+    <taskName>oooooooo</taskName>
+    <description>ogo</description>
+    <date>21-12-2121</date>
+    <time>21:21</time>
+    <contact>Dsf,</contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </businesstask>
+  <businesstask id="1">
+    <taskName>pa</taskName>
+    <description>parara</description>
+    <date>9-1-2014</date>
+    <time>20:44</time>
+    <contact>Posopd D,2312321</contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </businesstask>
+  <businesstask id="2">
+    <taskName>zzzzzzzz</taskName>
+    <description />
+    <date>9-1-2014</date>
+    <time>16:20</time>
+    <contact />
+    <priority>URGENT_IMPORTANT</priority>
+  </businesstask>
+</tasks>
