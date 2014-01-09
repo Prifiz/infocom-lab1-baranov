@@ -17,7 +17,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;  
 import org.jdom2.output.Format;  
 import org.jdom2.output.XMLOutputter;  
-
 import java.io.File; 
 import java.util.LinkedList;
 import java.util.List; 
@@ -31,42 +30,54 @@ import org.joda.time.DateTime;
  */
 
 public class XMLStorage implements Storage {
+    
+    public Document createDocument(){
+        Element tasks = new Element("tasks"); 
+        return new Document(tasks);
+    }
+    
+    public void outPutXML(Document tasks, String path){
+        try { 
+            XMLOutputter xmlOutput = new XMLOutputter();  
+            xmlOutput.setFormat(Format.getPrettyFormat());  
+            xmlOutput.output(tasks, new FileWriter(path));
+        }
+        catch (IOException io) {  
+            System.out.println(io.getMessage());  
+        }  
+    }
+    
+    public void createDir(String path){
+        File file = new File(path);
+        File dir = file.getParentFile();
+        if(!file.exists()){
+            dir.mkdirs();
+            outPutXML(createDocument(), path);
+        }
+    }
 
     public void saveData(LogImpl logModel) {
-        try {  
-            Element businessTasks = new Element("tasks");  
-            Element birthdayTasks = new Element("tasks");  
-            Document businessTask = new Document(businessTasks);
-            Document birthdayTask = new Document(birthdayTasks);
-            Integer birthdayTaskCount = 0;
-            Integer businessTaskCount = 0;
-            StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < logModel.getSize(); i++){
-                if(logModel.get(i) instanceof BirthdayTask){
-                    birthdayTask.getRootElement().addContent(
-                            createBirthdayTask(logModel.get(i),birthdayTaskCount));
-                    birthdayTaskCount++;
-                }
-                if(logModel.get(i) instanceof BusinessTask){
-                    businessTask.getRootElement().addContent(
-                            createBusinessTask(logModel.get(i),businessTaskCount));
-                    businessTaskCount++;
-                }
+        Document businessTask = createDocument();
+        Document birthdayTask = createDocument();
+        Integer birthdayTaskCount = 0;
+        Integer businessTaskCount = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < logModel.getSize(); i++){
+            if(logModel.get(i) instanceof BirthdayTask){
+                birthdayTask.getRootElement().addContent(
+                        createBirthdayTask(logModel.get(i),birthdayTaskCount));
+                birthdayTaskCount++;
             }
-            XMLOutputter xmlOutput = new XMLOutputter();  
-            xmlOutput.output(birthdayTask, System.out);  
-            xmlOutput.setFormat(Format.getPrettyFormat());  
-            xmlOutput.output(birthdayTask, new FileWriter(
-                    "birthdays\\birthdayTasks.xml"));
-                    //"target\\distributive\\birthdays\\birthdayTasks.xml"));  
-            xmlOutput.output(businessTask, System.out);  
-            xmlOutput.setFormat(Format.getPrettyFormat());  
-            xmlOutput.output(businessTask, new FileWriter(
-                    "business\\businessTasks.xml"));
-                    //"target\\distributive\\business\\businessTasks.xml"));  
-           } catch (IOException io) {  
-            System.out.println(io.getMessage());  
-           }  
+            if(logModel.get(i) instanceof BusinessTask){
+                businessTask.getRootElement().addContent(
+                        createBusinessTask(logModel.get(i),businessTaskCount));
+                businessTaskCount++;
+            }
+        }
+        outPutXML(birthdayTask, "birthdays\\birthdayTasks.xml");
+//                    "target\\distributive\\birthdays\\birthdayTasks.xml"));
+        outPutXML(businessTask, "business\\businessTasks.xml");
+//                    "target\\distributive\\business\\businessTasks.xml")); 
     }
     
     private Element createBirthdayTask(Task task, Integer i){
@@ -92,7 +103,7 @@ public class XMLStorage implements Storage {
                     
                     else if (birthday.getContact().getPhoneNumber() == 0 &&
                             birthday.getContact().getMail().equals(""))
-                        sb.append(birthday.getContact().getName());
+                        sb.append(birthday.getContact().getName()).append(", ");
                     
                     else if (birthday.getContact().getPhoneNumber() != 0 &&
                             birthday.getContact().getMail().equals(""))
@@ -141,7 +152,7 @@ public class XMLStorage implements Storage {
 
             else if (business.getContact().getPhoneNumber() == 0 &&
                     business.getContact().getMail().equals(""))
-                sb.append(business.getContact().getName());
+                sb.append(business.getContact().getName()).append(", ");
 
             else if (business.getContact().getPhoneNumber() != 0 &&
                     business.getContact().getMail().equals(""))
@@ -160,41 +171,40 @@ public class XMLStorage implements Storage {
             return element;
     }
         
+    public List<Task> openAndReadXML(String path, String children){
+        SAXBuilder saxBuilder = new SAXBuilder(); 
+        File fileBirthdays = new File(path);
+        List<Task> task = new LinkedList();
+        try { 
+           Document birthdayTask = saxBuilder.build(fileBirthdays);
+           Element rootNode = birthdayTask.getRootElement();
+           List birthdays = rootNode.getChildren(children);  
+           for(int i = 0;i <= birthdays.size()-1; i++){  
+               Element element = (Element)birthdays.get(i);
+               if(element.getName().equals("birthdaytask"))
+                    task.add(parseBirthdayTasks(element));
+               else if(element.getName().equals("businesstask"))
+                    task.add(parseBusinessTask(element));
+           } 
+        }
+        catch (JDOMException e) {
+           // e.printStackTrace();  
+        } catch (IOException e) {
+              //e.printStackTrace();  
+        } 
+        return task;
+    }
    
     public LogImpl uploadData() {
-        SAXBuilder saxBuilder = new SAXBuilder();  
+        createDir("birthdays\\birthdayTasks.xml");
+        createDir("business\\businessTasks.xml");
         LogImpl log = new LogImpl();
-        File fileBirthdays = new File(
-                "birthdays\\birthdayTasks.xml");
-                //"target\\distributive\\birthdays\\birthdayTasks.xml"); 
-        File fileBusiness = new File(
-                "business\\businessTasks.xml");
-                //"target\\distributive\\business\\businessTasks.xml"); 
-        try {  
-           Document birthdayTask = saxBuilder.build(fileBirthdays);
-           Document businessTask = saxBuilder.build(fileBusiness);
-           Element rootNode = birthdayTask.getRootElement();
-           List<Task> task = new LinkedList();
-           List birthdays = rootNode.getChildren("birthdaytask");  
-           for(int i = 0;i <= birthdays.size()-1; i++){  
-               Element element = (Element)birthdays.get(i);  
-               task.add(parseBirthdayTasks(element));
-           } 
-           rootNode = businessTask.getRootElement();
-           List business = rootNode.getChildren("businesstask");  
-           for(int i = 0;i <= business.size()-1; i++){  
-               Element element = (Element)business.get(i); 
-               task.add(parseBusinessTask(element));
-           }
-           if(!task.isEmpty())
+        List<Task> task = 
+                openAndReadXML("birthdays\\birthdayTasks.xml", "birthdaytask");
+        task.addAll(
+                openAndReadXML("business\\businessTasks.xml","businesstask"));
+        if(!task.isEmpty())
                 log = new LogImpl(task);
-           } catch (JDOMException e) {  
-           // TODO Auto-generated catch block  
-           e.printStackTrace();  
-          } catch (IOException e) {  
-           // TODO Auto-generated catch block  
-           e.printStackTrace();  
-          }   
         return log;
     }
     
@@ -214,7 +224,7 @@ public class XMLStorage implements Storage {
                 Integer.parseInt(date[0]),
                 Integer.parseInt(time[0]),
                 Integer.parseInt(time[1]));
-        if(contacts.length == 0 && element.getChildText("contact").length() > 0)
+        if(contacts.length == 1 && element.getChildText("contact").length() > 0)
             contact = new Contact(contacts[0]);
         else if(contacts.length == 2)
             contact = new Contact(contacts[0], Long.parseLong(contacts[1]));

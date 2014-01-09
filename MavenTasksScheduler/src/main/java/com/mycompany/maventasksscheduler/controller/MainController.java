@@ -45,7 +45,7 @@ public class MainController {
     }
     
     public void start(){
-        //notificationController.start();
+        notificationController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";

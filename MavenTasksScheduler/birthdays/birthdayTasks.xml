@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+  <birthdaytask id="0">
+    <date>12-12-2121</date>
+    <time>21:21</time>
+    <contact>Qwer,</contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="1">
+    <date>9-1-2014</date>
+    <time>16:18</time>
+    <contact>First,</contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+</tasks>
