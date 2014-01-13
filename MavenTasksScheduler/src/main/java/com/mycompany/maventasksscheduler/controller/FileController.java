@@ -16,34 +16,33 @@ import java.util.Scanner;
  * @author Сергей
  */
 public class FileController {
-    
+
     private LogImpl logModel;
     private FileConsoleUI fileUI;
     private MainConsoleUI userInterface;
     private XMLStorage xml;
     private ControlEnteredInformation control;
-       
-        
-    
-    public FileController(LogImpl logModel){
+
+    public FileController(LogImpl logModel) {
         this.logModel = logModel;
         fileUI = new FileConsoleUI();
         userInterface = new MainConsoleUI();
         xml = new XMLStorage();
         control = new ControlEnteredInformation(logModel);
     }
-    
-    public LogImpl start(){
+
+    public LogImpl start() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
         menu:
-        for(;;){
+        for (;;) {
             fileUI.showFileMenu();
             enteringString = sc.nextLine();
-            if(control.checkString(enteringString))
+            if (control.checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
-            switch(key){
+            }
+            switch (key) {
                 case 1:
                     break menu;
                 case 2:
@@ -55,8 +54,9 @@ public class FileController {
                     fileUI.taskLoaded();
                     break;
                 case 4:
-                    while(logModel.getSize() > 0)
+                    while (logModel.getSize() > 0) {
                         logModel.removeAll();
+                    }
                     fileUI.allTaskRemoved();
                     break;
                 case 0:
@@ -68,5 +68,4 @@ public class FileController {
         }
         return logModel;
     }
-    
 }

@@ -8,8 +8,9 @@ package com.mycompany.maventasksscheduler.exceptions;
  *
  * @author Сергей
  */
-public class TaskFieldIndexOutOfBoundsException extends IndexOutOfBoundsException{
-    public TaskFieldIndexOutOfBoundsException(){
+public class TaskFieldIndexOutOfBoundsException extends IndexOutOfBoundsException {
+
+    public TaskFieldIndexOutOfBoundsException() {
         super("The chosen task has no field with such number");
     }
 }

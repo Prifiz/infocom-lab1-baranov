@@ -7,44 +7,75 @@ package com.mycompany.maventasksscheduler.systemnotification;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
-import java.util.LinkedList;
-import java.util.List;
+import com.mycompany.maventasksscheduler.userinterface.NotificationConsoleUI;
 import org.joda.time.DateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author Сергей
  */
-public class MessageNotification implements SystemNotification {
-    
+public class MessageNotification implements SystemNotification, Runnable {
+
     private LogImpl task;
     private LogImpl logModel;
     private DateTime dateTime;
     private XMLStorage xml;
-    private MainConsoleUI userInterface;
-    
-    
-    public MessageNotification(){
-        xml = new XMLStorage(); 
+    private NotificationConsoleUI consoleUI;
+    private Timer timer;
+
+    class RemindTask extends TimerTask {
+
+        private Task task;
+
+        RemindTask(Task task) {
+            this.task = task;
+        }
+
+        public void run() {
+            System.out.format("Notification! %s %n", task.toString());
+            timer.cancel(); //Terminate the timer thread
+        }
+    }
+
+    public MessageNotification() {
+        xml = new XMLStorage();
         this.logModel = xml.uploadData();
         task = new LogImpl();
         dateTime = new DateTime();
-        userInterface = new MainConsoleUI();
+        consoleUI = new NotificationConsoleUI();
     }
 
     public LogImpl notification() {
-        for(int i = 0; i < logModel.getSize(); i++){
-            if(logModel.get(i).getDate().getYear() == dateTime.getYear() &&
-                    logModel.get(i).getDate().getMonthOfYear() == 
-                    dateTime.getMonthOfYear() && 
-                    logModel.get(i).getDate().getDayOfMonth() == 
-                    dateTime.getDayOfMonth()){
+        for (int i = 0; i < logModel.getSize(); i++) {
+            if (logModel.get(i).getDate().getYear() == dateTime.getYear()
+                    && logModel.get(i).getDate().getMonthOfYear()
+                    == dateTime.getMonthOfYear()
+                    && logModel.get(i).getDate().getDayOfMonth()
+                    == dateTime.getDayOfMonth()) {
                 task.add(logModel.get(i));
+                long timeNotif = 3600000 * logModel.get(i).getDate().getHourOfDay()
+                        + 60000 * logModel.get(i).getDate().getMinuteOfHour();
+                long timeRightNow = 3600000 * dateTime.getHourOfDay()
+                        + 60000 * dateTime.getMinuteOfHour();
+                long toTheNotif = timeNotif - timeRightNow;
+                if (toTheNotif > 0) {
+                    timer = new Timer();
+                    timer.schedule(new RemindTask(logModel.get(i)), toTheNotif);
+                }
             }
         }
         return task;
     }
-    
-    
+
+    public void run() {
+        task = notification();
+        if (task.getSize() == 0) {
+            consoleUI.noTaskForToday();
+        } else {
+            consoleUI.tasksPlannedForToday();
+            consoleUI.showPlannedTasks(task);
+        }
+    }
 }
