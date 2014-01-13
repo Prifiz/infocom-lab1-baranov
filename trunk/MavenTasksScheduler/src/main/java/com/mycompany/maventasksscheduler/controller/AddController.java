@@ -20,36 +20,36 @@ import org.joda.time.DateTime;
  * @author Сергей
  */
 public class AddController {
-    
-    
+
     private LogImpl logModel;
     private MainConsoleUI userInterface;
     private AddConsoleUI addConsoleUI;
     private ControlEnteredInformation control;
-    
-    public AddController(LogImpl logModel){
+
+    public AddController(LogImpl logModel) {
         this.logModel = logModel;
         addConsoleUI = new AddConsoleUI();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
     }
-    
-    public void start(){
+
+    public void start() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
         menu:
-        for(;;){
+        for (;;) {
             addConsoleUI.showAddMenu();
             enteringString = sc.nextLine();
-            if(control.checkString(enteringString))
+            if (control.checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
-            switch(key){
+            }
+            switch (key) {
                 case 1:
                     break menu;
                 case 2:
                     menu2:
-                    for(;;){
+                    for (;;) {
                         addConsoleUI.showTasksType();
                         Contact contact;
                         String taskName;
@@ -59,13 +59,14 @@ public class AddController {
                         int read;
                         key = 33;
                         enteringString = sc.nextLine();
-                        if(control.checkString(enteringString))
+                        if (control.checkString(enteringString)) {
                             key = Integer.parseInt(enteringString);
+                        }
                         switch (key) {
                             case 1:
                                 date = control.createDate(
-                                                    control.controlDate(), 
-                                                    control.controlTime());
+                                        control.controlDate(),
+                                        control.controlTime());
                                 contact = control.controlContact();
                                 priority = control.controlPriority();
                                 logModel.add(new BirthdayTask(date, contact, priority));
@@ -75,16 +76,17 @@ public class AddController {
                                 int backTo = 33;
 
                                 nextMenu:
-                                for(;;){
+                                for (;;) {
                                     addConsoleUI.chooseBusinessType();
                                     enteringString = sc.nextLine();
-                                    if(control.checkString(enteringString))
+                                    if (control.checkString(enteringString)) {
                                         backTo = Integer.parseInt(enteringString);
-                                    switch(backTo){
+                                    }
+                                    switch (backTo) {
                                         case 1:
                                             taskName = control.controlTaskName();
                                             date = control.createDate(
-                                                    control.controlDate(), 
+                                                    control.controlDate(),
                                                     control.controlTime());
                                             priority = control.controlPriority();
                                             logModel.add(new BusinessTask(
@@ -94,7 +96,7 @@ public class AddController {
                                             taskName = control.controlTaskName();
                                             description = control.controlDescription();
                                             date = control.createDate(
-                                                    control.controlDate(), 
+                                                    control.controlDate(),
                                                     control.controlTime());
                                             priority = control.controlPriority();
                                             logModel.add(new BusinessTask(
@@ -105,13 +107,13 @@ public class AddController {
                                             taskName = control.controlTaskName();
                                             description = control.controlDescription();
                                             date = control.createDate(
-                                                    control.controlDate(), 
+                                                    control.controlDate(),
                                                     control.controlTime());
                                             contact = control.controlContact();
                                             priority = control.controlPriority();
                                             logModel.add(new BusinessTask(
-                                                    taskName,description, date,
-                                                    contact,priority));
+                                                    taskName, description, date,
+                                                    contact, priority));
                                             break nextMenu;
                                         default:
                                             userInterface.chooseCorrectly();
@@ -129,5 +131,4 @@ public class AddController {
             }
         }
     }
-    
 }

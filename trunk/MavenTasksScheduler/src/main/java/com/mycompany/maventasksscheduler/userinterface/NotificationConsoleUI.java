@@ -5,26 +5,24 @@
 package com.mycompany.maventasksscheduler.userinterface;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
-import com.mycompany.maventasksscheduler.logmodel.Task;
-import java.util.List;
 
 /**
  *
  * @author Сергей
  */
 public class NotificationConsoleUI {
-    
-    public void tasksPlannedForToday(){
+
+    public void tasksPlannedForToday() {
         System.out.println("Tasks planned for today:");
     }
-    
-    public void noTaskForToday(){
+
+    public void noTaskForToday() {
         System.out.println("For today there are no tasks");
     }
-    
-    public void showPlannedTasks(LogImpl tasks){
-        for(int i = 0; i < tasks.getSize(); i++)
-            System.out.println(tasks.get(i).toString());   
+
+    public void showPlannedTasks(LogImpl tasks) {
+        for (int i = 0; i < tasks.getSize(); i++) {
+            System.out.println(tasks.get(i).toString());
+        }
     }
-    
 }

@@ -20,59 +20,60 @@ import org.joda.time.DateTime;
  * @author Сергей
  */
 public class ControlEnteredInformation {
-    
+
     private LogImpl logModel;
     private MainConsoleUI userInterface;
     private FileController fileController;
     private HelpController helpController;
     private AddController addController;
     private AddConsoleUI addConsoleUI;
-    
-    public ControlEnteredInformation (){
+
+    public ControlEnteredInformation() {
         addConsoleUI = new AddConsoleUI();
         userInterface = new MainConsoleUI();
     }
-    
-    public ControlEnteredInformation (LogImpl logModel){
+
+    public ControlEnteredInformation(LogImpl logModel) {
         this.logModel = logModel;
         addConsoleUI = new AddConsoleUI();
         userInterface = new MainConsoleUI();
     }
-    
-    
-    
+
     public int[] readAndSplitDate() {
         Scanner sc = new Scanner(System.in);
         String date = sc.nextLine();
-        int [] intSplitDate = new int[3];
-        if(date.length() < 7)
+        int[] intSplitDate = new int[3];
+        if (date.length() < 7) {
             return intSplitDate;
+        }
         String[] splitDate = new String[3];
         if (date.contains(".") && !date.contains("-") && !date.contains("/")) {
             splitDate = date.split("\\.");
-        }
-        else if (date.contains("-") && !date.contains(".") && !date.contains("/")) {
+        } else if (date.contains("-") && !date.contains(".")
+                && !date.contains("/")) {
             splitDate = date.split("-");
-        }
-        else if (date.contains("/") && !date.contains(".") && !date.contains("-")) {
+        } else if (date.contains("/") && !date.contains(".")
+                && !date.contains("-")) {
             splitDate = date.split("/");
-        }
-        else
+        } else {
             return intSplitDate;
-        if (Integer.parseInt(splitDate[1]) < 2013 && Integer.parseInt(splitDate[1]) <= 0
-                && Integer.parseInt(splitDate[1]) >= 13 && Integer.parseInt(splitDate[0]) <= 0
+        }
+        if (Integer.parseInt(splitDate[1]) < 2013
+                && Integer.parseInt(splitDate[1]) <= 0
+                && Integer.parseInt(splitDate[1]) >= 13
+                && Integer.parseInt(splitDate[0]) <= 0
                 && Integer.parseInt(splitDate[0]) > 31) {
             return intSplitDate;
-        }
-        else{
-            for(int i = 0; i < splitDate.length; i++)
+        } else {
+            for (int i = 0; i < splitDate.length; i++) {
                 intSplitDate[i] = Integer.parseInt(splitDate[i]);
+            }
             return intSplitDate;
         }
     }
-    
-    public int [] controlDate(){
-        int [] splitDate = new int [3];
+
+    public int[] controlDate() {
+        int[] splitDate = new int[3];
         while (true) {
             addConsoleUI.enterCorrectlyDate();
             splitDate = readAndSplitDate();
@@ -84,44 +85,47 @@ public class ControlEnteredInformation {
         }
         return splitDate;
     }
-       
+
     public int[] readAndSplitTime() {
         Scanner sc = new Scanner(System.in);
-        int [] intSplitTime = {-1,-1};
+        int[] intSplitTime = {-1, -1};
         String time = sc.nextLine();
-        if(time.length() < 3)
+        if (time.length() < 3) {
             return intSplitTime;
-        String[] splitTime = {"-1","-1"};
-        if(time.contains(":"))
+        }
+        String[] splitTime = {"-1", "-1"};
+        if (time.contains(":")) {
             splitTime = time.split(":");
-        for(int i = 0; i < splitTime.length; i++)
+        }
+        for (int i = 0; i < splitTime.length; i++) {
             intSplitTime[i] = Integer.parseInt(splitTime[i]);
+        }
         return intSplitTime;
     }
-    
-    public int [] controlTime(){
-        int [] splitTime = new int [2];
+
+    public int[] controlTime() {
+        int[] splitTime = new int[2];
         while (true) {
             addConsoleUI.enterCorrectlyTime();
-            splitTime = readAndSplitTime();                    
-            if (splitTime[0] >= 0 && splitTime[0] < 25 && 
-                    splitTime[1] >= 0 && splitTime[1] < 60) {
+            splitTime = readAndSplitTime();
+            if (splitTime[0] >= 0 && splitTime[0] < 25
+                    && splitTime[1] >= 0 && splitTime[1] < 60) {
                 break;
             }
         }
         return splitTime;
     }
-    
-    public DateTime createDate(int [] date) throws BadEnteredDate{
+
+    public DateTime createDate(int[] date) throws BadEnteredDate {
         DateTime dt = new DateTime(date[2], date[1], date[0], 0, 0);
         return dt;
     }
-    
-    public DateTime createDate(int [] date, int [] time) throws BadEnteredDate{
+
+    public DateTime createDate(int[] date, int[] time) throws BadEnteredDate {
         return new DateTime(date[2], date[1], date[0], time[0], time[1]);
     }
-    
-    public Contact controlContact(){
+
+    public Contact controlContact() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -129,17 +133,19 @@ public class ControlEnteredInformation {
         long phoneNumber;
         String email;
         Contact contact = new Contact();
-        while(true){
+        while (true) {
             userInterface.contactInfo();
             enteringString = sc.nextLine();
-            if(checkString(enteringString))
+            if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
-            if(key > 0 && key < 4)
+            }
+            if (key > 0 && key < 4) {
                 break;
+            }
         }
         boolean flag = true;
         while (flag) {
-            switch(key){
+            switch (key) {
                 case 1:
                     name = readContactName();
                     contact = createContact(name);
@@ -148,24 +154,24 @@ public class ControlEnteredInformation {
                 case 2:
                     name = readContactName();
                     phoneNumber = readContatcPhoneNumber();
-                    contact = createContact(name,phoneNumber);
+                    contact = createContact(name, phoneNumber);
                     flag = false;
                     break;
-                case 3: 
+                case 3:
                     name = readContactName();
                     phoneNumber = readContatcPhoneNumber();
                     email = readContatcMail();
-                    contact = createContact(name,phoneNumber, email);
+                    contact = createContact(name, phoneNumber, email);
                     flag = false;
                     break;
                 default:
-                     userInterface.chooseCorrectly();
+                    userInterface.chooseCorrectly();
             }
         }
         return contact;
     }
-    
-    public Priority controlPriority(){
+
+    public Priority controlPriority() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -174,13 +180,14 @@ public class ControlEnteredInformation {
         while (flag) {
             userInterface.priority();
             enteringString = sc.nextLine();
-            if(checkString(enteringString))
+            if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
+            }
             switch (key) {
                 case 1:
                     priority = setPriority(1);
                     flag = false;
-                    break ;
+                    break;
                 case 2:
                     priority = setPriority(2);
                     flag = false;
@@ -195,8 +202,8 @@ public class ControlEnteredInformation {
         }
         return priority;
     }
-    
-    public Status controlStatus(){
+
+    public Status controlStatus() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -205,13 +212,14 @@ public class ControlEnteredInformation {
         while (flag) {
             userInterface.status();
             enteringString = sc.nextLine();
-            if(checkString(enteringString))
+            if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
+            }
             switch (key) {
                 case 1:
                     status = setStatus(1);
                     flag = false;
-                    break ;
+                    break;
                 case 2:
                     status = setStatus(2);
                     flag = false;
@@ -226,49 +234,50 @@ public class ControlEnteredInformation {
         }
         return status;
     }
-    
-    public String controlTaskName(){
+
+    public String controlTaskName() {
         Scanner sc = new Scanner(System.in);
         String taskName = "";
-        for(;;){
+        for (;;) {
             addConsoleUI.enterTaskName();
             taskName = sc.nextLine();
-            if(taskName.length() > 0 && taskName.length() < 41)
+            if (taskName.length() > 0 && taskName.length() < 41) {
                 break;
+            }
         }
         return taskName;
     }
-    
-    public String controlDescription(){
+
+    public String controlDescription() {
         Scanner sc = new Scanner(System.in);
         String description = "";
-        for(;;){
+        for (;;) {
             addConsoleUI.enterDescription();
             description = sc.nextLine();
-            if(description.length() > 0 && description.length() < 150)
+            if (description.length() > 0 && description.length() < 150) {
                 break;
+            }
         }
         return description;
     }
-    
-    
-    public String readContactName(){
+
+    public String readContactName() {
         Scanner sc = new Scanner(System.in);
         StringBuilder contactName = new StringBuilder();
         String str;
-        
-        for(;;){
+
+        for (;;) {
             addConsoleUI.enterContactName();
             contactName.append(sc.nextLine());
-            if(contactName.length() > 0 && contactName.length() < 41){
+            if (contactName.length() > 0 && contactName.length() < 41) {
                 str = contactName.substring(0, 1);
                 contactName.insert(0, str.toUpperCase());
                 contactName.deleteCharAt(1);
-                for(int i = 0; i < contactName.length(); i++){
-                    if(contactName.charAt(i) == ' '){
-                        str = contactName.substring(i+1, i+2);
-                        contactName.insert(i+1, str.toUpperCase());
-                        contactName.deleteCharAt(i+2);
+                for (int i = 0; i < contactName.length(); i++) {
+                    if (contactName.charAt(i) == ' ') {
+                        str = contactName.substring(i + 1, i + 2);
+                        contactName.insert(i + 1, str.toUpperCase());
+                        contactName.deleteCharAt(i + 2);
                     }
                 }
                 break;
@@ -277,111 +286,116 @@ public class ControlEnteredInformation {
         }
         return contactName.toString();
     }
-    
-    public long readContatcPhoneNumber(){
+
+    public long readContatcPhoneNumber() {
         Scanner sc = new Scanner(System.in);
         long phoneNumber = 0;
         String enteringString = "";
-        for(;;){
+        for (;;) {
             addConsoleUI.enterContactPhoneNumber();
             enteringString = sc.nextLine();
-            if(checkString(enteringString))
+            if (checkString(enteringString)) {
                 phoneNumber = Integer.parseInt(enteringString);
-            if(phoneNumber > 0)
+            }
+            if (phoneNumber > 0) {
                 break;
+            }
         }
         return phoneNumber;
     }
-    
-    public String readContatcMail(){
+
+    public String readContatcMail() {
         Scanner sc = new Scanner(System.in);
         StringBuilder contactMail = new StringBuilder();
-        for(;;){
+        for (;;) {
             addConsoleUI.enterContactMail();
             contactMail.append(sc.nextLine());
-            if(contactMail.length() > 0 && contactMail.length() < 50)
+            if (contactMail.length() > 0 && contactMail.length() < 50) {
                 break;
+            }
             contactMail.delete(0, contactMail.length());
         }
         return contactMail.toString();
     }
-    
-    public Contact createContact(String name){
+
+    public Contact createContact(String name) {
         return new Contact(name);
     }
-    
-    public Contact createContact(String name, long phoneNumber){
+
+    public Contact createContact(String name, long phoneNumber) {
         return new Contact(name, phoneNumber);
     }
-    
-    public Contact createContact(String name, long phoneNumber, String email){
+
+    public Contact createContact(String name, long phoneNumber, String email) {
         return new Contact(name, phoneNumber, email);
     }
-    
-    public Status setStatus(int read){
+
+    public Status setStatus(int read) {
         Status status = Status.ACTIVE;
         switch (read) {
-                case 1:
-                    status = Status.ACTIVE;
-                    break ;
-                case 2:
-                    status = Status.POSTPONED;
-                    break;
-                case 3:
-                    status = Status.COMPLETE;
-                    break;
-                default:
-            }
+            case 1:
+                status = Status.ACTIVE;
+                break;
+            case 2:
+                status = Status.POSTPONED;
+                break;
+            case 3:
+                status = Status.COMPLETE;
+                break;
+            default:
+        }
         return status;
     }
-    
-    public Priority setPriority(int read){
+
+    public Priority setPriority(int read) {
         Priority priority = Priority.URGENT_IMPORTANT;
         switch (read) {
-                case 1:
-                    priority = Priority.URGENT_IMPORTANT;
-                    break ;
-                case 2:
-                    priority = Priority.URGENT;
-                    break;
-                case 3:
-                    priority = Priority.IMPORTANT;
-                    break;
-                default:
+            case 1:
+                priority = Priority.URGENT_IMPORTANT;
+                break;
+            case 2:
+                priority = Priority.URGENT;
+                break;
+            case 3:
+                priority = Priority.IMPORTANT;
+                break;
+            default:
         }
         return priority;
     }
-    
-    public void setTaskName(int taskId, String taskName){
-        if(logModel.get(taskId) instanceof BusinessTask){
+
+    public void setTaskName(int taskId, String taskName) {
+        if (logModel.get(taskId) instanceof BusinessTask) {
             BusinessTask bt = (BusinessTask) logModel.get(taskId);
             bt.setTaskName(taskName);
         }
     }
-    
-    public void setDescription(int taskId, String description){
-        if(logModel.get(taskId) instanceof BusinessTask){
+
+    public void setDescription(int taskId, String description) {
+        if (logModel.get(taskId) instanceof BusinessTask) {
             BusinessTask bt = (BusinessTask) logModel.get(taskId);
             bt.setTaskName(description);
         }
     }
-    
-    public int chooseTaskId(){
+
+    public int chooseTaskId() {
         Scanner sc = new Scanner(System.in);
         String enteringString = "";
         int phoneNumber = -1;
-        for(;;){
+        for (;;) {
             userInterface.chooseTaskId();
             enteringString = sc.nextLine();
-            if(checkString(enteringString))
+            if (checkString(enteringString)) {
                 phoneNumber = Integer.parseInt(enteringString);
-            if(phoneNumber >= 0 && phoneNumber < logModel.getSize())
+            }
+            if (phoneNumber >= 0 && phoneNumber < logModel.getSize()) {
                 break;
+            }
         }
         return phoneNumber;
     }
-    
-    public static boolean checkString(String string) {
+
+    public boolean checkString(String string) {
         try {
             Integer.parseInt(string);
         } catch (Exception e) {
@@ -389,5 +403,4 @@ public class ControlEnteredInformation {
         }
         return true;
     }
-    
 }

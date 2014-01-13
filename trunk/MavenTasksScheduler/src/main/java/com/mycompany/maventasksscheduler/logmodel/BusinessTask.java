@@ -11,13 +11,11 @@ import org.joda.time.DateTime;
  *
  * @author Сергей остаётся конструкторы
  */
-public class BusinessTask extends Task  implements Cloneable {
+public class BusinessTask extends Task implements Cloneable {
 
     private String taskName;
     private String description;
-    
-  
-    
+
     /**
      * This constructor creates BusinessTask with taskName, date, priority.
      *
@@ -25,7 +23,7 @@ public class BusinessTask extends Task  implements Cloneable {
      * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, DateTime timeNotification, 
+    public BusinessTask(String taskName, DateTime timeNotification,
             Priority priority) {
         this.taskName = taskName;
         this.description = "";
@@ -37,15 +35,15 @@ public class BusinessTask extends Task  implements Cloneable {
     }
 
     /**
-     * This constructor creates BusinessTask with taskName, description,
-     * date, priority.
+     * This constructor creates BusinessTask with taskName, description, date,
+     * priority.
      *
      * @param taskName BusinessTask's name.
      * @param description BusinessTask's description.
      * @param timeNotification BusinessTask's time notification.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, 
+    public BusinessTask(String taskName, String description,
             DateTime timeNotification, Priority priority) {
         this.taskName = taskName;
         this.description = description;
@@ -57,8 +55,8 @@ public class BusinessTask extends Task  implements Cloneable {
     }
 
     /**
-     * This constructor creates BusinessTask with taskName, description,
-     * date, contact, priority.
+     * This constructor creates BusinessTask with taskName, description, date,
+     * contact, priority.
      *
      * @param taskName BusinessTask's name.
      * @param description BusinessTask's description.
@@ -66,7 +64,7 @@ public class BusinessTask extends Task  implements Cloneable {
      * @param contact BusinessTask's contact.
      * @param priority BusinessTask's priority.
      */
-    public BusinessTask(String taskName, String description, 
+    public BusinessTask(String taskName, String description,
             DateTime timeNotification, Contact contact, Priority priority) {
         this.taskName = taskName;
         this.description = description;
@@ -77,8 +75,6 @@ public class BusinessTask extends Task  implements Cloneable {
         this.fieldCount = 6;
     }
 
-    
-    
     /**
      * Returns task's name.
      *
@@ -118,9 +114,9 @@ public class BusinessTask extends Task  implements Cloneable {
     /**
      * Returns information about BusinessTask.
      *
-     * @return taskName and timeNotification or taskName and
-     * description and timeNotification or taskName and description and
-     * contact and timeNotification
+     * @return taskName and timeNotification or taskName and description and
+     * timeNotification or taskName and description and contact and
+     * timeNotification
      */
     @Override
     public String toString() {
@@ -135,10 +131,9 @@ public class BusinessTask extends Task  implements Cloneable {
                     append(", time notification - ").
                     append(timeNotification.getHourOfDay()).append(":").
                     append(timeNotification.getMinuteOfHour()).toString();
-        }
-        else if (taskName.length() > 0 && description.length() > 0
-                && !timeNotification.equals(new DateTime()) && 
-                contact.equals(new Contact())) {
+        } else if (taskName.length() > 0 && description.length() > 0
+                && !timeNotification.equals(new DateTime())
+                && contact.equals(new Contact())) {
             return sb.append("Your task - ").append(taskName).
                     append(", description - ").append(description).
                     append(", date notification - ").
@@ -148,8 +143,7 @@ public class BusinessTask extends Task  implements Cloneable {
                     append(", time notification - ").
                     append(timeNotification.getHourOfDay()).append(":").
                     append(timeNotification.getMinuteOfHour()).toString();
-        }
-        else if (taskName.length() > 0 && description.length() > 0
+        } else if (taskName.length() > 0 && description.length() > 0
                 && !timeNotification.equals(new DateTime())
                 && !contact.equals(new Contact())) {
             return sb.append("Your task - ").append(taskName).
@@ -175,8 +169,8 @@ public class BusinessTask extends Task  implements Cloneable {
      */
     @Override
     public boolean equals(Object o) {
-        return o instanceof BusinessTask && 
-                this.taskName.equals(((BusinessTask) o).taskName)
+        return o instanceof BusinessTask
+                && this.taskName.equals(((BusinessTask) o).taskName)
                 && this.description.equals(((BusinessTask) o).description)
                 && this.timeNotification.equals(((BusinessTask) o).timeNotification)
                 && this.contact.equals(((BusinessTask) o).contact)

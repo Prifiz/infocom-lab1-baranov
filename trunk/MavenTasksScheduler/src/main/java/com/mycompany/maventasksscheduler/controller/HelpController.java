@@ -14,30 +14,29 @@ import java.util.Scanner;
  * @author Сергей
  */
 public class HelpController {
-    
-    
+
     private HelpConsoleUI helpUI;
     private MainConsoleUI userInterface;
     private ControlEnteredInformation control;
-    
-    public HelpController(){
+
+    public HelpController() {
         helpUI = new HelpConsoleUI();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation();
     }
-    
-    
-    public void start(){
+
+    public void start() {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
         menu:
-        for(;;){
+        for (;;) {
             helpUI.showHelpMenu();
             enteringString = sc.nextLine();
-            if(control.checkString(enteringString))
+            if (control.checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
-            switch(key){
+            }
+            switch (key) {
                 case 1:
                     break menu;
                 case 2:
@@ -51,5 +50,4 @@ public class HelpController {
             }
         }
     }
-    
 }

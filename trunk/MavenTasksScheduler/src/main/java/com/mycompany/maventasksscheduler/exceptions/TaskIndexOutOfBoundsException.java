@@ -9,7 +9,8 @@ package com.mycompany.maventasksscheduler.exceptions;
  * @author Сергей
  */
 public class TaskIndexOutOfBoundsException extends IndexOutOfBoundsException {
-    public TaskIndexOutOfBoundsException(){
+
+    public TaskIndexOutOfBoundsException() {
         super("The task with such number doesn't exist");
     }
 }
