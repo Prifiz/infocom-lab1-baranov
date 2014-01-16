@@ -33,8 +33,8 @@ abstract class View {
 
     public interface CLibrary extends Library {
 
-        CLibrary INSTANCE = (CLibrary) Native.loadLibrary((Platform.isWindows() ? "msvcrt" : "c"),
-                CLibrary.class);
+        CLibrary INSTANCE = (CLibrary) Native.loadLibrary(
+                (Platform.isWindows() ? "msvcrt" : "c"), CLibrary.class);
 
         void system(String command);
     }
