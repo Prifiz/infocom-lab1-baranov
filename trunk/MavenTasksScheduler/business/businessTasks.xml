@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasks>
   <businesstask id="0">
-    <taskName>first</taskName>
-    <description />
-    <date>13-1-2014</date>
-    <time>14:12</time>
-    <contact />
-    <priority>URGENT_IMPORTANT</priority>
-  </businesstask>
-  <businesstask id="1">
     <taskName>second</taskName>
     <description>des</description>
     <date>13-1-2014</date>
     <time>14:15</time>
     <contact />
-    <priority>URGENT</priority>
+    <priority>URGENT_IMPORTANT</priority>
   </businesstask>
-  <businesstask id="2">
-    <taskName>thread</taskName>
-    <description>cvxcvxcvxc</description>
+  <businesstask id="1">
+    <taskName>first</taskName>
+    <description />
     <date>13-1-2014</date>
-    <time>14:17</time>
-    <contact>Net,12321321</contact>
+    <time>14:12</time>
+    <contact />
     <priority>URGENT_IMPORTANT</priority>
   </businesstask>
 </tasks>

@@ -59,7 +59,6 @@ public class XMLStorage implements Storage {
         Document birthdayTask = createDocument();
         Integer birthdayTaskCount = 0;
         Integer businessTaskCount = 0;
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < logModel.getSize(); i++) {
             if (logModel.get(i) instanceof BirthdayTask) {
                 birthdayTask.getRootElement().addContent(
