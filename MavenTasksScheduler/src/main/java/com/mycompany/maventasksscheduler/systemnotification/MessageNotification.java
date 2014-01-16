@@ -18,7 +18,7 @@ import java.util.TimerTask;
  */
 public class MessageNotification implements SystemNotification, Runnable {
 
-    private LogImpl task;
+    private LogImpl tasks;
     private LogImpl logModel;
     private DateTime dateTime;
     private XMLStorage xml;
@@ -42,7 +42,7 @@ public class MessageNotification implements SystemNotification, Runnable {
     public MessageNotification() {
         xml = new XMLStorage();
         this.logModel = xml.uploadData();
-        task = new LogImpl();
+        tasks = new LogImpl();
         dateTime = new DateTime();
         consoleUI = new NotificationConsoleUI();
     }
@@ -54,7 +54,7 @@ public class MessageNotification implements SystemNotification, Runnable {
                     == dateTime.getMonthOfYear()
                     && logModel.get(i).getDate().getDayOfMonth()
                     == dateTime.getDayOfMonth()) {
-                task.add(logModel.get(i));
+                tasks.add(logModel.get(i));
                 long timeNotif = 3600000 * logModel.get(i).getDate().getHourOfDay()
                         + 60000 * logModel.get(i).getDate().getMinuteOfHour();
                 long timeRightNow = 3600000 * dateTime.getHourOfDay()
@@ -66,16 +66,16 @@ public class MessageNotification implements SystemNotification, Runnable {
                 }
             }
         }
-        return task;
+        return tasks;
     }
 
     public void run() {
-        task = notification();
-        if (task.getSize() == 0) {
+        tasks = notification();
+        if (tasks.getSize() == 0) {
             consoleUI.noTaskForToday();
         } else {
             consoleUI.tasksPlannedForToday();
-            consoleUI.showPlannedTasks(task);
+            consoleUI.showPlannedTasks(tasks);
         }
     }
 }

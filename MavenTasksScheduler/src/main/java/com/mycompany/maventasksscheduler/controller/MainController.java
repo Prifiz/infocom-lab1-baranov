@@ -9,8 +9,11 @@ import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +30,8 @@ public class MainController {
     private ChooseTaskController chooseTask;
     private XMLStorage xml;
     private NotificationController notificationController;
+    private UserOSController userOSController;
+    private boolean flag;
 
     public MainController() {
         xml = new XMLStorage();
@@ -34,6 +39,8 @@ public class MainController {
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
         notificationController = new NotificationController();
+        userOSController = new UserOSController();
+        flag = true;
     }
 
     public MainController(LogImpl logModel) {
@@ -42,15 +49,21 @@ public class MainController {
         control = new ControlEnteredInformation(this.logModel);
         xml = new XMLStorage();
         notificationController = new NotificationController();
+        userOSController = new UserOSController();
+        flag = true;
     }
 
-    public void start() {
+    public void start() throws IOException {
+        userOSController.start();
         notificationController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
         menu:
         for (;;) {
+            if (!flag) {
+                userOSController.start();
+            }
             userInterface.showMainMenu();
             enteringString = sc.nextLine();
             if (control.checkString(enteringString)) {
@@ -60,24 +73,29 @@ public class MainController {
                 case 1:
                     helpController = new HelpController();
                     helpController.start();
+                    flag = false;
                     break;
                 case 2:
                     fileController = new FileController(logModel);
                     logModel = fileController.start();
+                    flag = false;
                     break;
                 case 3:
                     if (logModel.getSize() == 0) {
                         userInterface.logIsEmpty();
+                        flag = true;
                         break;
                     }
                     logModel.sortByDate();
                     userInterface.showAll(logModel);
                     chooseTask = new ChooseTaskController(logModel);
                     chooseTask.start();
+                    flag = false;
                     break;
                 case 4:
                     if (logModel.getSize() == 0) {
                         userInterface.logIsEmpty();
+                        flag = true;
                         break;
                     }
                     List<Task> foundTasks = logModel.search(
@@ -85,10 +103,12 @@ public class MainController {
                     userInterface.foundTasks(foundTasks);
                     chooseTask = new ChooseTaskController(logModel, foundTasks);
                     chooseTask.start();
+                    flag = false;
                     break;
                 case 5:
                     addController = new AddController(logModel);
                     addController.start();
+                    flag = false;
                     break;
                 case 0:
                     xml.saveData(logModel);

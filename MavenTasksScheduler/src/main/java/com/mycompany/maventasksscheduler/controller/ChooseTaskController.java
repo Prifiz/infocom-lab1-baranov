@@ -9,6 +9,7 @@ import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.ChooseTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,7 +44,7 @@ public class ChooseTaskController {
         control = new ControlEnteredInformation(logModel);
     }
 
-    public void start() {
+    public void start() throws IOException {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";

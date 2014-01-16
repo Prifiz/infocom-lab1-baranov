@@ -9,6 +9,7 @@ import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.ShowChoosenTaskConsoleUI;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -35,7 +36,7 @@ public class ShowChoosenTaskController {
         control = new ControlEnteredInformation(logModel);
     }
 
-    public void start() {
+    public void start() throws IOException {
         Scanner sc = new Scanner(System.in);
         int backTo = 0;
         int key = 33;
