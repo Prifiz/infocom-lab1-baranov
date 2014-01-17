@@ -90,28 +90,15 @@ public class XMLStorage implements Storage {
                 append(birthday.getDate().getMinuteOfHour());
         element.addContent(new Element("time").setText(sb.toString()));
         sb.delete(0, sb.length());
-
-        if (birthday.getContact().getName().equals("")
-                && birthday.getContact().getPhoneNumber() == 0
-                && birthday.getContact().getMail().equals("")) {
-            sb.append("");
-        } else if (birthday.getContact().getPhoneNumber() == 0
-                && birthday.getContact().getMail().equals("")) {
-            sb.append(birthday.getContact().getName()).append(", ");
-        } else if (birthday.getContact().getPhoneNumber() != 0
-                && birthday.getContact().getMail().equals("")) {
-            sb.append(birthday.getContact().getName()).append(",").
-                    append(birthday.getContact().getPhoneNumber());
-        } else {
-            sb.append(birthday.getContact().getName()).append(",").
-                    append(birthday.getContact().getPhoneNumber()).
-                    append(",").append(birthday.getContact().getMail());
-        }
-
-        element.addContent(new Element("contact").
-                setText(sb.toString()));
-        sb.delete(0, sb.length());
-
+        Long phoneNumber = birthday.getContact().getPhoneNumber();
+        Element contact = new Element("contact");
+        contact.addContent(
+                new Element("name").setText(birthday.getContact().getName()));
+        contact.addContent(
+                new Element("phoneNumber").setText(phoneNumber.toString()));
+        contact.addContent(
+                new Element("email").setText(birthday.getContact().getMail()));
+        element.addContent(contact);
         sb.append(birthday.getPriority());
         element.addContent(new Element("priority").
                 setText(sb.toString()));
@@ -138,26 +125,15 @@ public class XMLStorage implements Storage {
                 append(business.getDate().getMinuteOfHour());
         element.addContent(new Element("time").setText(sb.toString()));
         sb.delete(0, sb.length());
-
-        if (business.getContact().getName().equals("")
-                && business.getContact().getPhoneNumber() == 0
-                && business.getContact().getMail().equals("")) {
-            sb.append("");
-        } else if (business.getContact().getPhoneNumber() == 0
-                && business.getContact().getMail().equals("")) {
-            sb.append(business.getContact().getName()).append(", ");
-        } else if (business.getContact().getPhoneNumber() != 0
-                && business.getContact().getMail().equals("")) {
-            sb.append(business.getContact().getName()).append(",").
-                    append(business.getContact().getPhoneNumber());
-        } else {
-            sb.append(business.getContact().getName()).append(",").
-                    append(business.getContact().getPhoneNumber()).
-                    append(",").append(business.getContact().getMail());
-        }
-
-        element.addContent(new Element("contact").setText(sb.toString()));
-        sb.delete(0, sb.length());
+        Long phoneNumber = business.getContact().getPhoneNumber();
+        Element contact = new Element("contact");
+        contact.addContent(
+                new Element("name").setText(business.getContact().getName()));
+        contact.addContent(
+                new Element("phoneNumber").setText(phoneNumber.toString()));
+        contact.addContent(
+                new Element("email").setText(business.getContact().getMail()));
+        element.addContent(contact);
         sb.append(business.getPriority());
         element.addContent(new Element("priority").setText(sb.toString()));
         sb.delete(0, sb.length());
@@ -215,18 +191,10 @@ public class XMLStorage implements Storage {
     }
 
     private Contact parseContact(Element element) {
-        String[] contacts;
-        Contact contact = new Contact();
-        contacts = element.getChildText("contact").split(",");
-        if (contacts.length == 1
-                && element.getChildText("contact").length() > 0) {
-            contact = new Contact(contacts[0]);
-        } else if (contacts.length == 2) {
-            contact = new Contact(contacts[0], Long.parseLong(contacts[1]));
-        } else if (contacts.length == 3) {
-            contact = new Contact(
-                    contacts[0], Long.parseLong(contacts[1]), contacts[2]);
-        }
+        Element elementContact = element.getChild("contact");
+        Contact contact = new Contact(elementContact.getChildText("name"),
+                Long.parseLong(elementContact.getChildText("phoneNumber")),
+                elementContact.getChildText("email"));
         return contact;
     }
 
@@ -265,19 +233,10 @@ public class XMLStorage implements Storage {
         String taskName = parseTaskName(element);
         String description = parseDescription(element);
         DateTime dateTime = parseDateAndTime(element);
+        Contact contact = parseContact(element);
         Priority priority = parsePriority(element);
-        String[] contacts;
-        Contact contact = new Contact();
-        if (element.getChildText("contact") != null) {
-            contacts = element.getChildText("contact").split(",");
-            contact = parseContact(element);
-        } else {
-            contacts = null;
-        }
-        if (description.equals("") && contacts == null) {
+        if (description.equals("")) {
             return new BusinessTask(taskName, dateTime, priority);
-        } else if (contacts == null) {
-            return new BusinessTask(taskName, description, dateTime, priority);
         } else {
             return new BusinessTask(
                     taskName, description, dateTime, contact, priority);
