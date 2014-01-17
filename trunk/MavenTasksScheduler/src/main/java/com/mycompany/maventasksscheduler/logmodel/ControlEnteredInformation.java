@@ -4,9 +4,6 @@
  */
 package com.mycompany.maventasksscheduler.logmodel;
 
-import com.mycompany.maventasksscheduler.controller.AddController;
-import com.mycompany.maventasksscheduler.controller.FileController;
-import com.mycompany.maventasksscheduler.controller.HelpController;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
 import com.mycompany.maventasksscheduler.logmodel.Task.Status;
@@ -23,9 +20,6 @@ public class ControlEnteredInformation {
 
     private LogImpl logModel;
     private MainConsoleUI userInterface;
-    private FileController fileController;
-    private HelpController helpController;
-    private AddController addController;
     private AddConsoleUI addConsoleUI;
 
     public ControlEnteredInformation() {
@@ -130,7 +124,7 @@ public class ControlEnteredInformation {
         int key = 33;
         String enteringString = "";
         String name;
-        long phoneNumber;
+        String phoneNumber;
         String email;
         Contact contact = new Contact();
         while (true) {
@@ -287,17 +281,17 @@ public class ControlEnteredInformation {
         return contactName.toString();
     }
 
-    public long readContatcPhoneNumber() {
+    public String readContatcPhoneNumber() {
         Scanner sc = new Scanner(System.in);
-        long phoneNumber = 0;
+        String phoneNumber = "";
         String enteringString = "";
         for (;;) {
             addConsoleUI.enterContactPhoneNumber();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
-                phoneNumber = Integer.parseInt(enteringString);
+                phoneNumber = enteringString;
             }
-            if (phoneNumber > 0) {
+            if (!phoneNumber.equals("") && phoneNumber.length() > 4) {
                 break;
             }
         }
@@ -322,11 +316,11 @@ public class ControlEnteredInformation {
         return new Contact(name);
     }
 
-    public Contact createContact(String name, long phoneNumber) {
+    public Contact createContact(String name, String phoneNumber) {
         return new Contact(name, phoneNumber);
     }
 
-    public Contact createContact(String name, long phoneNumber, String email) {
+    public Contact createContact(String name, String phoneNumber, String email) {
         return new Contact(name, phoneNumber, email);
     }
 

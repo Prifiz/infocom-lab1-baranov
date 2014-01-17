@@ -186,7 +186,8 @@ public class BusinessTask extends Task implements Cloneable {
     @Override
     public int hashCode() {
         return (taskName == null ? 0 : taskName.hashCode())
-                + (description == null ? 0 : description.hashCode()) + timeNotification.hashCode()
+                + (description == null ? 0 : description.hashCode())
+                + timeNotification.hashCode()
                 + contact.hashCode();
     }
 

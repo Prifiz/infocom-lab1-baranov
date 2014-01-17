@@ -104,7 +104,7 @@ public abstract class Task {
      * @param name Contact's name.
      * @param phoneNumber Contact's phone number.
      */
-    public void setContact(String name, long phoneNumber) {
+    public void setContact(String name, String phoneNumber) {
         contact = new Contact(name, phoneNumber);
     }
 
@@ -116,7 +116,7 @@ public abstract class Task {
      * @param phoneNumber Contact's phone number.
      * @param email Contact's email.
      */
-    public void setContact(String name, long phoneNumber, String email) {
+    public void setContact(String name, String phoneNumber, String email) {
         contact = new Contact(name, phoneNumber, email);
     }
 
@@ -145,8 +145,10 @@ public abstract class Task {
                 || (this.priority == Priority.URGENT && priority == Priority.IMPORTANT)) {
             return -1;
         } else if ((this.priority == Priority.IMPORTANT
-                && (priority == Priority.URGENT || priority == Priority.URGENT_IMPORTANT))
-                || (this.priority == Priority.URGENT && priority == Priority.URGENT_IMPORTANT)) {
+                && (priority == Priority.URGENT
+                || priority == Priority.URGENT_IMPORTANT))
+                || (this.priority == Priority.URGENT
+                && priority == Priority.URGENT_IMPORTANT)) {
             return 1;
         }
         return 0;

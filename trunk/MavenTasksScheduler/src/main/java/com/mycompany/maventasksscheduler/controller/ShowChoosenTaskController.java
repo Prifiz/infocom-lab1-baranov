@@ -19,7 +19,6 @@ import java.util.Scanner;
 public class ShowChoosenTaskController {
 
     private LogImpl logModel;
-    private Task task;
     private MainConsoleUI userInterface;
     private MainController mainController;
     private ShowChoosenTaskConsoleUI choosetask;
@@ -28,7 +27,6 @@ public class ShowChoosenTaskController {
 
     public ShowChoosenTaskController(LogImpl logModel, Task task, int taskNumber) {
         this.logModel = logModel;
-        this.task = task;
         userInterface = new MainConsoleUI();
         choosetask = new ShowChoosenTaskConsoleUI();
         this.taskNumber = taskNumber;

@@ -90,14 +90,13 @@ public class XMLStorage implements Storage {
                 append(birthday.getDate().getMinuteOfHour());
         element.addContent(new Element("time").setText(sb.toString()));
         sb.delete(0, sb.length());
-        Long phoneNumber = birthday.getContact().getPhoneNumber();
         Element contact = new Element("contact");
-        contact.addContent(
-                new Element("name").setText(birthday.getContact().getName()));
-        contact.addContent(
-                new Element("phoneNumber").setText(phoneNumber.toString()));
-        contact.addContent(
-                new Element("email").setText(birthday.getContact().getMail()));
+        contact.addContent(new Element("name").setText(
+                birthday.getContact().getName()));
+        contact.addContent(new Element("phoneNumber").setText(
+                birthday.getContact().getPhoneNumber()));
+        contact.addContent(new Element("email").setText(
+                birthday.getContact().getMail()));
         element.addContent(contact);
         sb.append(birthday.getPriority());
         element.addContent(new Element("priority").
@@ -125,14 +124,13 @@ public class XMLStorage implements Storage {
                 append(business.getDate().getMinuteOfHour());
         element.addContent(new Element("time").setText(sb.toString()));
         sb.delete(0, sb.length());
-        Long phoneNumber = business.getContact().getPhoneNumber();
         Element contact = new Element("contact");
-        contact.addContent(
-                new Element("name").setText(business.getContact().getName()));
-        contact.addContent(
-                new Element("phoneNumber").setText(phoneNumber.toString()));
-        contact.addContent(
-                new Element("email").setText(business.getContact().getMail()));
+        contact.addContent(new Element("name").setText(
+                business.getContact().getName()));
+        contact.addContent(new Element("phoneNumber").setText(
+                business.getContact().getPhoneNumber()));
+        contact.addContent(new Element("email").setText(
+                business.getContact().getMail()));
         element.addContent(contact);
         sb.append(business.getPriority());
         element.addContent(new Element("priority").setText(sb.toString()));
@@ -193,7 +191,7 @@ public class XMLStorage implements Storage {
     private Contact parseContact(Element element) {
         Element elementContact = element.getChild("contact");
         Contact contact = new Contact(elementContact.getChildText("name"),
-                Long.parseLong(elementContact.getChildText("phoneNumber")),
+                elementContact.getChildText("phoneNumber"),
                 elementContact.getChildText("email"));
         return contact;
     }
