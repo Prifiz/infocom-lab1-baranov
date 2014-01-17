@@ -13,7 +13,7 @@ package com.mycompany.maventasksscheduler.logmodel;
 public class Contact implements Cloneable {
 
     private String name;
-    private long phoneNumber;
+    private String phoneNumber;
     private String email;
 
     /**
@@ -21,7 +21,7 @@ public class Contact implements Cloneable {
      */
     public Contact() {
         name = "";
-        phoneNumber = 0;
+        phoneNumber = "";
         email = "";
     }
 
@@ -32,7 +32,7 @@ public class Contact implements Cloneable {
      */
     public Contact(String name) {
         this.name = name;
-        phoneNumber = 0;
+        phoneNumber = "";
         email = "";
     }
 
@@ -42,7 +42,7 @@ public class Contact implements Cloneable {
      * @param name Contact's name.
      * @param number Contact's phone number.
      */
-    public Contact(String name, long phoneNumber) {
+    public Contact(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         email = "";
@@ -55,7 +55,7 @@ public class Contact implements Cloneable {
      * @param number Contact's phone number.
      * @param email Contact's email.
      */
-    public Contact(String name, long phoneNumber, String email) {
+    public Contact(String name, String phoneNumber, String email) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -73,9 +73,9 @@ public class Contact implements Cloneable {
     /**
      * Returns contact's phone number.
      *
-     * @return int - phone number
+     * @return String - phone number
      */
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -102,7 +102,7 @@ public class Contact implements Cloneable {
      *
      * @param number The contact's phone number.
      */
-    public void setPhoneNumber(long number) {
+    public void setPhoneNumber(String number) {
         this.phoneNumber = number;
     }
 
@@ -124,19 +124,19 @@ public class Contact implements Cloneable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (name.length() > 0 && phoneNumber <= 0 && email.equals("")) {
+        if (name.length() > 0 && phoneNumber.equals("") && email.equals("")) {
             return sb.append("Contact's name - ").append(name).toString();
         }
-        if (name.length() > 0 && phoneNumber > 0 && email.equals("")) {
+        if (name.length() > 0 && phoneNumber.length() > 0 && email.equals("")) {
             return sb.append("Contact's name - ").append(name).
                     append(", with phone number - ").
                     append(phoneNumber).toString();
         }
-        if (name.length() > 0 && phoneNumber <= 0 && email.length() > 0) {
+        if (name.length() > 0 && phoneNumber.equals("") && email.length() > 0) {
             return sb.append("Contact's name - ").append(name).
                     append(", with email - ").append(email).toString();
         }
-        if (name.length() > 0 && phoneNumber > 0 && email.length() > 0) {
+        if (name.length() > 0 && phoneNumber.length() > 0 && email.length() > 0) {
             return sb.append("Contact's name - ").append(name).
                     append(", with phone number - ").
                     append(phoneNumber).append(" and email - ").
@@ -156,7 +156,7 @@ public class Contact implements Cloneable {
     @Override
     public boolean equals(Object o) {
         return o instanceof Contact && this.name.equals(((Contact) o).name)
-                && this.phoneNumber == ((Contact) o).phoneNumber
+                && this.phoneNumber.equals(((Contact) o).phoneNumber)
                 && this.email.equals(((Contact) o).email);
     }
 
@@ -167,7 +167,8 @@ public class Contact implements Cloneable {
      */
     @Override
     public int hashCode() {
-        return (int) phoneNumber + (name == null ? 0 : name.hashCode())
+        return (phoneNumber == null ? 0 : phoneNumber.hashCode())
+                + (name == null ? 0 : name.hashCode())
                 + (email == null ? 0 : email.hashCode());
     }
 
