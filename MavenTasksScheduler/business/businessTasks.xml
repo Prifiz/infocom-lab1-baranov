@@ -5,7 +5,11 @@
     <description>des</description>
     <date>13-1-2014</date>
     <time>14:15</time>
-    <contact />
+    <contact>
+      <name>paper</name>
+      <phoneNumber>0</phoneNumber>
+      <email />
+    </contact>
     <priority>URGENT_IMPORTANT</priority>
   </businesstask>
   <businesstask id="1">
@@ -13,7 +17,11 @@
     <description />
     <date>13-1-2014</date>
     <time>14:12</time>
-    <contact />
+    <contact>
+      <name />
+      <phoneNumber>0</phoneNumber>
+      <email />
+    </contact>
     <priority>URGENT_IMPORTANT</priority>
   </businesstask>
 </tasks>
