@@ -8,7 +8,7 @@ import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;

@@ -7,7 +7,7 @@ package com.mycompany.maventasksscheduler.systemnotification;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.NotificationConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.NotificationConsoleUI;
 import org.joda.time.DateTime;
 import java.util.Timer;
 import java.util.TimerTask;
