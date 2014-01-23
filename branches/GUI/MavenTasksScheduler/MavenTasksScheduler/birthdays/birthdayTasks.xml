@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasks>
+  <birthdaytask id="0">
+    <date>12-12-2014</date>
+    <time>16:11</time>
+    <contact>
+      <name>Qwe</name>
+      <phoneNumber>1</phoneNumber>
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="1">
+    <date>17-1-2014</date>
+    <time>20:45</time>
+    <contact>
+      <name>Das</name>
+      <phoneNumber>12333</phoneNumber>
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="2">
+    <date>17-1-2014</date>
+    <time>13:25</time>
+    <contact>
+      <name>It Works</name>
+      <phoneNumber>3232</phoneNumber>
+      <email>regusser@mail.ru</email>
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+</tasks>
