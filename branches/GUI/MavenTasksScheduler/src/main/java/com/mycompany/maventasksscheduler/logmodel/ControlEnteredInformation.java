@@ -7,8 +7,8 @@ package com.mycompany.maventasksscheduler.logmodel;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
 import com.mycompany.maventasksscheduler.logmodel.Task.Status;
-import com.mycompany.maventasksscheduler.userinterface.AddConsoleUI;
-import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.AddConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 

@@ -10,8 +10,8 @@ import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
-import com.mycompany.maventasksscheduler.userinterface.AddConsoleUI;
-import com.mycompany.maventasksscheduler.userinterface.MainConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.AddConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
