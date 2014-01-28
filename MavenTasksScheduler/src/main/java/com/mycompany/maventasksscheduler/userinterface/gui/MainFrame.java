@@ -215,9 +215,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (jTabbedPane2.getSelectedIndex() == 0) {
-            jTable3.setModel(new DefaultTableModel(
-                    jTable3.getRowCount() + 1,
-                    jTable3.getColumnCount()));
+            
         }
         if (jTabbedPane2.getSelectedIndex() == 1) {
             jTable4.setModel(new DefaultTableModel(
