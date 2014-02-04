@@ -128,11 +128,24 @@ class Frame extends JFrame {
         headerBirthdayVect.add("Remove");
         modBirthdayTask = new DefaultTableModel(headerBirthdayVect, 0);
 
-        
+
         birthdayTable.setModel(modBirthdayTask);
 
+        birthdayTable.getColumn("Detailed viewing").setCellRenderer(
+                new ButtonRenderer());
+        birthdayTable.getColumn("Detailed viewing").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+        birthdayTable.getColumn("Detailed editing").setCellRenderer(
+                new ButtonRenderer());
+        birthdayTable.getColumn("Detailed editing").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+        birthdayTable.getColumn("Remove").setCellRenderer(
+                new ButtonRenderer());
+        birthdayTable.getColumn("Remove").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+
         birthdayTable.getTableHeader().setReorderingAllowed(false);
-        
+
         jScrollPane3.setViewportView(birthdayTable);
 
         jTabbedPane2.addTab("birthdays", jScrollPane3);
@@ -149,6 +162,20 @@ class Frame extends JFrame {
         modBusinessTask = new DefaultTableModel(headerBusinessVect, 0);
 
         businessTable.setModel(modBusinessTask);
+
+        businessTable.getColumn("Detailed viewing").setCellRenderer(
+                new ButtonRenderer());
+        businessTable.getColumn("Detailed viewing").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+        businessTable.getColumn("Detailed editing").setCellRenderer(
+                new ButtonRenderer());
+        businessTable.getColumn("Detailed editing").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+        businessTable.getColumn("Remove").setCellRenderer(
+                new ButtonRenderer());
+        businessTable.getColumn("Remove").setCellEditor(
+                new ButtonEditor(new JCheckBox()));
+
         businessTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(businessTable);
 
@@ -288,23 +315,23 @@ class Frame extends JFrame {
     }
     private DefaultTableModel modBirthdayTask;
     private DefaultTableModel modBusinessTask;
-    private javax.swing.JButton submitButton;
-    private javax.swing.JButton addButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem manualMenuItem;
-    private javax.swing.JMenuItem aboutProgMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JMenuItem loadMenuItem;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable birthdayTable;
-    private javax.swing.JTable businessTable;
+    private JButton submitButton;
+    private JButton addButton;
+    private JLabel jLabel1;
+    private JMenu fileMenu;
+    private JMenu helpMenu;
+    private JMenuBar jMenuBar1;
+    private JMenuItem manualMenuItem;
+    private JMenuItem aboutProgMenuItem;
+    private JMenuItem saveMenuItem;
+    private JMenuItem loadMenuItem;
+    private JMenuItem exitMenuItem;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane3;
+    private JScrollPane jScrollPane5;
+    private JTabbedPane jTabbedPane2;
+    private JTable birthdayTable;
+    private JTable businessTable;
     // End of variables declaration                   
 }
 
