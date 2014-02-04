@@ -134,15 +134,15 @@ class Frame extends JFrame {
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Detailed viewing"));
         birthdayTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Detailed editing"));
         birthdayTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Remove"));
 
         birthdayTable.getTableHeader().setReorderingAllowed(false);
 
@@ -166,15 +166,15 @@ class Frame extends JFrame {
         businessTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Detailed viewing"));
         businessTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Detailed editing"));
         businessTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox()));
+                new ButtonEditor(new JCheckBox(), "Remove"));
 
         businessTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(businessTable);
@@ -363,11 +363,13 @@ class ButtonEditor extends DefaultCellEditor {
     protected JButton button;
     private String label;
     private boolean isPushed;
+    private String buttonName;
 
-    public ButtonEditor(JCheckBox checkBox) {
+    public ButtonEditor(JCheckBox checkBox, String buttonName) {
         super(checkBox);
         button = new JButton();
         button.setOpaque(true);
+        this.buttonName = buttonName;
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
@@ -392,10 +394,13 @@ class ButtonEditor extends DefaultCellEditor {
 
     public Object getCellEditorValue() {
         if (isPushed) {
-            // 
-            // 
-            JOptionPane.showMessageDialog(button, label + ": Ouch!");
-            // System.out.println(label + ": Ouch!");
+            if (buttonName.equals("Detailed viewing")) {
+                JOptionPane.showMessageDialog(button, label + ": Detailed viewing");
+            } else if (buttonName.equals("Detailed editing")) {
+                JOptionPane.showMessageDialog(button, label + "Detailed editing");
+            } else if (buttonName.equals("Remove")) {
+                JOptionPane.showMessageDialog(button, label + ": Remove!");
+            }
         }
         isPushed = false;
         return new String(label);
