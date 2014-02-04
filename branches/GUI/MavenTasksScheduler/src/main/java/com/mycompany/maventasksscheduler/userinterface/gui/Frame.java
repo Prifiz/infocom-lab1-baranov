@@ -108,7 +108,7 @@ class Frame extends JFrame {
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton2ActionPerformed();
             }
         });
 
@@ -134,15 +134,15 @@ class Frame extends JFrame {
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed viewing"));
+                new ButtonEditor(new JCheckBox(), "Detailed viewing", birthdayTable));
         birthdayTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed editing"));
+                new ButtonEditor(new JCheckBox(), "Detailed editing", birthdayTable));
         birthdayTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Remove"));
+                new ButtonEditor(new JCheckBox(), "Remove", modBirthdayTask, birthdayTable));
 
         birthdayTable.getTableHeader().setReorderingAllowed(false);
 
@@ -166,15 +166,15 @@ class Frame extends JFrame {
         businessTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed viewing"));
+                new ButtonEditor(new JCheckBox(), "Detailed viewing", birthdayTable));
         businessTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed editing"));
+                new ButtonEditor(new JCheckBox(), "Detailed editing", birthdayTable));
         businessTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Remove"));
+                new ButtonEditor(new JCheckBox(), "Remove", modBusinessTask, birthdayTable));
 
         businessTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(businessTable);
@@ -206,7 +206,7 @@ class Frame extends JFrame {
         manualMenuItem.setText("Manual");
         manualMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton2ActionPerformed();
             }
         });
         helpMenu.add(manualMenuItem);
@@ -264,10 +264,9 @@ class Frame extends JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
-        // TODO add your handling code here:
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton2ActionPerformed() {
         if (jTabbedPane2.getSelectedIndex() == 0) {
             Vector<String> newRow = new Vector<String>();
             modBirthdayTask.addRow(newRow);
@@ -276,7 +275,6 @@ class Frame extends JFrame {
             Vector<String> newRow = new Vector<String>();
             modBusinessTask.addRow(newRow);
         }
-        // TODO add your handling code here:
     }
 
     /**
@@ -360,17 +358,37 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
  */
 class ButtonEditor extends DefaultCellEditor {
 
-    protected JButton button;
+    protected JButton buttonOk;
+    protected JButton buttonCancel;
     private String label;
     private boolean isPushed;
     private String buttonName;
+    private DefaultTableModel model;
+    private JTable table;
 
-    public ButtonEditor(JCheckBox checkBox, String buttonName) {
+    public ButtonEditor(JCheckBox checkBox, String buttonName, JTable table) {
         super(checkBox);
-        button = new JButton();
-        button.setOpaque(true);
+        buttonOk = new JButton();
+        buttonOk.setOpaque(true);
         this.buttonName = buttonName;
-        button.addActionListener(new ActionListener() {
+        this.model = new DefaultTableModel();
+        this.table = table;
+        buttonOk.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        });
+    }
+
+    public ButtonEditor(JCheckBox checkBox, String buttonName,
+            DefaultTableModel model, JTable table) {
+        super(checkBox);
+        buttonOk = new JButton();
+        buttonOk.setOpaque(true);
+        this.buttonName = buttonName;
+        this.model = model;
+        this.table = table;
+        buttonOk.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
             }
@@ -380,26 +398,32 @@ class ButtonEditor extends DefaultCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value,
             boolean isSelected, int row, int column) {
         if (isSelected) {
-            button.setForeground(table.getSelectionForeground());
-            button.setBackground(table.getSelectionBackground());
+            buttonOk.setForeground(table.getSelectionForeground());
+            buttonOk.setBackground(table.getSelectionBackground());
         } else {
-            button.setForeground(table.getForeground());
-            button.setBackground(table.getBackground());
+            buttonOk.setForeground(table.getForeground());
+            buttonOk.setBackground(table.getBackground());
         }
         label = (value == null) ? "" : value.toString();
-        button.setText(label);
+        buttonOk.setText(label);
         isPushed = true;
-        return button;
+        return buttonOk;
     }
 
     public Object getCellEditorValue() {
         if (isPushed) {
             if (buttonName.equals("Detailed viewing")) {
-                JOptionPane.showMessageDialog(button, label + ": Detailed viewing");
+                JOptionPane.showMessageDialog(buttonOk, label + ": Detailed viewing");
             } else if (buttonName.equals("Detailed editing")) {
-                JOptionPane.showMessageDialog(button, label + "Detailed editing");
+                JOptionPane.showMessageDialog(buttonOk, label + "Detailed editing");
             } else if (buttonName.equals("Remove")) {
-                JOptionPane.showMessageDialog(button, label + ": Remove!");
+                if (JOptionPane.showConfirmDialog(null,
+                        "you want to remove this task?",
+                        "An Inane Question",
+                        JOptionPane.YES_NO_OPTION) == 0) {
+                    model.removeRow(table.getSelectedRow());
+                    //почему-то при удалении последней строки вылетает ошибка
+                }
             }
         }
         isPushed = false;
