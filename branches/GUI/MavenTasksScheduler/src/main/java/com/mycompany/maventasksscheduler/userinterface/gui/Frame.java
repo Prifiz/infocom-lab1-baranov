@@ -68,6 +68,24 @@ class Frame extends JFrame {
                         return String.class;
                 }
             }
+
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                if (col > birthdayTable.getColumnCount() - 5) {
+                    return true;//разрешает нажимать на кнопки и checkbox
+                }
+                boolean flag = false;
+                if (birthdayTable.getColumnClass(4).equals(Boolean.class)) {
+                    Boolean checkBox = (Boolean) birthdayTable.getValueAt(
+                            row, 4);
+                    if (checkBox == null || !checkBox) {
+                        flag = false;
+                    } else {
+                        flag = true;
+                    }
+                }
+                return flag;
+            }
         };
         jScrollPane5 = new JScrollPane();
         businessTable = new JTable() {
@@ -87,6 +105,24 @@ class Frame extends JFrame {
                     default:
                         return String.class;
                 }
+            }
+            
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                if (col > businessTable.getColumnCount() - 5) {
+                    return true;//разрешает нажимать на кнопки и checkbox
+                }
+                boolean flag = false;
+                if (businessTable.getColumnClass(4).equals(Boolean.class)) {
+                    Boolean checkBox = (Boolean) businessTable.getValueAt(
+                            row, 4);
+                    if (checkBox == null || !checkBox) {
+                        flag = false;
+                    } else {
+                        flag = true;
+                    }
+                }
+                return flag;
             }
         };
         jMenuBar1 = new JMenuBar();
