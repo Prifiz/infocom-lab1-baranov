@@ -106,7 +106,7 @@ class Frame extends JFrame {
                         return String.class;
                 }
             }
-            
+
             @Override
             public boolean isCellEditable(int row, int col) {
                 if (col > businessTable.getColumnCount() - 5) {
@@ -144,7 +144,7 @@ class Frame extends JFrame {
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed();
+                jAddButtonActionPerformed();
             }
         });
 
@@ -242,7 +242,7 @@ class Frame extends JFrame {
         manualMenuItem.setText("Manual");
         manualMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed();
+                jAddButtonActionPerformed();
             }
         });
         helpMenu.add(manualMenuItem);
@@ -302,10 +302,11 @@ class Frame extends JFrame {
         System.exit(0);
     }
 
-    private void jButton2ActionPerformed() {
+    private void jAddButtonActionPerformed() {
         if (jTabbedPane2.getSelectedIndex() == 0) {
             Vector<String> newRow = new Vector<String>();
             modBirthdayTask.addRow(newRow);
+            birthdayTable.updateUI();
         }
         if (jTabbedPane2.getSelectedIndex() == 1) {
             Vector<String> newRow = new Vector<String>();
@@ -395,7 +396,6 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 class ButtonEditor extends DefaultCellEditor {
 
     protected JButton buttonOk;
-    protected JButton buttonCancel;
     private String label;
     private boolean isPushed;
     private String buttonName;
@@ -455,9 +455,11 @@ class ButtonEditor extends DefaultCellEditor {
             } else if (buttonName.equals("Remove")) {
                 if (JOptionPane.showConfirmDialog(null,
                         "you want to remove this task?",
-                        "An Inane Question",
-                        JOptionPane.YES_NO_OPTION) == 0) {
+                        "Removing task",
+                        JOptionPane.OK_CANCEL_OPTION) == 0) {
+                    System.out.println(model.getRowCount());
                     model.removeRow(table.getSelectedRow());
+                    System.out.println(model.getRowCount());
                     //почему-то при удалении последней строки вылетает ошибка
                 }
             }
