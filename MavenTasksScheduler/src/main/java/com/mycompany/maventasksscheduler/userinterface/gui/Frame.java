@@ -171,15 +171,18 @@ class Frame extends JFrame {
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed viewing", birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Detailed viewing", birthdayTable));
         birthdayTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed editing", birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Detailed editing", birthdayTable));
         birthdayTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Remove", modBirthdayTask, birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Remove", modBirthdayTask, birthdayTable));
 
         birthdayTable.getTableHeader().setReorderingAllowed(false);
 
@@ -204,15 +207,18 @@ class Frame extends JFrame {
         businessTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed viewing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed viewing", birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Detailed viewing", businessTable));
         businessTable.getColumn("Detailed editing").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Detailed editing").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Detailed editing", birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Detailed editing", businessTable));
         businessTable.getColumn("Remove").setCellRenderer(
                 new ButtonRenderer());
         businessTable.getColumn("Remove").setCellEditor(
-                new ButtonEditor(new JCheckBox(), "Remove", modBusinessTask, birthdayTable));
+                new ButtonEditor(
+                new JCheckBox(), "Remove", modBusinessTask, businessTable));
 
         businessTable.getTableHeader().setReorderingAllowed(false);
         businessTable.setRowHeight(23);
@@ -309,9 +315,7 @@ class Frame extends JFrame {
         if (jTabbedPane2.getSelectedIndex() == 0) {
             Vector<String> newRow = new Vector<String>();
             modBirthdayTask.addRow(newRow);
-            birthdayTable.updateUI();
-        }
-        if (jTabbedPane2.getSelectedIndex() == 1) {
+        } else if (jTabbedPane2.getSelectedIndex() == 1) {
             Vector<String> newRow = new Vector<String>();
             modBusinessTask.addRow(newRow);
         }
@@ -466,8 +470,6 @@ class ButtonEditor extends DefaultCellEditor {
                         }
                     };
                     SwingUtilities.invokeLater(removeRow);
-                    //почему-то при удалении последней строки вылетает ошибка
-
                 }
             }
         }
