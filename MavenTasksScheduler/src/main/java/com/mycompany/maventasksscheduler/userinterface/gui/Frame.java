@@ -4,7 +4,10 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -12,11 +15,13 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -45,7 +50,10 @@ class Frame extends JFrame {
      */
     private void initComponents() {
 
-        jLabel1 = new JLabel();
+        dayOfWeek = new DayOfWeek();
+        dayOfWeek.setFont(new Font("Algerian", 1, 20));
+        clock = new DigitalClockLabel();
+        clock.setFont(new Font("Algerian", 1, 20));
         submitButton = new JButton();
         addButton = new JButton();
         jScrollPane1 = new JScrollPane();
@@ -137,8 +145,6 @@ class Frame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(850, 430));
-
-        jLabel1.setText("Today - monday. 28 june");
 
         submitButton.setText("Submit");
 
@@ -280,14 +286,16 @@ class Frame extends JFrame {
                 .addGap(0, 459, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(submitButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(clock, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(dayOfWeek, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap()));
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1)
+                .addComponent(clock)
+                .addComponent(dayOfWeek)
                 .addGap(15, 15, 15)
                 .addComponent(addButton)
                 .addGap(15, 15, 15)
@@ -359,7 +367,8 @@ class Frame extends JFrame {
     private DefaultTableModel modBusinessTask;
     private JButton submitButton;
     private JButton addButton;
-    private JLabel jLabel1;
+    private DayOfWeek dayOfWeek;
+    private DigitalClockLabel clock;
     private JMenu fileMenu;
     private JMenu helpMenu;
     private JMenuBar jMenuBar1;
@@ -458,7 +467,8 @@ class ButtonEditor extends DefaultCellEditor {
             if (buttonName.equals("Detailed viewing")) {
                 JOptionPane.showMessageDialog(buttonOk, label + ": Detailed viewing");
             } else if (buttonName.equals("Detailed editing")) {
-                JOptionPane.showMessageDialog(buttonOk, label + "Detailed editing");
+                new BrowsingAndEditingDataFrame().setVisible(true);
+                //JOptionPane.showMessageDialog(buttonOk, label + "Detailed editing");
             } else if (buttonName.equals("Remove")) {
                 if (JOptionPane.showConfirmDialog(null,
                         "you want to remove this task?",
@@ -484,5 +494,24 @@ class ButtonEditor extends DefaultCellEditor {
 
     protected void fireEditingStopped() {
         super.fireEditingStopped();
+    }
+}
+
+class BrowsingAndEditingDataFrame extends JFrame {
+
+    private JPanel panel;
+
+    public BrowsingAndEditingDataFrame() {
+        super("Browsing And Editing Data Frame");
+        setSize(300, 100);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        DigitalClockLabel clock = new DigitalClockLabel();
+        clock.setFont(new Font("Algerian", 1, 20));
+        getContentPane().add(clock, BorderLayout.NORTH);
+        setBounds(100, 100, 200, 200);
+
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 2));
     }
 }
