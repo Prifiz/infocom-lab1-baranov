@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -183,6 +184,7 @@ class Frame extends JFrame {
         birthdayTable.getTableHeader().setReorderingAllowed(false);
 
         jScrollPane3.setViewportView(birthdayTable);
+        birthdayTable.setRowHeight(23);
 
         jTabbedPane2.addTab("birthdays", jScrollPane3);
 
@@ -213,6 +215,7 @@ class Frame extends JFrame {
                 new ButtonEditor(new JCheckBox(), "Remove", modBusinessTask, birthdayTable));
 
         businessTable.getTableHeader().setReorderingAllowed(false);
+        businessTable.setRowHeight(23);
         jScrollPane5.setViewportView(businessTable);
 
         jTabbedPane2.addTab("business tasks", jScrollPane5);
@@ -457,10 +460,14 @@ class ButtonEditor extends DefaultCellEditor {
                         "you want to remove this task?",
                         "Removing task",
                         JOptionPane.OK_CANCEL_OPTION) == 0) {
-                    System.out.println(model.getRowCount());
-                    model.removeRow(table.getSelectedRow());
-                    System.out.println(model.getRowCount());
+                    Runnable removeRow = new Runnable() {
+                        public void run() {
+                            model.removeRow(table.getSelectedRow());
+                        }
+                    };
+                    SwingUtilities.invokeLater(removeRow);
                     //почему-то при удалении последней строки вылетает ошибка
+
                 }
             }
         }
