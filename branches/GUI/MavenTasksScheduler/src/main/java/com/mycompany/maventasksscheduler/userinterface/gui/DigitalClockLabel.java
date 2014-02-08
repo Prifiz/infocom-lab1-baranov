@@ -22,9 +22,7 @@ public class DigitalClockLabel extends JLabel implements ActionListener {
     public DigitalClockLabel() {
         time = new DateTime();
         strTime = new StringBuilder();
-        strTime.append(time.getHourOfDay()).append(":").
-                append(redactMinuts()).append(":").
-                append(time.getSecondOfMinute());
+        strTime.append(time.getHourOfDay()).append(":").append(redactMinuts());
         setText(strTime.toString());
         strTime.delete(0, strTime.length());
         Timer t = new Timer(1000, this);
@@ -33,9 +31,7 @@ public class DigitalClockLabel extends JLabel implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
         time = new DateTime();
-        strTime.append(time.getHourOfDay()).append(":").
-                append(redactMinuts()).append(":").
-                append(time.getSecondOfMinute());
+        strTime.append(time.getHourOfDay()).append(":").append(redactMinuts());
         setText(strTime.toString());
         strTime.delete(0, strTime.length());
     }
