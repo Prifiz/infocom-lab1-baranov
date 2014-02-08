@@ -4,10 +4,8 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -15,13 +13,10 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -40,6 +35,7 @@ class Frame extends JFrame {
      * Creates new form MainFrame
      */
     public Frame() {
+        super("Task scheduler");
         initComponents();
     }
 
@@ -151,7 +147,7 @@ class Frame extends JFrame {
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jAddButtonActionPerformed();
+                addButtonActionPerformed();
             }
         });
 
@@ -245,7 +241,7 @@ class Frame extends JFrame {
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                exitMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(exitMenuItem);
@@ -257,7 +253,7 @@ class Frame extends JFrame {
         manualMenuItem.setText("Manual");
         manualMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jAddButtonActionPerformed();
+                manualMenuItemActionPerformed(evt);
             }
         });
         helpMenu.add(manualMenuItem);
@@ -265,7 +261,7 @@ class Frame extends JFrame {
         aboutProgMenuItem.setText("About program");
         aboutProgMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                aboutMenuItemActionPerformed(evt);
             }
         });
         helpMenu.add(aboutProgMenuItem);
@@ -307,19 +303,19 @@ class Frame extends JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void manualMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }
 
-    private void jAddButtonActionPerformed() {
+    private void addButtonActionPerformed() {
         if (jTabbedPane2.getSelectedIndex() == 0) {
             Vector<String> newRow = new Vector<String>();
             modBirthdayTask.addRow(newRow);
@@ -464,11 +460,14 @@ class ButtonEditor extends DefaultCellEditor {
 
     public Object getCellEditorValue() {
         if (isPushed) {
+            final BrowsingTaskDialog browsingFrame;
+            EditingTaskDialog editingFrame;
             if (buttonName.equals("Detailed viewing")) {
-                JOptionPane.showMessageDialog(buttonOk, label + ": Detailed viewing");
+                browsingFrame = new BrowsingTaskDialog();
+                browsingFrame.setVisible(true);
             } else if (buttonName.equals("Detailed editing")) {
-                new BrowsingAndEditingDataFrame().setVisible(true);
-                //JOptionPane.showMessageDialog(buttonOk, label + "Detailed editing");
+                editingFrame = new EditingTaskDialog();
+                editingFrame.setVisible(true);
             } else if (buttonName.equals("Remove")) {
                 if (JOptionPane.showConfirmDialog(null,
                         "you want to remove this task?",
@@ -494,24 +493,5 @@ class ButtonEditor extends DefaultCellEditor {
 
     protected void fireEditingStopped() {
         super.fireEditingStopped();
-    }
-}
-
-class BrowsingAndEditingDataFrame extends JFrame {
-
-    private JPanel panel;
-
-    public BrowsingAndEditingDataFrame() {
-        super("Browsing And Editing Data Frame");
-        setSize(300, 100);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        DigitalClockLabel clock = new DigitalClockLabel();
-        clock.setFont(new Font("Algerian", 1, 20));
-        getContentPane().add(clock, BorderLayout.NORTH);
-        setBounds(100, 100, 200, 200);
-
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 2));
     }
 }
