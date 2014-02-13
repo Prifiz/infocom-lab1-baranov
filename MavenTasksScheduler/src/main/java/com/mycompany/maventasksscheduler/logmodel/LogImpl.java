@@ -54,6 +54,10 @@ public class LogImpl implements Log, Cloneable {
         log.add(task);
     }
 
+    public void add(int index, Task task) {
+        log.add(index, task);
+    }
+
     @Override
     public void remove(int taskNumber) {
         if (taskNumber < 0 || taskNumber >= log.size()) {
