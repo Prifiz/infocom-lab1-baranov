@@ -13,6 +13,17 @@ import org.joda.time.DateTime;
  */
 public class BirthdayTask extends Task implements Cloneable {
 
+    
+    
+    
+    
+    public BirthdayTask() {
+        this.timeNotification = DateTime.now();
+        this.contact = new Contact();
+        this.status = Status.ACTIVE;
+        this.priority = Priority.IMPORTANT;
+        this.fieldCount = 4;
+    }
     /**
      * This constructor creates object Birthday with date, contact, priority.
      *

@@ -4,15 +4,13 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
-import java.awt.BorderLayout;
+import com.mycompany.maventasksscheduler.logmodel.Task;
 import java.awt.Font;
 import java.awt.GridLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
@@ -23,7 +21,7 @@ public class EditingTaskDialog extends JDialog {
 
     private JPanel panel;
 
-    public EditingTaskDialog() {
+    public EditingTaskDialog(Task task) {
         super(new JFrame(), "Editing task", true);
         setSize(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -34,9 +32,7 @@ public class EditingTaskDialog extends JDialog {
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(2, 2));
-        panel.add(clock);
-        panel.add(new JSlider());
-        panel.add(new JLabel("some components"));
+        panel.add(new JLabel(task.toString()));
         getContentPane().add(panel);
     }
 }

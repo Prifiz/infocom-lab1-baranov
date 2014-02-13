@@ -16,6 +16,16 @@ public class BusinessTask extends Task implements Cloneable {
     private String taskName;
     private String description;
 
+    
+    public BusinessTask() {
+        this.taskName = "";
+        this.description = "";
+        this.timeNotification = DateTime.now();
+        this.contact = new Contact();
+        this.status = Status.ACTIVE;
+        this.priority = Priority.IMPORTANT;
+        this.fieldCount = 6;
+    }
     /**
      * This constructor creates BusinessTask with taskName, date, priority.
      *
