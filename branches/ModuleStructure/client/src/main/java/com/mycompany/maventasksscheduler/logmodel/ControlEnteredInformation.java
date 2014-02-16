@@ -7,8 +7,7 @@ package com.mycompany.maventasksscheduler.logmodel;
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
 import com.mycompany.maventasksscheduler.logmodel.Task.Status;
-import com.mycompany.maventasksscheduler.userinterface.consoleui.AddConsoleUI;
-import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
+
 import java.util.Scanner;
 import org.joda.time.DateTime;
 
@@ -19,18 +18,18 @@ import org.joda.time.DateTime;
 public class ControlEnteredInformation {
 
     private LogImpl logModel;
-    private MainConsoleUI userInterface;
-    private AddConsoleUI addConsoleUI;
+   // private MainConsoleUI userInterface;
+    //private AddConsoleUI addConsoleUI;
 
     public ControlEnteredInformation() {
-        addConsoleUI = new AddConsoleUI();
-        userInterface = new MainConsoleUI();
+    //    addConsoleUI = new AddConsoleUI();
+        //userInterface = new MainConsoleUI();
     }
 
     public ControlEnteredInformation(LogImpl logModel) {
         this.logModel = logModel;
-        addConsoleUI = new AddConsoleUI();
-        userInterface = new MainConsoleUI();
+       // addConsoleUI = new AddConsoleUI();
+       // userInterface = new MainConsoleUI();
     }
 
     public int[] readAndSplitDate() {
@@ -69,7 +68,7 @@ public class ControlEnteredInformation {
     public int[] controlDate() {
         int[] splitDate = new int[3];
         while (true) {
-            addConsoleUI.enterCorrectlyDate();
+          //  addConsoleUI.enterCorrectlyDate();
             splitDate = readAndSplitDate();
             if (splitDate[2] >= 2013 && splitDate[1] > 0
                     && splitDate[1] < 13 && splitDate[0] > 0
@@ -100,7 +99,7 @@ public class ControlEnteredInformation {
     public int[] controlTime() {
         int[] splitTime = new int[2];
         while (true) {
-            addConsoleUI.enterCorrectlyTime();
+           // addConsoleUI.enterCorrectlyTime();
             splitTime = readAndSplitTime();
             if (splitTime[0] >= 0 && splitTime[0] < 25
                     && splitTime[1] >= 0 && splitTime[1] < 60) {
@@ -128,7 +127,7 @@ public class ControlEnteredInformation {
         String email;
         Contact contact = new Contact();
         while (true) {
-            userInterface.contactInfo();
+          //  userInterface.contactInfo();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
@@ -159,7 +158,7 @@ public class ControlEnteredInformation {
                     flag = false;
                     break;
                 default:
-                    userInterface.chooseCorrectly();
+                  //  userInterface.chooseCorrectly();
             }
         }
         return contact;
@@ -172,7 +171,7 @@ public class ControlEnteredInformation {
         Task.Priority priority = null;
         boolean flag = true;
         while (flag) {
-            userInterface.priority();
+            //userInterface.priority();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
@@ -191,7 +190,7 @@ public class ControlEnteredInformation {
                     flag = false;
                     break;
                 default:
-                    userInterface.chooseCorrectly();
+                  //  userInterface.chooseCorrectly();
             }
         }
         return priority;
@@ -204,7 +203,7 @@ public class ControlEnteredInformation {
         Task.Status status = null;
         boolean flag = true;
         while (flag) {
-            userInterface.status();
+           // userInterface.status();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
                 key = Integer.parseInt(enteringString);
@@ -223,7 +222,7 @@ public class ControlEnteredInformation {
                     flag = false;
                     break;
                 default:
-                    userInterface.chooseCorrectly();
+                   // userInterface.chooseCorrectly();
             }
         }
         return status;
@@ -233,7 +232,7 @@ public class ControlEnteredInformation {
         Scanner sc = new Scanner(System.in);
         String taskName = "";
         for (;;) {
-            addConsoleUI.enterTaskName();
+           // addConsoleUI.enterTaskName();
             taskName = sc.nextLine();
             if (taskName.length() > 0 && taskName.length() < 41) {
                 break;
@@ -246,7 +245,7 @@ public class ControlEnteredInformation {
         Scanner sc = new Scanner(System.in);
         String description = "";
         for (;;) {
-            addConsoleUI.enterDescription();
+           // addConsoleUI.enterDescription();
             description = sc.nextLine();
             if (description.length() > 0 && description.length() < 150) {
                 break;
@@ -261,7 +260,7 @@ public class ControlEnteredInformation {
         String str;
 
         for (;;) {
-            addConsoleUI.enterContactName();
+            //addConsoleUI.enterContactName();
             contactName.append(sc.nextLine());
             if (contactName.length() > 0 && contactName.length() < 41) {
                 str = contactName.substring(0, 1);
@@ -286,7 +285,7 @@ public class ControlEnteredInformation {
         String phoneNumber = "";
         String enteringString = "";
         for (;;) {
-            addConsoleUI.enterContactPhoneNumber();
+         //   addConsoleUI.enterContactPhoneNumber();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
                 phoneNumber = enteringString;
@@ -302,7 +301,7 @@ public class ControlEnteredInformation {
         Scanner sc = new Scanner(System.in);
         StringBuilder contactMail = new StringBuilder();
         for (;;) {
-            addConsoleUI.enterContactMail();
+          //  addConsoleUI.enterContactMail();
             contactMail.append(sc.nextLine());
             if (contactMail.length() > 0 && contactMail.length() < 50) {
                 break;
@@ -377,7 +376,7 @@ public class ControlEnteredInformation {
         String enteringString = "";
         int phoneNumber = -1;
         for (;;) {
-            userInterface.chooseTaskId();
+          //  userInterface.chooseTaskId();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
                 phoneNumber = Integer.parseInt(enteringString);

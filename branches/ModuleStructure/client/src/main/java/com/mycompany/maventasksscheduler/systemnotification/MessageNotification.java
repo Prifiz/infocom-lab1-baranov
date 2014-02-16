@@ -4,10 +4,9 @@
  */
 package com.mycompany.maventasksscheduler.systemnotification;
 
-import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import com.mycompany.maventasksscheduler.userinterface.consoleui.NotificationConsoleUI;
 import org.joda.time.DateTime;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,8 +20,6 @@ public class MessageNotification implements SystemNotification, Runnable {
     private LogImpl tasks;
     private LogImpl logModel;
     private DateTime dateTime;
-    private XMLStorage xml;
-    private NotificationConsoleUI consoleUI;
     private Timer timer;
 
     class RemindTask extends TimerTask {
@@ -40,11 +37,8 @@ public class MessageNotification implements SystemNotification, Runnable {
     }
 
     public MessageNotification() {
-        xml = new XMLStorage();
-        this.logModel = xml.uploadData();
         tasks = new LogImpl();
         dateTime = new DateTime();
-        consoleUI = new NotificationConsoleUI();
     }
 
     public LogImpl notification() {
@@ -72,10 +66,8 @@ public class MessageNotification implements SystemNotification, Runnable {
     public void run() {
         tasks = notification();
         if (tasks.getSize() == 0) {
-            consoleUI.noTaskForToday();
         } else {
-            consoleUI.tasksPlannedForToday();
-            consoleUI.showPlannedTasks(tasks);
+
         }
     }
 }
