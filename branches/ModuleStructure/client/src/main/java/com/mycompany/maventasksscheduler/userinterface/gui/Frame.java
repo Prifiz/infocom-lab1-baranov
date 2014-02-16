@@ -30,6 +30,8 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import javax.swing.JComboBox;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -181,9 +183,15 @@ class Frame extends JFrame {
         headerBirthdayVect.add("Remove");
         modBirthdayTask = new DefaultTableModel(headerBirthdayVect, 0);
 
-
         birthdayTable.setModel(modBirthdayTask);
-
+        
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("URGENT_IMPORTANT");
+        comboBox.addItem("URGENT");
+        comboBox.addItem("IMPORTANT");
+        birthdayTable.getColumn("Priority").setCellEditor(
+                new DefaultCellEditor(comboBox));
+        
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed viewing").setCellEditor(
@@ -219,6 +227,9 @@ class Frame extends JFrame {
         modBusinessTask = new DefaultTableModel(headerBusinessVect, 0);
 
         businessTable.setModel(modBusinessTask);
+        
+        businessTable.getColumn("Priority").setCellEditor(
+                new DefaultCellEditor(comboBox));
 
         businessTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
