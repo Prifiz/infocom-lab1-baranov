@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.systemnotification;
 
-//import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.NotificationConsoleUI;
@@ -21,7 +21,7 @@ public class MessageNotification implements SystemNotification, Runnable {
     private LogImpl tasks;
     private LogImpl logModel;
     private DateTime dateTime;
-   // private XMLStorage xml;
+    private XMLStorage xml;
     private NotificationConsoleUI consoleUI;
     private Timer timer;
 
@@ -40,8 +40,8 @@ public class MessageNotification implements SystemNotification, Runnable {
     }
 
     public MessageNotification() {
-      //  xml = new XMLStorage();
-       // this.logModel = xml.uploadData();
+        xml = new XMLStorage();
+        this.logModel = xml.uploadData();
         tasks = new LogImpl();
         dateTime = new DateTime();
         consoleUI = new NotificationConsoleUI();

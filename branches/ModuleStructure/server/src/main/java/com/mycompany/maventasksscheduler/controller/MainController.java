@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-//import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
@@ -26,14 +26,14 @@ public class MainController {
     private AddController addController;
     private ControlEnteredInformation control;
     private ChooseTaskController chooseTask;
-    //private XMLStorage xml;
+    private XMLStorage xml;
     private NotificationController notificationController;
     private UserOSController userOSController;
     private boolean flag;
 
     public MainController() {
-      //  xml = new XMLStorage();
-       // logModel = xml.uploadData();
+        xml = new XMLStorage();
+        logModel = xml.uploadData();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
         notificationController = new NotificationController();
@@ -45,7 +45,7 @@ public class MainController {
         this.logModel = logModel;
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(this.logModel);
-       // xml = new XMLStorage();
+        xml = new XMLStorage();
         notificationController = new NotificationController();
         userOSController = new UserOSController();
         flag = true;
