@@ -16,6 +16,8 @@
 	
 	<modules>
 		<module>client</module>
+		<module>server</module>
+		<module>common-api</module>
 		<module>aggregator</module>
 	</modules>
   
