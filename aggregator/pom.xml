@@ -79,5 +79,15 @@
             <artifactId>client</artifactId>
             <version>${project.version}</version>
         </dependency>
+		<dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>common-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
