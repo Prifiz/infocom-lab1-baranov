@@ -18,6 +18,7 @@ import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -183,6 +184,13 @@ class Frame extends JFrame {
 
 
         birthdayTable.setModel(modBirthdayTask);
+        
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("URGENT_IMPORTANT");
+        comboBox.addItem("URGENT");
+        comboBox.addItem("IMPORTANT");
+        birthdayTable.getColumn("Priority").setCellEditor(
+                new DefaultCellEditor(comboBox));
 
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
@@ -219,6 +227,9 @@ class Frame extends JFrame {
         modBusinessTask = new DefaultTableModel(headerBusinessVect, 0);
 
         businessTable.setModel(modBusinessTask);
+        
+        businessTable.getColumn("Priority").setCellEditor(
+                new DefaultCellEditor(comboBox));
 
         businessTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
