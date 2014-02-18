@@ -20,4 +20,34 @@
     </contact>
     <priority>URGENT_IMPORTANT</priority>
   </birthdaytask>
+  <birthdaytask id="2">
+    <date>16-2-2014</date>
+    <time>20:20</time>
+    <contact>
+      <name />
+      <phoneNumber />
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="3">
+    <date>16-2-2014</date>
+    <time>20:21</time>
+    <contact>
+      <name />
+      <phoneNumber />
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="4">
+    <date>16-2-2014</date>
+    <time>20:21</time>
+    <contact>
+      <name />
+      <phoneNumber />
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
 </tasks>
