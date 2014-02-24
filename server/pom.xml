@@ -31,7 +31,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency</classpathPrefix>
-                            <mainClass>com.mycompany.maventasksscheduler.Server</mainClass>
+                            <mainClass>com.mycompany.maventasksscheduler.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
