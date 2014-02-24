@@ -41,7 +41,7 @@ public class MainController {
         control = new ControlEnteredInformation(logModel);
         userOSController = new UserOSController();
         flag = true;
-        run = new Server();
+        run = new Server(xml);
         thread = new Thread(run);
     }
 
@@ -52,7 +52,7 @@ public class MainController {
         xml = new XMLStorage();
         userOSController = new UserOSController();
         flag = true;
-        run = new Server();
+        run = new Server(xml);
         thread = new Thread(run);
     }
 
