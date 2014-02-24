@@ -440,7 +440,7 @@ class Frame extends JFrame {
 
     private void initializeBirthdaysTable(Task birthday) {
         Vector<String> newRow = new Vector<String>();
-        newRow.add(birthday.getContact().toString());
+        newRow.add(birthday.getContact().getName());
         newRow.add(birthday.getDate().getDayOfMonth() + "."
                 + birthday.getDate().getMonthOfYear() + "."
                 + birthday.getDate().getYear());
@@ -452,7 +452,7 @@ class Frame extends JFrame {
 
     private void initializeBusinessTable(Task business) {
         Vector<String> newRow = new Vector<String>();
-        newRow.add(((BusinessTask) business).getTaskName().toString());
+        newRow.add(((BusinessTask) business).getTaskName());
         newRow.add(business.getDate().getDayOfMonth() + "."
                 + business.getDate().getMonthOfYear() + "."
                 + business.getDate().getYear());
