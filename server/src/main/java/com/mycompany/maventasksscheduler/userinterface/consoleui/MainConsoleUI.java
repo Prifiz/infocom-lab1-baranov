@@ -20,10 +20,10 @@ public class MainConsoleUI {
     public void showMainMenu() {
         System.out.println("\nYou in main menu, choose menu point:"
                 + "\n1. Help"
-                + "\n2. File"
-                + "\n3. Show tasks"
-                + "\n4. Search task"
-                + "\n5. Add task"
+                + "\n2. Add user"
+                + "\n3. Choose user"
+                + "\n4. Remove user"
+                + "\n5. Get info about server"
                 + "\n0. Exit\n");
     }
 

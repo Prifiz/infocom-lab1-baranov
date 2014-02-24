@@ -19,14 +19,14 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public class AddController {
+public class AddTaskController {
 
     private LogImpl logModel;
     private MainConsoleUI userInterface;
     private AddConsoleUI addConsoleUI;
     private ControlEnteredInformation control;
 
-    public AddController(LogImpl logModel) {
+    public AddTaskController(LogImpl logModel) {
         this.logModel = logModel;
         addConsoleUI = new AddConsoleUI();
         userInterface = new MainConsoleUI();

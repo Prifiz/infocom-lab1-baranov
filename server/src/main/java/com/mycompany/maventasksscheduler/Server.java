@@ -12,23 +12,22 @@ import java.net.Socket;
  *
  * @author Сергей
  */
-public class Server {
-    
-    public static void main(String [] args){
-        try{
+public class Server implements Runnable {
+
+    public void run() {
+        try {
             int i = 1;
             ServerSocket s = new ServerSocket(8189);
-            while(true){
+            while (true) {
                 Socket incoming = s.accept();
-                System.out.println("Spawning "+i);
+                System.out.println("Spawning " + i);
                 Runnable run = new ProcessingClientThread(incoming);
                 Thread t = new Thread(run);
                 t.start();
                 i++;
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
 }
