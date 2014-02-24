@@ -4,7 +4,6 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
-
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -30,8 +29,22 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -159,6 +172,43 @@ class Frame extends JFrame {
                 submitButtonActionPerformed();
             }
         });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+
+            private void formWindowOpened(WindowEvent evt) {
+                try {
+                    Socket s = new Socket(InetAddress.getLocalHost(), 8189);
+                    try {
+                        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+                        ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+
+                        oos.writeObject(logModel);
+                        System.out.println(logModel.getSize());
+                        oos.flush();
+                        Object o;
+                        try {
+                            o = ois.readObject();
+                            if (o instanceof LogImpl) {
+                                logModel = (LogImpl) o;
+                                System.out.println(logModel.getSize());
+                            }
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } finally {
+                        s.close();
+                    }
+
+                } catch (ConnectException e) {
+                    new JFrame("Connecting with server error").setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
@@ -184,14 +234,14 @@ class Frame extends JFrame {
         modBirthdayTask = new DefaultTableModel(headerBirthdayVect, 0);
 
         birthdayTable.setModel(modBirthdayTask);
-        
+
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("URGENT_IMPORTANT");
         comboBox.addItem("URGENT");
         comboBox.addItem("IMPORTANT");
         birthdayTable.getColumn("Priority").setCellEditor(
                 new DefaultCellEditor(comboBox));
-        
+
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
         birthdayTable.getColumn("Detailed viewing").setCellEditor(
@@ -227,7 +277,7 @@ class Frame extends JFrame {
         modBusinessTask = new DefaultTableModel(headerBusinessVect, 0);
 
         businessTable.setModel(modBusinessTask);
-        
+
         businessTable.getColumn("Priority").setCellEditor(
                 new DefaultCellEditor(comboBox));
 
@@ -255,7 +305,8 @@ class Frame extends JFrame {
 
         jScrollPane1.setViewportView(jTabbedPane2);
 
-        initializeTables();
+        //connectWithServer();
+        initializeTables(); // инициализация таблицы
 
         fileMenu.setText("File");
 
@@ -340,6 +391,43 @@ class Frame extends JFrame {
         pack();
     }// </editor-fold>   
 
+    private void connectWithServer() {
+        try {
+            Socket s = new Socket(InetAddress.getLocalHost(), 8189);
+            if (s.isConnected()) {
+                try {
+                    InputStream inStream = s.getInputStream();//получает, что отправляет сервер
+                    OutputStream outStream = s.getOutputStream();//отправляет то, что получает сервер
+
+                    DataInputStream in = new DataInputStream(inStream);
+                    DataOutputStream out = new DataOutputStream(outStream);
+
+                    BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+                    String line = null;
+                    System.out.println("Type in something and press enter. Will send it to the server and tell ya what it thinks.");
+                    System.out.println();
+
+                    while (!s.isInputShutdown()) {
+                        line = keyboard.readLine(); // ждем пока пользователь введет что-то и нажмет кнопку Enter.
+                        System.out.println("Sending this line to the server...");
+                        out.writeUTF(line); // отсылаем введенную строку текста серверу.
+                        out.flush(); // заставляем поток закончить передачу данных.
+                        line = in.readUTF(); // ждем пока сервер отошлет строку текста.
+                        System.out.println("The server was very polite. It sent me this : " + line);
+                        System.out.println("Looks like the server is pleased with us. Go ahead and enter more lines.");
+                        System.out.println();
+                    }
+                } finally {
+                    s.close();
+                }
+            } else {
+                new JFrame("Connecting error").setVisible(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initializeTables() {
         for (int i = 0; i < logModel.getSize(); i++) {
             if (logModel.get(i) instanceof BirthdayTask) {
@@ -377,7 +465,7 @@ class Frame extends JFrame {
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         Runnable saveData = new Runnable() {
             public void run() {
-               xml.saveData(logModel);
+                xml.saveData(logModel);
             }
         };
         SwingUtilities.invokeLater(saveData);
