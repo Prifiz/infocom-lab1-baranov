@@ -10,7 +10,7 @@ package com.mycompany.maventasksscheduler.logmodel;
  * @author Сергей
  *
  */
-public class Contact implements Cloneable {
+public class Contact implements Cloneable, java.io.Serializable {
 
     private String name;
     private String phoneNumber;

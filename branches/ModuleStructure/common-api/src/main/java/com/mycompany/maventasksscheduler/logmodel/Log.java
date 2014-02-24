@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public interface Log {
+public interface Log  {
 
     /**
      * This method add task in logModel.

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей осталось конструкторы
  */
-public class BirthdayTask extends Task implements Cloneable {
+public class BirthdayTask extends Task implements Cloneable, java.io.Serializable {
 
     
     

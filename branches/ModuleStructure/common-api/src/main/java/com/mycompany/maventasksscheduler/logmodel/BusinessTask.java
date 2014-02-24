@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей остаётся конструкторы
  */
-public class BusinessTask extends Task implements Cloneable {
+public class BusinessTask extends Task implements Cloneable, java.io.Serializable {
 
     private String taskName;
     private String description;

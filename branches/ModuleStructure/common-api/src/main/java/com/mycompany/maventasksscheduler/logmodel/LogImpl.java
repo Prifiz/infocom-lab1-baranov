@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public class LogImpl implements Log, Cloneable {
+public class LogImpl implements Log, Cloneable, java.io.Serializable {
 
     private List<Task> log;
     private ControlEnteredInformation control;
