@@ -4,6 +4,8 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
+import com.mycompany.maventasksscheduler.ProcessingClientThread;
+import com.mycompany.maventasksscheduler.Server;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -23,22 +25,24 @@ public class MainController {
     private MainConsoleUI userInterface;
     private FileController fileController;
     private HelpController helpController;
-    private AddController addController;
+    private AddTaskController addController;
     private ControlEnteredInformation control;
     private ChooseTaskController chooseTask;
     private XMLStorage xml;
-    private NotificationController notificationController;
     private UserOSController userOSController;
     private boolean flag;
+    private Runnable run;
+    private Thread thread;
 
     public MainController() {
         xml = new XMLStorage();
         logModel = xml.uploadData();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
-        notificationController = new NotificationController();
         userOSController = new UserOSController();
         flag = true;
+        run = new Server();
+        thread = new Thread(run);
     }
 
     public MainController(LogImpl logModel) {
@@ -46,14 +50,16 @@ public class MainController {
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(this.logModel);
         xml = new XMLStorage();
-        notificationController = new NotificationController();
         userOSController = new UserOSController();
         flag = true;
+        run = new Server();
+        thread = new Thread(run);
     }
 
     public void start() throws IOException {
+        thread.start();
+
         userOSController.start();
-        notificationController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -74,42 +80,54 @@ public class MainController {
                     flag = false;
                     break;
                 case 2:
-                    fileController = new FileController(logModel);
-                    logModel = fileController.start();
-                    flag = false;
+                    //add user
                     break;
                 case 3:
-                    if (logModel.getSize() == 0) {
-                        userInterface.logIsEmpty();
-                        flag = true;
-                        break;
-                    }
-                    logModel.sortByDate();
-                    userInterface.showAll(logModel);
-                    chooseTask = new ChooseTaskController(logModel);
-                    chooseTask.start();
-                    flag = false;
+                    //choose user
                     break;
                 case 4:
-                    if (logModel.getSize() == 0) {
-                        userInterface.logIsEmpty();
-                        flag = true;
-                        break;
-                    }
-                    List<Task> foundTasks = logModel.search(
-                            control.createDate(control.controlDate()));
-                    userInterface.foundTasks(foundTasks);
-                    chooseTask = new ChooseTaskController(logModel, foundTasks);
-                    chooseTask.start();
-                    flag = false;
+                    //remove user
                     break;
                 case 5:
-                    addController = new AddController(logModel);
-                    addController.start();
-                    flag = false;
+                    //get info about server
                     break;
+//                case 2:
+//                    fileController = new FileController(logModel);
+//                    logModel = fileController.start();
+//                    flag = false;
+//                    break;
+//                case 3:
+//                    if (logModel.getSize() == 0) {
+//                        userInterface.logIsEmpty();
+//                        flag = true;
+//                        break;
+//                    }
+//                    logModel.sortByDate();
+//                    userInterface.showAll(logModel);
+//                    chooseTask = new ChooseTaskController(logModel);
+//                    chooseTask.start();
+//                    flag = false;
+//                    break;
+//                case 4:
+//                    if (logModel.getSize() == 0) {
+//                        userInterface.logIsEmpty();
+//                        flag = true;
+//                        break;
+//                    }
+//                    List<Task> foundTasks = logModel.search(
+//                            control.createDate(control.controlDate()));
+//                    userInterface.foundTasks(foundTasks);
+//                    chooseTask = new ChooseTaskController(logModel, foundTasks);
+//                    chooseTask.start();
+//                    flag = false;
+//                    break;
+//                case 5:
+//                    addController = new AddTaskController(logModel);
+//                    addController.start();
+//                    flag = false;
+//                    break;
                 case 0:
-                   // xml.saveData(logModel);
+                    // xml.saveData(logModel);
                     System.exit(0);
                 default:
                     userInterface.chooseCorrectly();

@@ -4,12 +4,13 @@
  */
 package com.mycompany.maventasksscheduler;
 
+import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,23 +25,22 @@ public class ProcessingClientThread implements Runnable {
     public void run() {
         try {
             try {
-                InputStream inStream = incoming.getInputStream();
-                OutputStream outStream = incoming.getOutputStream();
+                ObjectInputStream ois = new ObjectInputStream(incoming.getInputStream());
+                ObjectOutputStream oos = new ObjectOutputStream(incoming.getOutputStream());
+                Object o = null;
 
-                Scanner in = new Scanner(inStream);
-                PrintWriter out = new PrintWriter(outStream, true);
-
-                out.println("Hello! Enter BYE to exit.");
-
-                // echo client input
-                boolean done = false;
-                while (!done && in.hasNextLine()) {
-                    String line = in.nextLine();
-                    out.println("Echo: " + line);
-                    if (line.trim().equals("BYE")) {
-                        done = true;
-                    }
+                try {
+                    o = ois.readObject();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                if (o instanceof LogImpl) {
+                    logModel = (LogImpl) o;
+                    logModel.remove(0);
+                    oos.writeObject(logModel);
+                    oos.flush();
+                }
+
             } finally {
                 incoming.close();
             }
@@ -49,4 +49,5 @@ public class ProcessingClientThread implements Runnable {
         }
     }
     private Socket incoming;
+    private LogImpl logModel;
 }
