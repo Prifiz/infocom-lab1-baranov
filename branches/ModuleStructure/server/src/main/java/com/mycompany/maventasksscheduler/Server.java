@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler;
 
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +15,12 @@ import java.net.Socket;
  */
 public class Server implements Runnable {
 
+    private XMLStorage xml;
+
+    public Server(XMLStorage xml) {
+        this.xml = xml;
+    }
+
     public void run() {
         try {
             int i = 1;
@@ -21,7 +28,7 @@ public class Server implements Runnable {
             while (true) {
                 Socket incoming = s.accept();
                 System.out.println("Spawning " + i);
-                Runnable run = new ProcessingClientThread(incoming);
+                Runnable run = new ProcessingClientThread(incoming, xml);
                 Thread t = new Thread(run);
                 t.start();
                 i++;

@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler;
 
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,8 +19,9 @@ import java.util.logging.Logger;
  */
 public class ProcessingClientThread implements Runnable {
 
-    public ProcessingClientThread(Socket s) {
+    public ProcessingClientThread(Socket s, XMLStorage xml) {
         incoming = s;
+        this.xml = xml;
     }
 
     public void run() {
@@ -36,9 +38,14 @@ public class ProcessingClientThread implements Runnable {
                 }
                 if (o instanceof LogImpl) {
                     logModel = (LogImpl) o;
-                    logModel.remove(0);
-                    oos.writeObject(logModel);
-                    oos.flush();
+                    if (logModel.getSize() > 0) {
+                        logModel.remove(0);
+                        oos.writeObject(logModel);
+                        oos.flush();
+                    } else {
+                        oos.writeObject(logModel);
+                        oos.flush();
+                    }
                 }
 
             } finally {
@@ -50,4 +57,5 @@ public class ProcessingClientThread implements Runnable {
     }
     private Socket incoming;
     private LogImpl logModel;
+    private XMLStorage xml;
 }
