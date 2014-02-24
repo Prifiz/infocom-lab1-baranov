@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public class ControlEnteredInformation {
+public class ControlEnteredInformation implements java.io.Serializable{
 
     private LogImpl logModel;
     //private MainConsoleUI userInterface;

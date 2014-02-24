@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  *
  * @author Сергей
  */
-public abstract class Task {
+public abstract class Task implements java.io.Serializable {
 
     public DateTime timeNotification;
     public Contact contact;
