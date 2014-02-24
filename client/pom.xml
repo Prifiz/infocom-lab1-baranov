@@ -32,7 +32,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency</classpathPrefix>
-                            <mainClass>com.mycompany.maventasksscheduler.Client<!--userinterface.gui.Frame--></mainClass>
+                            <mainClass>com.mycompany.maventasksscheduler.userinterface.gui.Frame</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
