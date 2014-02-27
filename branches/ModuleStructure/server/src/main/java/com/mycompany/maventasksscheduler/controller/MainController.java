@@ -34,6 +34,7 @@ public class MainController {
     private Runnable run;
     private Thread thread;
     private ServerInfoController serverInfoController;
+    private AddUserController addUserController;
 
     public MainController() {
         xml = new XMLStorage();
@@ -80,6 +81,8 @@ public class MainController {
                     flag = false;
                     break;
                 case 2:
+                    addUserController = new AddUserController();
+                    addUserController.start();
                     //add user
                     break;
                 case 3:
