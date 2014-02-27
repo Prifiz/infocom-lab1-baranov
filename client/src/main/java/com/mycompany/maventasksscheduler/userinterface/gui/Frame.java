@@ -67,7 +67,7 @@ class Frame extends JFrame {
      */
     private void initComponents() {
         xml = new XMLStorage();
-        logModel = xml.uploadData();
+        logModel = xml.uploadData("");
 
         dayOfWeek = new DayOfWeek();
         dayOfWeek.setFont(new Font("Algerian", 1, 20));
@@ -485,7 +485,7 @@ class Frame extends JFrame {
                 for (int i = 0; i < taskCount; i++) {
                     modBusinessTask.removeRow(0);
                 }
-                logModel = xml.uploadData();
+                logModel = xml.uploadData("");
                 initializeTables();
             }
         };

@@ -22,7 +22,7 @@ public class ProcessingClientThread implements Runnable {
     public ProcessingClientThread(Socket s, XMLStorage xml, LogImpl logModel) {
         incoming = s;
         this.xml = xml;
-        serverLogModel = xml.uploadData();
+        serverLogModel = xml.uploadData("");
     }
 
     private boolean checkingLogin(String login) {

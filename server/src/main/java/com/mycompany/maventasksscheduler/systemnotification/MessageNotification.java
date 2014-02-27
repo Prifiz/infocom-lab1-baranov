@@ -41,7 +41,7 @@ public class MessageNotification implements SystemNotification, Runnable {
 
     public MessageNotification() {
         xml = new XMLStorage();
-        this.logModel = xml.uploadData();
+        this.logModel = xml.uploadData("");
         tasks = new LogImpl();
         dateTime = new DateTime();
         consoleUI = new NotificationConsoleUI();
