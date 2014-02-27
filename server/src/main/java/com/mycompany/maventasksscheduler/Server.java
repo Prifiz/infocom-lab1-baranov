@@ -5,6 +5,7 @@
 package com.mycompany.maventasksscheduler;
 
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,25 +17,25 @@ import java.net.Socket;
 public class Server implements Runnable {
 
     private XMLStorage xml;
+    private LogImpl logModel;
 
-    public Server(XMLStorage xml) {
+    public Server(XMLStorage xml, LogImpl logModel) {
         this.xml = xml;
+        this.logModel = logModel;
     }
 
     public void run() {
         try {
-            int i = 1;
             ServerSocket s = new ServerSocket(8189);
             while (true) {
                 Socket incoming = s.accept();
-                System.out.println("Spawning " + i);
-                Runnable run = new ProcessingClientThread(incoming, xml);
+                Runnable run = new ProcessingClientThread(incoming, xml, logModel);
                 Thread t = new Thread(run);
                 t.start();
-                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 }

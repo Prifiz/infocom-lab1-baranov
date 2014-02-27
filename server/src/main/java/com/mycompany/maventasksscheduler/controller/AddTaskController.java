@@ -10,7 +10,7 @@ import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task.Priority;
-import com.mycompany.maventasksscheduler.userinterface.consoleui.AddConsoleUI;
+import com.mycompany.maventasksscheduler.userinterface.consoleui.AddTaskConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.util.Scanner;
 import org.joda.time.DateTime;
@@ -23,12 +23,12 @@ public class AddTaskController {
 
     private LogImpl logModel;
     private MainConsoleUI userInterface;
-    private AddConsoleUI addConsoleUI;
+    private AddTaskConsoleUI addConsoleUI;
     private ControlEnteredInformation control;
 
     public AddTaskController(LogImpl logModel) {
         this.logModel = logModel;
-        addConsoleUI = new AddConsoleUI();
+        addConsoleUI = new AddTaskConsoleUI();
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
     }

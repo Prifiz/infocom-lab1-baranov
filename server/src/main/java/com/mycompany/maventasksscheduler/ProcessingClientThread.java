@@ -19,9 +19,18 @@ import java.util.logging.Logger;
  */
 public class ProcessingClientThread implements Runnable {
 
-    public ProcessingClientThread(Socket s, XMLStorage xml) {
+    public ProcessingClientThread(Socket s, XMLStorage xml, LogImpl logModel) {
         incoming = s;
         this.xml = xml;
+        serverLogModel = xml.uploadData();
+    }
+
+    private boolean checkingLogin(String login) {
+        return false;
+    }
+
+    private void synchronizeLogs() {
+        System.out.println("SynchronizeLogs");
     }
 
     public void run() {
@@ -30,24 +39,30 @@ public class ProcessingClientThread implements Runnable {
                 ObjectInputStream ois = new ObjectInputStream(incoming.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(incoming.getOutputStream());
                 Object o = null;
-
-                try {
-                    o = ois.readObject();
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (o instanceof LogImpl) {
-                    logModel = (LogImpl) o;
-                    if (logModel.getSize() > 0) {
-                        logModel.remove(0);
-                        oos.writeObject(logModel);
+                while (!incoming.isClosed()) {
+                    try {
+                        o = ois.readObject();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (o instanceof String) {
+                        //метод проверки существования такого логина
+                        //checkingLogin((String)o);
+                        oos.writeObject(checkingLogin((String) o));
                         oos.flush();
-                    } else {
-                        oos.writeObject(logModel);
+                    } else if (o instanceof LogImpl) {
+                        userLogModel = (LogImpl) o;
+                        //если журналы не равны, вызываем метод синхронизации
+                        if (!serverLogModel.equals(userLogModel)) {
+                            synchronizeLogs();
+                        }
+                        if (userLogModel.getSize() > 0) {//просто для наглядности, работы запросов
+                            userLogModel.remove(0);
+                        }
+                        oos.writeObject(userLogModel);
                         oos.flush();
                     }
                 }
-
             } finally {
                 incoming.close();
             }
@@ -56,6 +71,7 @@ public class ProcessingClientThread implements Runnable {
         }
     }
     private Socket incoming;
-    private LogImpl logModel;
+    private LogImpl userLogModel;
+    private LogImpl serverLogModel;
     private XMLStorage xml;
 }

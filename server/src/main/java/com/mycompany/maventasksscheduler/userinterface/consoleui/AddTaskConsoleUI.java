@@ -8,7 +8,7 @@ package com.mycompany.maventasksscheduler.userinterface.consoleui;
  *
  * @author Сергей
  */
-public class AddConsoleUI {
+public class AddTaskConsoleUI {
 
     public void showAddMenu() {
         System.out.println("\nYou in add menu, choose menu point:"
