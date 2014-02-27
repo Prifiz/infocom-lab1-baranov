@@ -25,26 +25,26 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.table.TableCellEditor;
 
 /**
  *
@@ -87,9 +87,9 @@ class Frame extends JFrame {
                     case 1:
                         return String.class;
                     case 2:
-                        return String.class;
+                        return Object.class;
                     case 3:
-                        return String.class;
+                        return Integer.class;
                     case 4:
                         return Boolean.class;
                     default:
@@ -125,7 +125,7 @@ class Frame extends JFrame {
                     case 1:
                         return String.class;
                     case 2:
-                        return String.class;
+                        return Integer.class;
                     case 3:
                         return String.class;
                     case 4:
@@ -172,40 +172,10 @@ class Frame extends JFrame {
                 submitButtonActionPerformed();
             }
         });
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-
-            private void formWindowOpened(WindowEvent evt) {
-                try {
-                    Socket s = new Socket(InetAddress.getLocalHost(), 8189);
-                    try {
-                        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-                        ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-
-                        oos.writeObject(logModel);
-                        System.out.println(logModel.getSize());
-                        oos.flush();
-                        Object o;
-                        try {
-                            o = ois.readObject();
-                            if (o instanceof LogImpl) {
-                                logModel = (LogImpl) o;
-                                System.out.println(logModel.getSize());
-                            }
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } finally {
-                        s.close();
-                    }
-
-                } catch (ConnectException e) {
-                    new JFrame("Connecting with server error").setVisible(true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                connectWithServer();
             }
         });
 
@@ -241,6 +211,10 @@ class Frame extends JFrame {
         comboBox.addItem("IMPORTANT");
         birthdayTable.getColumn("Priority").setCellEditor(
                 new DefaultCellEditor(comboBox));
+
+
+        birthdayTable.getColumn("Time").setCellEditor(new SpinnerInTable("Time"));
+        birthdayTable.getColumn("Date").setCellEditor(new SpinnerInTable("Date"));
 
         birthdayTable.getColumn("Detailed viewing").setCellRenderer(
                 new ButtonRenderer());
@@ -393,39 +367,68 @@ class Frame extends JFrame {
 
     private void connectWithServer() {
         try {
-            Socket s = new Socket(InetAddress.getLocalHost(), 8189);
-            if (s.isConnected()) {
+            String login = JOptionPane.showInputDialog(null,
+                    "Enter your login", "Connect with server",
+                    JOptionPane.OK_CANCEL_OPTION);
+            if (login != null) {
+                Socket s = new Socket(InetAddress.getLocalHost(), 8189);
                 try {
-                    InputStream inStream = s.getInputStream();//получает, что отправляет сервер
-                    OutputStream outStream = s.getOutputStream();//отправляет то, что получает сервер
-
-                    DataInputStream in = new DataInputStream(inStream);
-                    DataOutputStream out = new DataOutputStream(outStream);
-
-                    BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-                    String line = null;
-                    System.out.println("Type in something and press enter. Will send it to the server and tell ya what it thinks.");
-                    System.out.println();
-
-                    while (!s.isInputShutdown()) {
-                        line = keyboard.readLine(); // ждем пока пользователь введет что-то и нажмет кнопку Enter.
-                        System.out.println("Sending this line to the server...");
-                        out.writeUTF(line); // отсылаем введенную строку текста серверу.
-                        out.flush(); // заставляем поток закончить передачу данных.
-                        line = in.readUTF(); // ждем пока сервер отошлет строку текста.
-                        System.out.println("The server was very polite. It sent me this : " + line);
-                        System.out.println("Looks like the server is pleased with us. Go ahead and enter more lines.");
-                        System.out.println();
+                    ObjectOutputStream oos = new ObjectOutputStream(
+                            s.getOutputStream());
+                    ObjectInputStream ois = new ObjectInputStream(
+                            s.getInputStream());
+                    oos.writeObject(login);
+                    oos.flush();
+                    try {
+                        Object o;
+                        o = ois.readObject();
+                        if (o instanceof Boolean && (Boolean) o.equals(false)) {
+                            //цикл вывода всплывающего окна, пока не будет введён верно логин,
+                            //не будет найден свободный логин или не отменено подключение к серверу
+                            loop:
+                            while (o instanceof Boolean && (Boolean) o.equals(false)) {
+                                while (login.equals("")) {
+                                    login = JOptionPane.showInputDialog(null,
+                                            "Enter correctly your login",
+                                            "Connect with server",
+                                            JOptionPane.OK_CANCEL_OPTION);
+                                    if (login == null) {
+                                        break loop;
+                                    }
+                                }
+                                oos.writeObject(login);
+                                oos.flush();
+                                o = ois.readObject();
+                                if (!login.equals("")) {//на данный момент, чтобы выйти из цикла
+                                    break;          //потом будет выходить, если сервер вернёт true
+                                }
+                            }
+                        }
+                        oos.writeObject(logModel);
+                        System.out.println(logModel.getSize());
+                        oos.flush();
+                        try {
+                            o = ois.readObject();
+                            if (o instanceof LogImpl) {
+                                logModel = (LogImpl) o;
+                                System.out.println(logModel.getSize());
+                            }
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } finally {
                     s.close();
                 }
-            } else {
-                new JFrame("Connecting error").setVisible(true);
             }
+        } catch (ConnectException e) {
+            new JFrame("Connecting with server error").setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void initializeTables() {
@@ -591,11 +594,11 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
-            setForeground(table.getSelectionForeground());
-            setBackground(table.getSelectionBackground());
+//            setForeground(table.getSelectionForeground());
+//            setBackground(table.getSelectionBackground());
         } else {
-            setForeground(table.getForeground());
-            setBackground(UIManager.getColor("Button.background"));
+//            setForeground(table.getForeground());
+//            setBackground(UIManager.getColor("Button.background"));
         }
         setText((value == null) ? "" : value.toString());
         return this;
@@ -730,5 +733,53 @@ class ButtonEditor extends DefaultCellEditor {
 
     protected void fireEditingStopped() {
         super.fireEditingStopped();
+    }
+}
+
+class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
+
+    //остаётся прицепить дату и время, которые загружаются из файла
+    private JSpinner spinner;
+    private int clickCountToStart;
+    private Date now;
+    private String columnName;
+
+    protected SpinnerInTable(String columnName) {
+        clickCountToStart = 2;
+        now = new Date();
+        this.columnName = columnName;
+        SpinnerDateModel sdm = new SpinnerDateModel(now, null, null, Calendar.DAY_OF_MONTH);
+        spinner = new JSpinner(sdm);
+        if (columnName.equals("Time")) {
+            spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
+        } else if (columnName.equals("Date")) {
+            spinner.setEditor(new JSpinner.DateEditor(spinner, "dd.MM.yyyy"));
+        }
+    }
+
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        // System.out.println(value.toString());
+        // spinner.setValue(now); //парисить value, доставать дату и время
+        return spinner;
+    }
+
+    public Object getCellEditorValue() {
+        String s = spinner.getValue().toString();
+        String[] ss;
+        ss = s.split(" ");
+        if (columnName.equals("Time")) {
+            return ss[3];
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(ss[2]).append(".").append(ss[1]).append(".").append(ss[5]);
+            return sb.toString();
+        }
+    }
+
+    public boolean isCellEditable(EventObject anEvent) {
+        if (anEvent instanceof MouseEvent) {
+            return ((MouseEvent) anEvent).getClickCount() >= clickCountToStart;
+        }
+        return true;
     }
 }

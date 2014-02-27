@@ -33,6 +33,7 @@ public class MainController {
     private boolean flag;
     private Runnable run;
     private Thread thread;
+    private ServerInfoController serverInfoController;
 
     public MainController() {
         xml = new XMLStorage();
@@ -41,7 +42,7 @@ public class MainController {
         control = new ControlEnteredInformation(logModel);
         userOSController = new UserOSController();
         flag = true;
-        run = new Server(xml);
+        run = new Server(xml, logModel);
         thread = new Thread(run);
     }
 
@@ -52,13 +53,12 @@ public class MainController {
         xml = new XMLStorage();
         userOSController = new UserOSController();
         flag = true;
-        run = new Server(xml);
+        run = new Server(xml, logModel);
         thread = new Thread(run);
     }
 
     public void start() throws IOException {
         thread.start();
-
         userOSController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
@@ -89,6 +89,8 @@ public class MainController {
                     //remove user
                     break;
                 case 5:
+                    serverInfoController = new ServerInfoController(thread);
+                    serverInfoController.start();
                     //get info about server
                     break;
 //                case 2:
