@@ -163,13 +163,13 @@ public class XMLStorage implements Storage {
     }
 
     public LogImpl uploadData(String login) {
-        createDir("birthdays\\birthdayTasks.xml");
-        createDir("business\\businessTasks.xml");
+        createDir(login+"\\birthdays\\birthdayTasks.xml");
+        createDir(login+"\\business\\businessTasks.xml");
         LogImpl log = new LogImpl();
         List<Task> task =
-                openAndReadXML("birthdays\\birthdayTasks.xml", "birthdaytask");
+                openAndReadXML(login+"\\birthdays\\birthdayTasks.xml", "birthdaytask");
         task.addAll(
-                openAndReadXML("business\\businessTasks.xml", "businesstask"));
+                openAndReadXML(login+"\\business\\businessTasks.xml", "businesstask"));
         if (!task.isEmpty()) {
             log = new LogImpl(task);
         }
