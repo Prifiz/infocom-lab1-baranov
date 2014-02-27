@@ -162,7 +162,7 @@ public class XMLStorage implements Storage {
         return task;
     }
 
-    public LogImpl uploadData() {
+    public LogImpl uploadData(String login) {
         createDir("birthdays\\birthdayTasks.xml");
         createDir("business\\businessTasks.xml");
         LogImpl log = new LogImpl();

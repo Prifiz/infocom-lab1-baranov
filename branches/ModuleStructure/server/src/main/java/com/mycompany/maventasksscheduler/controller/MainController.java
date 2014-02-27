@@ -37,7 +37,7 @@ public class MainController {
 
     public MainController() {
         xml = new XMLStorage();
-        logModel = xml.uploadData();
+        logModel = xml.uploadData("");
         userInterface = new MainConsoleUI();
         control = new ControlEnteredInformation(logModel);
         userOSController = new UserOSController();

@@ -24,5 +24,5 @@ public interface Storage {
      *
      * @return A LogModel containing on a hard disk.
      */
-    LogImpl uploadData();
+    LogImpl uploadData(String login);
 }

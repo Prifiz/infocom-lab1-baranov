@@ -38,6 +38,16 @@
       <phoneNumber />
       <email />
     </contact>
-    <priority>IMPORTANT</priority>
+    <priority>URGENT_IMPORTANT</priority>
+  </birthdaytask>
+  <birthdaytask id="4">
+    <date>27-2-2014</date>
+    <time>17:23</time>
+    <contact>
+      <name />
+      <phoneNumber />
+      <email />
+    </contact>
+    <priority>URGENT_IMPORTANT</priority>
   </birthdaytask>
 </tasks>
