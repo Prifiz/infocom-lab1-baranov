@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.ServerInfoConsoleUI;
 import java.io.IOException;

@@ -12,33 +12,20 @@ import java.util.List;
  *
  * @author Сергей
  */
-public class MainConsoleUI {
-
-    public MainConsoleUI() {
-    }
+public class UserMainConsoleUI {
 
     public void showMainMenu() {
         System.out.println("\nYou in main menu, choose menu point:"
                 + "\n1. Help"
-                + "\n2. Add user"
-                + "\n3. Choose user"
-                + "\n4. Remove user"
-                + "\n5. Start server"
-                + "\n6. Stop server"
-                + "\n7. Get info about server"
+                + "\n2. File"
+                + "\n3. Show tasks"
+                + "\n4. Search task"
+                + "\n5. Add task"
                 + "\n0. Exit\n");
     }
 
     public void chooseCorrectly() {
         System.out.println("Please, choose correctly menu point");
-    }
-
-    public void serverIsLaunched() {
-        System.out.println("The server is launched");
-    }
-
-    public void serverIsNotLaunched() {
-        System.out.println("The server is not launched");
     }
 
     public void showAll(LogImpl log) {

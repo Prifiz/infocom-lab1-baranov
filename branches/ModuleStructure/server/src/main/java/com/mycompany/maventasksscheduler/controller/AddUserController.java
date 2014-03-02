@@ -4,8 +4,8 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.ManipulationsOverUsers;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.AddUserConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.util.Scanner;
@@ -16,16 +16,16 @@ import java.util.Scanner;
  */
 public class AddUserController {
 
-    private XMLStorage xml;
     private AddUserConsoleUI addUserUI;
     private ControlEnteredInformation control;
-        private MainConsoleUI userInterface;
+    private MainConsoleUI userInterface;
+    private ManipulationsOverUsers manipulationOverUser;
 
     public AddUserController() {
-        xml = new XMLStorage();
         addUserUI = new AddUserConsoleUI();
         control = new ControlEnteredInformation();
         userInterface = new MainConsoleUI();
+        manipulationOverUser = new ManipulationsOverUsers();
     }
 
     public void start() {
@@ -45,8 +45,12 @@ public class AddUserController {
                 case 2:
                     addUserUI.enterUserName();
                     enteringString = sc.nextLine();
-                    xml.uploadData(enteringString);
-                    addUserUI.userAdded();
+                    if (!manipulationOverUser.userExists(enteringString)) {
+                        manipulationOverUser.createUser(enteringString);
+                        addUserUI.userAdded();
+                    } else {
+                        addUserUI.userExist();
+                    }
                     break;
                 default:
                     userInterface.chooseCorrectly();

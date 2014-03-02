@@ -4,8 +4,9 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-//import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
+
+import com.mycompany.maventasksscheduler.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.FileConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
@@ -20,14 +21,16 @@ public class FileController {
     private LogImpl logModel;
     private FileConsoleUI fileUI;
     private MainConsoleUI userInterface;
-   // private XMLStorage xml;
+    private XMLStorage xml;
     private ControlEnteredInformation control;
+    private String userName;
 
-    public FileController(LogImpl logModel) {
+    public FileController(LogImpl logModel, String userName) {
+        this.userName = userName;
         this.logModel = logModel;
         fileUI = new FileConsoleUI();
         userInterface = new MainConsoleUI();
-       // xml = new XMLStorage();
+        xml = new XMLStorage();
         control = new ControlEnteredInformation(logModel);
     }
 
@@ -46,11 +49,11 @@ public class FileController {
                 case 1:
                     break menu;
                 case 2:
-                   // xml.saveData(logModel);
+                    xml.saveData(logModel, userName);
                     fileUI.taskSaved();
                     break;
                 case 3:
-                  //  logModel = xml.uploadData();
+                    logModel = xml.uploadData(userName);
                     fileUI.taskLoaded();
                     break;
                 case 4:
@@ -60,7 +63,7 @@ public class FileController {
                     fileUI.allTaskRemoved();
                     break;
                 case 0:
-                 //   xml.saveData(logModel);
+                    xml.saveData(logModel,userName );
                     System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
