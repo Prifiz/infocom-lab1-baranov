@@ -67,7 +67,7 @@ class Frame extends JFrame {
      */
     private void initComponents() {
         xml = new XMLStorage();
-        logModel = xml.uploadData("");
+        logModel = xml.uploadData("my tasks");
 
         dayOfWeek = new DayOfWeek();
         dayOfWeek.setFont(new Font("Algerian", 1, 20));
@@ -75,6 +75,7 @@ class Frame extends JFrame {
         clock.setFont(new Font("Algerian", 1, 20));
         submitButton = new JButton();
         addButton = new JButton();
+        connectWithServerButton = new JButton();
         jScrollPane1 = new JScrollPane();
         jTabbedPane2 = new JTabbedPane();
         jScrollPane3 = new JScrollPane();
@@ -165,6 +166,13 @@ class Frame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(850, 430));
+
+        connectWithServerButton.setText("Connect with server");
+        connectWithServerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                connectWithServerButtonActionPerformed();
+            }
+        });
 
         submitButton.setText("Submit");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -344,6 +352,7 @@ class Frame extends JFrame {
                 .addGap(0, 459, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(submitButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(connectWithServerButton, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(clock, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(dayOfWeek, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))
@@ -360,6 +369,8 @@ class Frame extends JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(submitButton)
+                .addGap(15, 15, 15)
+                .addComponent(connectWithServerButton)
                 .addContainerGap(64, Short.MAX_VALUE)));
 
         pack();
@@ -372,6 +383,7 @@ class Frame extends JFrame {
                     JOptionPane.OK_CANCEL_OPTION);
             if (login != null) {
                 Socket s = new Socket(InetAddress.getLocalHost(), 8189);
+                s.setSoTimeout(5000);
                 try {
                     ObjectOutputStream oos = new ObjectOutputStream(
                             s.getOutputStream());
@@ -404,18 +416,19 @@ class Frame extends JFrame {
                                 }
                             }
                         }
+                        // if (o instanceof Boolean && (Boolean) o.equals(true)) {
                         oos.writeObject(logModel);
-                        System.out.println(logModel.getSize());
                         oos.flush();
                         try {
                             o = ois.readObject();
                             if (o instanceof LogImpl) {
                                 logModel = (LogImpl) o;
-                                System.out.println(logModel.getSize());
+                                new LogsSynchronized().setVisible(true);
                             }
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        // }
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -424,9 +437,9 @@ class Frame extends JFrame {
                 }
             }
         } catch (ConnectException e) {
-            new JFrame("Connecting with server error").setVisible(true);
+            new ErrorConnectFrame("The server is switched off").setVisible(true);
         } catch (IOException e) {
-            e.printStackTrace();
+           new ErrorConnectFrame("The server doesn't respond").setVisible(true);
         }
 
     }
@@ -468,7 +481,7 @@ class Frame extends JFrame {
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         Runnable saveData = new Runnable() {
             public void run() {
-                xml.saveData(logModel);
+                xml.saveData(logModel, "my tasks\\");
             }
         };
         SwingUtilities.invokeLater(saveData);
@@ -485,7 +498,7 @@ class Frame extends JFrame {
                 for (int i = 0; i < taskCount; i++) {
                     modBusinessTask.removeRow(0);
                 }
-                logModel = xml.uploadData("");
+                logModel = xml.uploadData("my tasks");
                 initializeTables();
             }
         };
@@ -497,12 +510,12 @@ class Frame extends JFrame {
     }
 
     private void manualMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        new JFrame("manual").setVisible(true);
+        new ManualFrame().setVisible(true);
         // TODO add your handling code here:
     }
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        new JFrame("about program").setVisible(true);
+        new AboutProgramFrame().setVisible(true);
         // TODO add your handling code here:
     }
 
@@ -524,6 +537,10 @@ class Frame extends JFrame {
     }
 
     private void submitButtonActionPerformed() {
+    }
+
+    private void connectWithServerButtonActionPerformed() {
+        connectWithServer();
     }
 
     /**
@@ -563,6 +580,7 @@ class Frame extends JFrame {
     private DefaultTableModel modBirthdayTask;
     private DefaultTableModel modBusinessTask;
     private JButton submitButton;
+    private JButton connectWithServerButton;
     private JButton addButton;
     private DayOfWeek dayOfWeek;
     private DigitalClockLabel clock;
