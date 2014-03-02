@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import org.joda.time.DateTime;
 
 /**
@@ -171,7 +170,6 @@ public class LogImpl implements Log, Cloneable, java.io.Serializable {
      * module for edit some field of BusinessTask
      */
     public void setEditSomeFieldOfBusinessTask(int taskId, int fieldNumber) {
-        Scanner sc = new Scanner(System.in);
         switch (fieldNumber) {
             case 1:
                 control.setTaskName(taskId, control.controlTaskName());
@@ -195,17 +193,25 @@ public class LogImpl implements Log, Cloneable, java.io.Serializable {
             default:
         }
     }
-    
-     @Override
+
+    @Override
     public boolean equals(Object o) {
-         if(this.getSize() == ((LogImpl) o).getSize()){
-             for (int i = 0; i < this.getSize(); i++) {
-                 if(! this.get(i).equals(((LogImpl) o).get(i))){
-                     return false;
-                 }
-             }
-             return true;
-         }
+        if (this.getSize() == ((LogImpl) o).getSize()) {
+            for (int i = 0; i < this.getSize(); i++) {
+                if (!this.get(i).equals(((LogImpl) o).get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + (this.log != null ? this.log.hashCode() : 0);
+        hash = 29 * hash + (this.control != null ? this.control.hashCode() : 0);
+        return hash;
     }
 }

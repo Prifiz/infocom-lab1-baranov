@@ -47,14 +47,41 @@ public class XMLStorage implements Storage {
 
     public void createDir(String path) {
         File file = new File(path);
-        File dir = file.getParentFile();
         if (!file.exists()) {
+            File dir = file.getParentFile();
             dir.mkdirs();
             outPutXML(createDocument(), path);
         }
     }
 
-    public void saveData(LogImpl logModel) {
+    public LogImpl uploadData(String login) {
+        LogImpl log = new LogImpl();
+        List<Task> task = new LinkedList();
+        if (login == null || login.equals("")) {
+        }
+        else if (login.equals("my tasks")) {
+            createDir(login + "\\birthdays\\birthdayTasks.xml");
+            createDir(login + "\\business\\businessTasks.xml");
+            task.addAll(openAndReadXML(login
+                    + "\\birthdays\\birthdayTasks.xml", "birthdaytask"));
+            task.addAll(openAndReadXML(login
+                    + "\\business\\businessTasks.xml", "businesstask"));
+        }  else {
+            createDir("users\\" + login + "\\birthdays\\birthdayTasks.xml");
+            createDir("users\\" + login + "\\business\\businessTasks.xml");
+            task.addAll(openAndReadXML("users\\" + login
+                    + "\\birthdays\\birthdayTasks.xml", "birthdaytask"));
+            task.addAll(openAndReadXML("users\\" + login
+                    + "\\business\\businessTasks.xml", "businesstask"));
+        }
+
+        if (!task.isEmpty()) {
+            log = new LogImpl(task);
+        }
+        return log;
+    }
+
+    public void saveData(LogImpl logModel, String user) {
         Document businessTask = createDocument();
         Document birthdayTask = createDocument();
         Integer birthdayTaskCount = 0;
@@ -71,8 +98,15 @@ public class XMLStorage implements Storage {
                 businessTaskCount++;
             }
         }
-        outPutXML(birthdayTask, "birthdays\\birthdayTasks.xml");
-        outPutXML(businessTask, "business\\businessTasks.xml");
+        if (user.equals("my tasks\\")) {
+            outPutXML(birthdayTask, user + "birthdays\\birthdayTasks.xml");
+            outPutXML(businessTask, user + "business\\businessTasks.xml");
+        } else {
+            outPutXML(birthdayTask, "users\\" + user + "\\birthdays\\birthdayTasks.xml");
+            outPutXML(businessTask, "users\\" + user + "\\business\\businessTasks.xml");
+        }
+//        outPutXML(birthdayTask, "my tasks\\birthdays\\birthdayTasks.xml");
+//        outPutXML(businessTask, "my tasks\\business\\businessTasks.xml");
     }
 
     private Element createBirthdayTask(Task task, Integer i) {
@@ -160,20 +194,6 @@ public class XMLStorage implements Storage {
             //e.printStackTrace();  
         }
         return task;
-    }
-
-    public LogImpl uploadData(String login) {
-        createDir(login+"\\birthdays\\birthdayTasks.xml");
-        createDir(login+"\\business\\businessTasks.xml");
-        LogImpl log = new LogImpl();
-        List<Task> task =
-                openAndReadXML(login+"\\birthdays\\birthdayTasks.xml", "birthdaytask");
-        task.addAll(
-                openAndReadXML(login+"\\business\\businessTasks.xml", "businesstask"));
-        if (!task.isEmpty()) {
-            log = new LogImpl(task);
-        }
-        return log;
     }
 
     private DateTime parseDateAndTime(Element element) {
