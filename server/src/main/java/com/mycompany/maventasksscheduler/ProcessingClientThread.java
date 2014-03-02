@@ -6,6 +6,7 @@ package com.mycompany.maventasksscheduler;
 
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,14 +20,15 @@ import java.util.logging.Logger;
  */
 public class ProcessingClientThread implements Runnable {
 
-    public ProcessingClientThread(Socket s, XMLStorage xml, LogImpl logModel) {
+    public ProcessingClientThread(Socket s) {
         incoming = s;
-        this.xml = xml;
-        serverLogModel = xml.uploadData("");
+        serverLogModel = new LogImpl();
+        manipulationOverUser = new ManipulationsOverUsers();
     }
 
-    private boolean checkingLogin(String login) {
-        return false;
+    public boolean userExists(String login) {
+        File file = new File("users\\" + login);
+        return file.exists();
     }
 
     private void synchronizeLogs() {
@@ -39,6 +41,8 @@ public class ProcessingClientThread implements Runnable {
                 ObjectInputStream ois = new ObjectInputStream(incoming.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(incoming.getOutputStream());
                 Object o = null;
+                boolean userExist;
+                String login = "";
                 while (!incoming.isClosed()) {
                     try {
                         o = ois.readObject();
@@ -46,18 +50,20 @@ public class ProcessingClientThread implements Runnable {
                         Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if (o instanceof String) {
-                        //метод проверки существования такого логина
-                        //checkingLogin((String)o);
-                        oos.writeObject(checkingLogin((String) o));
+                        //System.out.println("connect");
+                        userExist = userExists((String) o);
+                        oos.writeObject(userExist);
+                        if (userExist) {
+                            login = (String) o;
+                        }
                         oos.flush();
                     } else if (o instanceof LogImpl) {
                         userLogModel = (LogImpl) o;
+                        serverLogModel = new XMLStorage().uploadData(login);
+                        //serverLogModel = xml.uploadData(login);
                         //если журналы не равны, вызываем метод синхронизации
                         if (!serverLogModel.equals(userLogModel)) {
                             synchronizeLogs();
-                        }
-                        if (userLogModel.getSize() > 0) {//просто для наглядности, работы запросов
-                            userLogModel.remove(0);
                         }
                         oos.writeObject(userLogModel);
                         oos.flush();
@@ -67,11 +73,11 @@ public class ProcessingClientThread implements Runnable {
                 incoming.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
     private Socket incoming;
     private LogImpl userLogModel;
     private LogImpl serverLogModel;
     private XMLStorage xml;
+    private ManipulationsOverUsers manipulationOverUser;
 }

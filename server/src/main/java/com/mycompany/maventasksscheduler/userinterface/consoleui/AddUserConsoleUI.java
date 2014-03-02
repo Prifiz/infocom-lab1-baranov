@@ -23,4 +23,8 @@ public class AddUserConsoleUI {
     public void userAdded() {
         System.out.println("The user is added");
     }
+
+    public void userExist() {
+        System.out.println("User with this name exist");
+    }
 }

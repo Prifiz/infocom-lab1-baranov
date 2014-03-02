@@ -4,8 +4,6 @@
  */
 package com.mycompany.maventasksscheduler;
 
-import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,28 +12,29 @@ import java.net.Socket;
  *
  * @author Сергей
  */
-public class Server implements Runnable {
+public class Server extends Thread {
 
-    private XMLStorage xml;
-    private LogImpl logModel;
-
-    public Server(XMLStorage xml, LogImpl logModel) {
-        this.xml = xml;
-        this.logModel = logModel;
+    public Server(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
+        this.active = true;
     }
 
     public void run() {
         try {
-            ServerSocket s = new ServerSocket(8189);
-            while (true) {
-                Socket incoming = s.accept();
-                Runnable run = new ProcessingClientThread(incoming, xml, logModel);
+            while (active) {
+                Socket incoming = serverSocket.accept();
+                Runnable run = new ProcessingClientThread(incoming);
                 Thread t = new Thread(run);
                 t.start();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
-    
+
+    public void setActive(boolean state) {
+        active = state;
+    }
+    private ServerSocket serverSocket;
+    private boolean active;
 }

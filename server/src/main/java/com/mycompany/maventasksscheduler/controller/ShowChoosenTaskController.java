@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
@@ -20,7 +20,7 @@ public class ShowChoosenTaskController {
 
     private LogImpl logModel;
     private MainConsoleUI userInterface;
-    private MainController mainController;
+    private UserMainController mainController;// будет не маин контроллер, а контроллер выбранного пользователя
     private ShowChoosenTaskConsoleUI choosetask;
     private int taskNumber;
     private ControlEnteredInformation control;
@@ -30,7 +30,7 @@ public class ShowChoosenTaskController {
         userInterface = new MainConsoleUI();
         choosetask = new ShowChoosenTaskConsoleUI();
         this.taskNumber = taskNumber;
-        mainController = new MainController(this.logModel);
+        mainController = new UserMainController(this.logModel);
         control = new ControlEnteredInformation(logModel);
     }
 

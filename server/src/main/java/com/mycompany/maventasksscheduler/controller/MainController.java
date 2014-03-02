@@ -4,16 +4,14 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ProcessingClientThread;
+import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.Server;
-import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
-import com.mycompany.maventasksscheduler.logmodel.ControlEnteredInformation;
-import com.mycompany.maventasksscheduler.logmodel.LogImpl;
-import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.io.IOException;
-import java.util.List;
+import java.net.ServerSocket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,45 +19,33 @@ import java.util.Scanner;
  */
 public class MainController {
 
-    private LogImpl logModel;
     private MainConsoleUI userInterface;
-    private FileController fileController;
     private HelpController helpController;
-    private AddTaskController addController;
     private ControlEnteredInformation control;
-    private ChooseTaskController chooseTask;
-    private XMLStorage xml;
     private UserOSController userOSController;
     private boolean flag;
-    private Runnable run;
-    private Thread thread;
     private ServerInfoController serverInfoController;
     private AddUserController addUserController;
+    private RemoveUserController removeUserController;
+    private ChooseUserController chooseUserController;
+    private ServerSocket serverSocket;
+    private Server server;
 
     public MainController() {
-        xml = new XMLStorage();
-        logModel = xml.uploadData("");
         userInterface = new MainConsoleUI();
-        control = new ControlEnteredInformation(logModel);
+        control = new ControlEnteredInformation();
         userOSController = new UserOSController();
+        helpController = new HelpController();
         flag = true;
-        run = new Server(xml, logModel);
-        thread = new Thread(run);
-    }
-
-    public MainController(LogImpl logModel) {
-        this.logModel = logModel;
-        userInterface = new MainConsoleUI();
-        control = new ControlEnteredInformation(this.logModel);
-        xml = new XMLStorage();
-        userOSController = new UserOSController();
-        flag = true;
-        run = new Server(xml, logModel);
-        thread = new Thread(run);
+        try {
+            serverSocket = new ServerSocket(8189);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        server = new Server(serverSocket);
     }
 
     public void start() throws IOException {
-        thread.start();
         userOSController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
@@ -76,63 +62,47 @@ public class MainController {
             }
             switch (key) {
                 case 1:
-                    helpController = new HelpController();
                     helpController.start();
                     flag = false;
                     break;
                 case 2:
                     addUserController = new AddUserController();
                     addUserController.start();
-                    //add user
                     break;
                 case 3:
-                    //choose user
+                    chooseUserController = new ChooseUserController();
+                    chooseUserController.start();
                     break;
                 case 4:
+//                    removeUserController = new RemoveUserController();
+//                    removeUserController.start();
                     //remove user
                     break;
                 case 5:
-                    serverInfoController = new ServerInfoController(thread);
-                    serverInfoController.start();
+                    if (!server.isAlive()) {
+                        server.start();
+                    }
+                    userInterface.serverIsLaunched();
+                    //start server
+                    break;
+                case 6:
+                    if (server.isAlive()) {
+                        server.setActive(false);//почему-то не останавливает
+                        System.out.println("server stop");
+                        //остановка сервера через определённое время
+                        //с предварительным оповещением пользователей
+                    } else {
+                        userInterface.serverIsNotLaunched();
+                    }
+                    //stop server
+                    break;
+                case 7:
+//                    serverInfoController = new ServerInfoController(thread);
+//                    serverInfoController.start();
                     //get info about server
                     break;
-//                case 2:
-//                    fileController = new FileController(logModel);
-//                    logModel = fileController.start();
-//                    flag = false;
-//                    break;
-//                case 3:
-//                    if (logModel.getSize() == 0) {
-//                        userInterface.logIsEmpty();
-//                        flag = true;
-//                        break;
-//                    }
-//                    logModel.sortByDate();
-//                    userInterface.showAll(logModel);
-//                    chooseTask = new ChooseTaskController(logModel);
-//                    chooseTask.start();
-//                    flag = false;
-//                    break;
-//                case 4:
-//                    if (logModel.getSize() == 0) {
-//                        userInterface.logIsEmpty();
-//                        flag = true;
-//                        break;
-//                    }
-//                    List<Task> foundTasks = logModel.search(
-//                            control.createDate(control.controlDate()));
-//                    userInterface.foundTasks(foundTasks);
-//                    chooseTask = new ChooseTaskController(logModel, foundTasks);
-//                    chooseTask.start();
-//                    flag = false;
-//                    break;
-//                case 5:
-//                    addController = new AddTaskController(logModel);
-//                    addController.start();
-//                    flag = false;
-//                    break;
+
                 case 0:
-                    // xml.saveData(logModel);
                     System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
@@ -140,7 +110,4 @@ public class MainController {
         }
     }
 
-    public LogImpl getLog() {
-        return logModel;
-    }
 }
