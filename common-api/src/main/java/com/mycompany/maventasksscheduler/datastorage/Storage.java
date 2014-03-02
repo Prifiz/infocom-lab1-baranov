@@ -17,7 +17,7 @@ public interface Storage {
      *
      * @param logModel The kept LogModel.
      */
-    void saveData(LogImpl logModel);
+    void saveData(LogImpl logModel, String user);
 
     /**
      * Returns LogModel from a hard disk.
