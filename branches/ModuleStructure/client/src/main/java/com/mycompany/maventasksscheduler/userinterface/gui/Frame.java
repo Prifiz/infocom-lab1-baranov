@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -416,6 +417,8 @@ class Frame extends JFrame {
                                 }
                             }
                         }
+
+                        oos.writeObject(lastModified());
                         // if (o instanceof Boolean && (Boolean) o.equals(true)) {
                         oos.writeObject(logModel);
                         oos.flush();
@@ -439,7 +442,7 @@ class Frame extends JFrame {
         } catch (ConnectException e) {
             new ErrorConnectFrame("The server is switched off").setVisible(true);
         } catch (IOException e) {
-           new ErrorConnectFrame("The server doesn't respond").setVisible(true);
+            new ErrorConnectFrame("The server doesn't respond").setVisible(true);
         }
 
     }
@@ -541,6 +544,18 @@ class Frame extends JFrame {
 
     private void connectWithServerButtonActionPerformed() {
         connectWithServer();
+    }
+
+    private Date lastModified() {
+        File file1 = new File("my tasks\\birthdays\\birthdayTasks.xml");
+        File file2 = new File("my tasks\\business\\businessTasks.xml");
+        Date date1 = new Date(file1.lastModified());
+        Date date2 = new Date(file2.lastModified());
+        if (date1.compareTo(date2) >= 0) {
+            return date1;
+        } else {
+            return date2;
+        }
     }
 
     /**
