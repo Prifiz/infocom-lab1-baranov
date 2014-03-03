@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,22 +20,43 @@ import java.util.logging.Logger;
  * @author Сергей
  */
 public class ProcessingClientThread implements Runnable {
-
+    
     public ProcessingClientThread(Socket s) {
         incoming = s;
         serverLogModel = new LogImpl();
         manipulationOverUser = new ManipulationsOverUsers();
+        xml = new XMLStorage();
     }
-
+    
     public boolean userExists(String login) {
         File file = new File("users\\" + login);
         return file.exists();
     }
-
-    private void synchronizeLogs() {
-        System.out.println("SynchronizeLogs");
+    
+    private Date lastModified(String login) {
+        File file1 = new File("users\\" + login + "\\birthdays\\birthdayTasks.xml");
+        File file2 = new File("users\\" + login + "\\business\\businessTasks.xml");
+        Date date1 = new Date(file1.lastModified());
+        Date date2 = new Date(file2.lastModified());
+        if (date1.compareTo(date2) >= 0) {
+            return date1;
+        } else {
+            return date2;
+        }
     }
-
+    
+    private void synchronizeLogs() {
+        System.out.println("User - " + login + " want synchronize sogs");
+        if (userLastModified.compareTo(serverLastModified) > 0) {
+            System.out.println("user have last modified");
+            serverLogModel = userLogModel;
+            xml.saveData(serverLogModel, login);
+        } else if (userLastModified.compareTo(serverLastModified) <= 0) {
+            System.out.println("server has last modified");
+            userLogModel = serverLogModel;
+        }
+    }
+    
     public void run() {
         try {
             try {
@@ -42,7 +64,7 @@ public class ProcessingClientThread implements Runnable {
                 ObjectOutputStream oos = new ObjectOutputStream(incoming.getOutputStream());
                 Object o = null;
                 boolean userExist;
-                String login = "";
+                login = "";
                 while (!incoming.isClosed()) {
                     try {
                         o = ois.readObject();
@@ -50,17 +72,18 @@ public class ProcessingClientThread implements Runnable {
                         Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if (o instanceof String) {
-                        //System.out.println("connect");
                         userExist = userExists((String) o);
                         oos.writeObject(userExist);
                         if (userExist) {
                             login = (String) o;
                         }
                         oos.flush();
+                    } else if (o instanceof Date) {
+                        userLastModified = (Date) o;
+                        serverLastModified = lastModified(login);
                     } else if (o instanceof LogImpl) {
                         userLogModel = (LogImpl) o;
                         serverLogModel = new XMLStorage().uploadData(login);
-                        //serverLogModel = xml.uploadData(login);
                         //если журналы не равны, вызываем метод синхронизации
                         if (!serverLogModel.equals(userLogModel)) {
                             synchronizeLogs();
@@ -79,5 +102,8 @@ public class ProcessingClientThread implements Runnable {
     private LogImpl userLogModel;
     private LogImpl serverLogModel;
     private XMLStorage xml;
+    private String login;
     private ManipulationsOverUsers manipulationOverUser;
+    private Date serverLastModified;
+    private Date userLastModified;
 }

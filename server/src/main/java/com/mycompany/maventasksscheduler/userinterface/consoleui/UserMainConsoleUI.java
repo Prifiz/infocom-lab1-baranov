@@ -21,7 +21,7 @@ public class UserMainConsoleUI {
                 + "\n3. Show tasks"
                 + "\n4. Search task"
                 + "\n5. Add task"
-                + "\n0. Exit\n");
+                + "\n0. Finish editing of the user\n");
     }
 
     public void chooseCorrectly() {
