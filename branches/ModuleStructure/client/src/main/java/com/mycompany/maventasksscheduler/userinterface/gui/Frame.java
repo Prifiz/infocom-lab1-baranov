@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
+import com.mycompany.maventasksscheduler.MainWindow;
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -28,7 +29,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import static java.awt.SystemTray.getSystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,6 +70,7 @@ class Frame extends JFrame {
     public Frame() {
         super("Task scheduler");
         initComponents();
+        tray();
     }
 
     /**
@@ -69,7 +81,7 @@ class Frame extends JFrame {
     private void initComponents() {
         xml = new XMLStorage();
         logModel = xml.uploadData("my tasks");
-
+        notification = new SystemNotification(logModel);
         dayOfWeek = new DayOfWeek();
         dayOfWeek.setFont(new Font("Algerian", 1, 20));
         clock = new DigitalClockLabel();
@@ -185,6 +197,7 @@ class Frame extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 connectWithServer();
+                notification.run();
             }
         });
 
@@ -509,6 +522,7 @@ class Frame extends JFrame {
     }
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        xml.saveData(logModel, "my tasks\\");
         System.exit(0);
     }
 
@@ -555,6 +569,52 @@ class Frame extends JFrame {
             return date1;
         } else {
             return date2;
+        }
+    }
+
+    private void tray() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("123.jpg");
+        setIconImage(image);
+        if (SystemTray.isSupported()) {
+            PopupMenu menu = new PopupMenu();
+            MenuItem messageItem = new MenuItem("Show Message");
+            messageItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(null, "Task scheduler with tray");
+                }
+            });
+            menu.add(messageItem);
+
+            MenuItem closeItem = new MenuItem("Exit");
+            closeItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    xml.saveData(logModel, "my tasks\\");
+                    System.exit(0);
+                }
+            });
+            menu.add(closeItem);
+
+            final TrayIcon icon = new TrayIcon(image, "Task scheduler", menu);
+            icon.setImageAutoSize(true);
+            icon.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    Frame.this.setVisible(true);
+                    Frame.this.setExtendedState(Frame.NORMAL);
+                    getSystemTray().remove(icon);
+                }
+            });
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowIconified(WindowEvent e) {
+                    Frame.this.setVisible(false);
+                    try {
+                        getSystemTray().add(icon);
+                    } catch (AWTException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
         }
     }
 
@@ -615,204 +675,205 @@ class Frame extends JFrame {
     private JTable businessTable;
     private LogImpl logModel;
     private XMLStorage xml;
+    private SystemNotification notification;
     // End of variables declaration                   
-}
 
-class ButtonRenderer extends JButton implements TableCellRenderer {
+    class ButtonRenderer extends JButton implements TableCellRenderer {
 
-    public ButtonRenderer() {
-        setOpaque(true);
-    }
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
 
-    public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected) {
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
 //            setForeground(table.getSelectionForeground());
 //            setBackground(table.getSelectionBackground());
-        } else {
+            } else {
 //            setForeground(table.getForeground());
 //            setBackground(UIManager.getColor("Button.background"));
-        }
-        setText((value == null) ? "" : value.toString());
-        return this;
-    }
-}
-
-/**
- * @version 1.0 11/09/98
- */
-class ButtonEditor extends DefaultCellEditor {
-
-    protected JButton buttonOk;
-    private String label;
-    private boolean isPushed;
-    private String buttonName;
-    private DefaultTableModel model;
-    private JTable birthdayTable;
-    private JTable businessTable;
-    private JTabbedPane jTabbedPane;
-    private LogImpl logModel;
-
-    public ButtonEditor(JCheckBox checkBox, String buttonName,
-            JTable birthdayTable, JTable businessTable, JTabbedPane jTabbedPane,
-            LogImpl logModel) {
-        super(checkBox);
-        buttonOk = new JButton();
-        buttonOk.setOpaque(true);
-        this.buttonName = buttonName;
-        this.model = new DefaultTableModel();
-        this.birthdayTable = birthdayTable;
-        this.businessTable = businessTable;
-        this.logModel = logModel;
-        this.jTabbedPane = jTabbedPane;
-        buttonOk.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
             }
-        });
-    }
-
-    public ButtonEditor(JCheckBox checkBox, String buttonName,
-            DefaultTableModel model, JTable birthdayTable,
-            JTable businessTable, JTabbedPane jTabbedPane, LogImpl logModel) {
-        super(checkBox);
-        buttonOk = new JButton();
-        buttonOk.setOpaque(true);
-        this.buttonName = buttonName;
-        this.model = model;
-        this.birthdayTable = birthdayTable;
-        this.businessTable = businessTable;
-        this.logModel = logModel;
-        this.jTabbedPane = jTabbedPane;
-        buttonOk.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        });
-    }
-
-    public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
-        if (isSelected) {
-            buttonOk.setForeground(table.getSelectionForeground());
-            buttonOk.setBackground(table.getSelectionBackground());
-        } else {
-            buttonOk.setForeground(table.getForeground());
-            buttonOk.setBackground(table.getBackground());
+            setText((value == null) ? "" : value.toString());
+            return this;
         }
-        label = (value == null) ? "" : value.toString();
-        buttonOk.setText(label);
-        isPushed = true;
-        return buttonOk;
     }
 
-    public Object getCellEditorValue() {
-        if (isPushed) {
-            BrowsingTaskDialog browsingFrame;
-            EditingTaskDialog editingFrame;
-            if (buttonName.equals("Detailed viewing")) {
-                if (jTabbedPane.getSelectedIndex() == 0) {
-                    browsingFrame = new BrowsingTaskDialog(
-                            logModel.get(birthdayTable.getSelectedRow()));
-                } else {
-                    browsingFrame = new BrowsingTaskDialog(
-                            logModel.get(birthdayTable.getRowCount()
-                            + businessTable.getSelectedRow()));
+    /**
+     * @version 1.0 11/09/98
+     */
+    class ButtonEditor extends DefaultCellEditor {
+
+        protected JButton buttonOk;
+        private String label;
+        private boolean isPushed;
+        private String buttonName;
+        private DefaultTableModel model;
+        private JTable birthdayTable;
+        private JTable businessTable;
+        private JTabbedPane jTabbedPane;
+        private LogImpl logModel;
+
+        public ButtonEditor(JCheckBox checkBox, String buttonName,
+                JTable birthdayTable, JTable businessTable, JTabbedPane jTabbedPane,
+                LogImpl logModel) {
+            super(checkBox);
+            buttonOk = new JButton();
+            buttonOk.setOpaque(true);
+            this.buttonName = buttonName;
+            this.model = new DefaultTableModel();
+            this.birthdayTable = birthdayTable;
+            this.businessTable = businessTable;
+            this.logModel = logModel;
+            this.jTabbedPane = jTabbedPane;
+            buttonOk.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
                 }
-                browsingFrame.setVisible(true);
-            } else if (buttonName.equals("Detailed editing")) {
-                if (jTabbedPane.getSelectedIndex() == 0) {
-                    editingFrame = new EditingTaskDialog(
-                            logModel.get(birthdayTable.getSelectedRow()));
-                } else {
-                    editingFrame = new EditingTaskDialog(
-                            logModel.get(birthdayTable.getRowCount()
-                            + businessTable.getSelectedRow()));
+            });
+        }
+
+        public ButtonEditor(JCheckBox checkBox, String buttonName,
+                DefaultTableModel model, JTable birthdayTable,
+                JTable businessTable, JTabbedPane jTabbedPane, LogImpl logModel) {
+            super(checkBox);
+            buttonOk = new JButton();
+            buttonOk.setOpaque(true);
+            this.buttonName = buttonName;
+            this.model = model;
+            this.birthdayTable = birthdayTable;
+            this.businessTable = businessTable;
+            this.logModel = logModel;
+            this.jTabbedPane = jTabbedPane;
+            buttonOk.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
                 }
-                editingFrame.setVisible(true);
-            } else if (buttonName.equals("Remove")) {
-                if (JOptionPane.showConfirmDialog(null,
-                        "you want to remove this task?",
-                        "Removing task",
-                        JOptionPane.OK_CANCEL_OPTION) == 0) {
-                    Runnable removeRow = new Runnable() {
-                        public void run() {
-                            if (jTabbedPane.getSelectedIndex() == 0) {
-                                logModel.remove(birthdayTable.getSelectedRow());
-                                model.removeRow(birthdayTable.getSelectedRow());
-                            } else {
-                                if (birthdayTable.getRowCount() > 0) {
-                                    logModel.remove(birthdayTable.getRowCount()
-                                            + businessTable.getSelectedRow() - 1);
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            if (isSelected) {
+                buttonOk.setForeground(table.getSelectionForeground());
+                buttonOk.setBackground(table.getSelectionBackground());
+            } else {
+                buttonOk.setForeground(table.getForeground());
+                buttonOk.setBackground(table.getBackground());
+            }
+            label = (value == null) ? "" : value.toString();
+            buttonOk.setText(label);
+            isPushed = true;
+            return buttonOk;
+        }
+
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                BrowsingTaskDialog browsingFrame;
+                EditingTaskDialog editingFrame;
+                if (buttonName.equals("Detailed viewing")) {
+                    if (jTabbedPane.getSelectedIndex() == 0) {
+                        browsingFrame = new BrowsingTaskDialog(
+                                logModel.get(birthdayTable.getSelectedRow()));
+                    } else {
+                        browsingFrame = new BrowsingTaskDialog(
+                                logModel.get(birthdayTable.getRowCount()
+                                + businessTable.getSelectedRow()));
+                    }
+                    browsingFrame.setVisible(true);
+                } else if (buttonName.equals("Detailed editing")) {
+                    if (jTabbedPane.getSelectedIndex() == 0) {
+                        editingFrame = new EditingTaskDialog(
+                                logModel.get(birthdayTable.getSelectedRow()));
+                    } else {
+                        editingFrame = new EditingTaskDialog(
+                                logModel.get(birthdayTable.getRowCount()
+                                + businessTable.getSelectedRow()));
+                    }
+                    editingFrame.setVisible(true);
+                } else if (buttonName.equals("Remove")) {
+                    if (JOptionPane.showConfirmDialog(null,
+                            "you want to remove this task?",
+                            "Removing task",
+                            JOptionPane.OK_CANCEL_OPTION) == 0) {
+                        Runnable removeRow = new Runnable() {
+                            public void run() {
+                                if (jTabbedPane.getSelectedIndex() == 0) {
+                                    logModel.remove(birthdayTable.getSelectedRow());
+                                    model.removeRow(birthdayTable.getSelectedRow());
                                 } else {
-                                    logModel.remove(businessTable.getSelectedRow());
+                                    if (birthdayTable.getRowCount() > 0) {
+                                        logModel.remove(birthdayTable.getRowCount()
+                                                + businessTable.getSelectedRow() - 1);
+                                    } else {
+                                        logModel.remove(businessTable.getSelectedRow());
+                                    }
+                                    model.removeRow(businessTable.getSelectedRow());
                                 }
-                                model.removeRow(businessTable.getSelectedRow());
                             }
-                        }
-                    };
-                    SwingUtilities.invokeLater(removeRow);
+                        };
+                        SwingUtilities.invokeLater(removeRow);
+                    }
                 }
             }
+            isPushed = false;
+            return new String(label);
         }
-        isPushed = false;
-        return new String(label);
-    }
 
-    public boolean stopCellEditing() {
-        isPushed = false;
-        return super.stopCellEditing();
-    }
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
 
-    protected void fireEditingStopped() {
-        super.fireEditingStopped();
-    }
-}
-
-class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
-
-    //остаётся прицепить дату и время, которые загружаются из файла
-    private JSpinner spinner;
-    private int clickCountToStart;
-    private Date now;
-    private String columnName;
-
-    protected SpinnerInTable(String columnName) {
-        clickCountToStart = 2;
-        now = new Date();
-        this.columnName = columnName;
-        SpinnerDateModel sdm = new SpinnerDateModel(now, null, null, Calendar.DAY_OF_MONTH);
-        spinner = new JSpinner(sdm);
-        if (columnName.equals("Time")) {
-            spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
-        } else if (columnName.equals("Date")) {
-            spinner.setEditor(new JSpinner.DateEditor(spinner, "dd.MM.yyyy"));
+        protected void fireEditingStopped() {
+            super.fireEditingStopped();
         }
     }
 
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        // System.out.println(value.toString());
-        // spinner.setValue(now); //парисить value, доставать дату и время
-        return spinner;
-    }
+    class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
 
-    public Object getCellEditorValue() {
-        String s = spinner.getValue().toString();
-        String[] ss;
-        ss = s.split(" ");
-        if (columnName.equals("Time")) {
-            return ss[3];
-        } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(ss[2]).append(".").append(ss[1]).append(".").append(ss[5]);
-            return sb.toString();
-        }
-    }
+        //остаётся прицепить дату и время, которые загружаются из файла
+        private JSpinner spinner;
+        private int clickCountToStart;
+        private Date now;
+        private String columnName;
 
-    public boolean isCellEditable(EventObject anEvent) {
-        if (anEvent instanceof MouseEvent) {
-            return ((MouseEvent) anEvent).getClickCount() >= clickCountToStart;
+        protected SpinnerInTable(String columnName) {
+            clickCountToStart = 2;
+            now = new Date();
+            this.columnName = columnName;
+            SpinnerDateModel sdm = new SpinnerDateModel(now, null, null, Calendar.DAY_OF_MONTH);
+            spinner = new JSpinner(sdm);
+            if (columnName.equals("Time")) {
+                spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
+            } else if (columnName.equals("Date")) {
+                spinner.setEditor(new JSpinner.DateEditor(spinner, "dd.MM.yyyy"));
+            }
         }
-        return true;
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            // System.out.println(value.toString());
+            // spinner.setValue(now); //парисить value, доставать дату и время
+            return spinner;
+        }
+
+        public Object getCellEditorValue() {
+            String s = spinner.getValue().toString();
+            String[] ss;
+            ss = s.split(" ");
+            if (columnName.equals("Time")) {
+                return ss[3];
+            } else {
+                StringBuilder sb = new StringBuilder();
+                sb.append(ss[2]).append(".").append(ss[1]).append(".").append(ss[5]);
+                return sb.toString();
+            }
+        }
+
+        public boolean isCellEditable(EventObject anEvent) {
+            if (anEvent instanceof MouseEvent) {
+                return ((MouseEvent) anEvent).getClickCount() >= clickCountToStart;
+            }
+            return true;
+        }
     }
 }
