@@ -24,7 +24,6 @@ public class ProcessingClientThread implements Runnable {
     public ProcessingClientThread(Socket s) {
         incoming = s;
         serverLogModel = new LogImpl();
-        manipulationOverUser = new ManipulationsOverUsers();
         xml = new XMLStorage();
     }
     
@@ -103,7 +102,6 @@ public class ProcessingClientThread implements Runnable {
     private LogImpl serverLogModel;
     private XMLStorage xml;
     private String login;
-    private ManipulationsOverUsers manipulationOverUser;
     private Date serverLastModified;
     private Date userLastModified;
 }
