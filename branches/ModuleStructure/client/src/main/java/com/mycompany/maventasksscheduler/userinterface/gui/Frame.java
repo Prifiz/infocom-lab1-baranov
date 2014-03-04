@@ -4,7 +4,6 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
-import com.mycompany.maventasksscheduler.MainWindow;
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
