@@ -68,7 +68,7 @@ public class ProcessingClientThread implements Runnable {
                     try {
                         o = ois.readObject();
                     } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                        //Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if (o instanceof String) {
                         userExist = userExists((String) o);
