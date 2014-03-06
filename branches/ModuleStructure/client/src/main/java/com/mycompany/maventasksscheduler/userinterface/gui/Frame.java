@@ -441,11 +441,11 @@ class Frame extends JFrame {
                                 new LogsSynchronized().setVisible(true);
                             }
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                            //Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         // }
                     } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                       // Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } finally {
                     s.close();
@@ -610,7 +610,7 @@ class Frame extends JFrame {
                     try {
                         getSystemTray().add(icon);
                     } catch (AWTException e1) {
-                        e1.printStackTrace();
+                       // e1.printStackTrace();
                     }
                 }
             });
@@ -634,13 +634,13 @@ class Frame extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+           // java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
