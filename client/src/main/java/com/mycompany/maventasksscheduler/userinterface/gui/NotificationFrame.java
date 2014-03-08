@@ -80,11 +80,13 @@ public class NotificationFrame extends javax.swing.JFrame {
 
     private void postponeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postponeButtonActionPerformed
         task.setStatus(Task.Status.POSTPONED);
+        super.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_postponeButtonActionPerformed
 
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
         task.setStatus(Task.Status.COMPLETE);
+        super.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_finishButtonActionPerformed
 
