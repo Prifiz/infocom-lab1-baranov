@@ -12,26 +12,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Сергей
  */
-public class ProcessingClientThread implements Runnable {
-    
+public class ProcessingClientThread extends Thread {
+
     public ProcessingClientThread(Socket s) {
         incoming = s;
         serverLogModel = new LogImpl();
         xml = new XMLStorage();
     }
-    
+
     public boolean userExists(String login) {
         File file = new File("users\\" + login);
         return file.exists();
     }
-    
+
     private Date lastModified(String login) {
         File file1 = new File("users\\" + login + "\\birthdays\\birthdayTasks.xml");
         File file2 = new File("users\\" + login + "\\business\\businessTasks.xml");
@@ -43,7 +41,7 @@ public class ProcessingClientThread implements Runnable {
             return date2;
         }
     }
-    
+
     private void synchronizeLogs() {
         System.out.println("User - " + login + " want synchronize sogs");
         if (userLastModified.compareTo(serverLastModified) > 0) {
@@ -55,7 +53,8 @@ public class ProcessingClientThread implements Runnable {
             userLogModel = serverLogModel;
         }
     }
-    
+
+    @Override
     public void run() {
         try {
             try {
@@ -92,6 +91,7 @@ public class ProcessingClientThread implements Runnable {
                     }
                 }
             } finally {
+                login = "";
                 incoming.close();
             }
         } catch (IOException e) {

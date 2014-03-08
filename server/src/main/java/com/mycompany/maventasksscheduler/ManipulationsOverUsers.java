@@ -25,12 +25,16 @@ public class ManipulationsOverUsers {
         return file.exists();
     }
 
-    public void showUsers() {
+    public int showUsers() {
         File folder = new File("users");
-        File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            System.out.println(i + " " + listOfFiles[i].getName());
+        if (folder.exists()) {
+            File[] listOfFiles = folder.listFiles();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                System.out.println(i + " " + listOfFiles[i].getName());
+            }
+            return listOfFiles.length;
         }
+        return 0;
     }
 
     public void removeUser(String login) {
@@ -40,7 +44,7 @@ public class ManipulationsOverUsers {
             System.out.println("Directory does not exist.");
         } else {
 
-                delete("user\\",true);
+            delete("user\\", true);
         }
 
         System.out.println("Done");
@@ -66,7 +70,7 @@ public class ManipulationsOverUsers {
         return file.delete();
     }
 
-public static void delete(File file)
+    public static void delete(File file)
             throws IOException {
 
         if (file.isDirectory()) {
@@ -83,7 +87,7 @@ public static void delete(File file)
                 String files[] = file.list();
                 for (int i = 0; i < files.length; i++) {
                     System.out.println(files[i]);
-                    
+
                 }
                 for (String temp : files) {
                     //construct the file structure
