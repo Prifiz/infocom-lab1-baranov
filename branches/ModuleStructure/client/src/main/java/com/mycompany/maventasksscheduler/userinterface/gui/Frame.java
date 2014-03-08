@@ -8,7 +8,6 @@ import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +25,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import java.awt.AWTException;
 import java.awt.Image;
@@ -36,7 +34,6 @@ import java.awt.SystemTray;
 import static java.awt.SystemTray.getSystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -46,16 +43,8 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.EventObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
-import javax.swing.table.TableCellEditor;
 
 /**
  *
@@ -87,6 +76,7 @@ class Frame extends JFrame {
         clock.setFont(new Font("Algerian", 1, 20));
         submitButton = new JButton();
         addButton = new JButton();
+        addFlag = new MyFlag();
         connectWithServerButton = new JButton();
         jScrollPane1 = new JScrollPane();
         jTabbedPane2 = new JTabbedPane();
@@ -437,7 +427,16 @@ class Frame extends JFrame {
                         try {
                             o = ois.readObject();
                             if (o instanceof LogImpl) {
-                                logModel = (LogImpl) o;
+                                while (logModel.getSize() > 0) {
+                                    logModel.removeAll();
+                                }
+                                LogImpl log = (LogImpl) o;
+                                for (int i = 0; i < log.getSize(); i++) {
+                                    logModel.add(log.get(i));
+                                }
+                                notification = new SystemNotification(logModel);
+                                initializeTables();
+                                //logModel = (LogImpl) o;
                                 new LogsSynchronized().setVisible(true);
                             }
                         } catch (ClassNotFoundException ex) {
@@ -445,7 +444,7 @@ class Frame extends JFrame {
                         }
                         // }
                     } catch (ClassNotFoundException ex) {
-                       // Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                        // Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } finally {
                     s.close();
@@ -513,7 +512,15 @@ class Frame extends JFrame {
                 for (int i = 0; i < taskCount; i++) {
                     modBusinessTask.removeRow(0);
                 }
-                logModel = xml.uploadData("my tasks");
+                while (logModel.getSize() > 0) {
+                    logModel.removeAll();
+                }
+                LogImpl log = xml.uploadData("my tasks");
+                for (int i = 0; i < log.getSize(); i++) {
+                    logModel.add(log.get(i));
+                }
+                notification = new SystemNotification(logModel);
+                notification.run();
                 initializeTables();
             }
         };
@@ -538,15 +545,42 @@ class Frame extends JFrame {
     private void addButtonActionPerformed() {
         Runnable addRow = new Runnable() {
             public void run() {
+                Task task;
                 if (jTabbedPane2.getSelectedIndex() == 0) {
-                    Vector<String> newRow = new Vector<String>();
-                    modBirthdayTask.addRow(newRow);
-                    logModel.add(modBirthdayTask.getRowCount() - 1, new BirthdayTask());
+                    task = new BirthdayTask();
+                    new AddBirthdayTask(addFlag, task).setVisible(true);
+                    if (addFlag.getFlag()) {
+                        Vector<String> newRow = new Vector<String>();
+                        newRow.add(task.getContact().getName());
+                        newRow.add(task.getDate().getDayOfMonth() + "."
+                                + task.getDate().getMonthOfYear() + "."
+                                + task.getDate().getYear());
+                        newRow.add(task.getDate().getHourOfDay() + ":"
+                                + task.getDate().getMinuteOfHour());
+                        newRow.add(task.getPriority().toString());
+                        modBirthdayTask.addRow(newRow);
+                        logModel.add(modBirthdayTask.getRowCount() - 1,
+                                task);
+                        addFlag.setFlag(false);
+                    }
                 } else if (jTabbedPane2.getSelectedIndex() == 1) {
-                    Vector<String> newRow = new Vector<String>();
-                    modBusinessTask.addRow(newRow);
-                    logModel.add(new BusinessTask());
+                    task = new BusinessTask();
+                    new AddBusinessTask(addFlag, task).setVisible(true);
+                    if (addFlag.getFlag()) {
+                        Vector<String> newRow = new Vector<String>();
+                        newRow.add(((BusinessTask) task).getTaskName());
+                        newRow.add(task.getDate().getDayOfMonth() + "."
+                                + task.getDate().getMonthOfYear() + "."
+                                + task.getDate().getYear());
+                        newRow.add(task.getDate().getHourOfDay() + ":"
+                                + task.getDate().getMinuteOfHour());
+                        newRow.add(task.getPriority().toString());
+                        modBusinessTask.addRow(newRow);
+                        logModel.add(task);
+                        addFlag.setFlag(false);
+                    }
                 }
+                //revalidate();
             }
         };
         SwingUtilities.invokeLater(addRow);
@@ -610,7 +644,7 @@ class Frame extends JFrame {
                     try {
                         getSystemTray().add(icon);
                     } catch (AWTException e1) {
-                       // e1.printStackTrace();
+                        // e1.printStackTrace();
                     }
                 }
             });
@@ -634,7 +668,7 @@ class Frame extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-           // java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
             //java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -656,6 +690,7 @@ class Frame extends JFrame {
     private JButton submitButton;
     private JButton connectWithServerButton;
     private JButton addButton;
+    private MyFlag addFlag;
     private DayOfWeek dayOfWeek;
     private DigitalClockLabel clock;
     private JMenu fileMenu;
@@ -675,204 +710,21 @@ class Frame extends JFrame {
     private LogImpl logModel;
     private XMLStorage xml;
     private SystemNotification notification;
-    // End of variables declaration                   
+}
 
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+class MyFlag {
 
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
+    private boolean flag;
 
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
-            if (isSelected) {
-//            setForeground(table.getSelectionForeground());
-//            setBackground(table.getSelectionBackground());
-            } else {
-//            setForeground(table.getForeground());
-//            setBackground(UIManager.getColor("Button.background"));
-            }
-            setText((value == null) ? "" : value.toString());
-            return this;
-        }
+    MyFlag() {
+        flag = false;
     }
 
-    /**
-     * @version 1.0 11/09/98
-     */
-    class ButtonEditor extends DefaultCellEditor {
-
-        protected JButton buttonOk;
-        private String label;
-        private boolean isPushed;
-        private String buttonName;
-        private DefaultTableModel model;
-        private JTable birthdayTable;
-        private JTable businessTable;
-        private JTabbedPane jTabbedPane;
-        private LogImpl logModel;
-
-        public ButtonEditor(JCheckBox checkBox, String buttonName,
-                JTable birthdayTable, JTable businessTable, JTabbedPane jTabbedPane,
-                LogImpl logModel) {
-            super(checkBox);
-            buttonOk = new JButton();
-            buttonOk.setOpaque(true);
-            this.buttonName = buttonName;
-            this.model = new DefaultTableModel();
-            this.birthdayTable = birthdayTable;
-            this.businessTable = businessTable;
-            this.logModel = logModel;
-            this.jTabbedPane = jTabbedPane;
-            buttonOk.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                }
-            });
-        }
-
-        public ButtonEditor(JCheckBox checkBox, String buttonName,
-                DefaultTableModel model, JTable birthdayTable,
-                JTable businessTable, JTabbedPane jTabbedPane, LogImpl logModel) {
-            super(checkBox);
-            buttonOk = new JButton();
-            buttonOk.setOpaque(true);
-            this.buttonName = buttonName;
-            this.model = model;
-            this.birthdayTable = birthdayTable;
-            this.businessTable = businessTable;
-            this.logModel = logModel;
-            this.jTabbedPane = jTabbedPane;
-            buttonOk.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                }
-            });
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-            if (isSelected) {
-                buttonOk.setForeground(table.getSelectionForeground());
-                buttonOk.setBackground(table.getSelectionBackground());
-            } else {
-                buttonOk.setForeground(table.getForeground());
-                buttonOk.setBackground(table.getBackground());
-            }
-            label = (value == null) ? "" : value.toString();
-            buttonOk.setText(label);
-            isPushed = true;
-            return buttonOk;
-        }
-
-        public Object getCellEditorValue() {
-            if (isPushed) {
-                BrowsingTaskDialog browsingFrame;
-                EditingTaskDialog editingFrame;
-                if (buttonName.equals("Detailed viewing")) {
-                    if (jTabbedPane.getSelectedIndex() == 0) {
-                        browsingFrame = new BrowsingTaskDialog(
-                                logModel.get(birthdayTable.getSelectedRow()));
-                    } else {
-                        browsingFrame = new BrowsingTaskDialog(
-                                logModel.get(birthdayTable.getRowCount()
-                                + businessTable.getSelectedRow()));
-                    }
-                    browsingFrame.setVisible(true);
-                } else if (buttonName.equals("Detailed editing")) {
-                    if (jTabbedPane.getSelectedIndex() == 0) {
-                        editingFrame = new EditingTaskDialog(
-                                logModel.get(birthdayTable.getSelectedRow()));
-                    } else {
-                        editingFrame = new EditingTaskDialog(
-                                logModel.get(birthdayTable.getRowCount()
-                                + businessTable.getSelectedRow()));
-                    }
-                    editingFrame.setVisible(true);
-                } else if (buttonName.equals("Remove")) {
-                    if (JOptionPane.showConfirmDialog(null,
-                            "you want to remove this task?",
-                            "Removing task",
-                            JOptionPane.OK_CANCEL_OPTION) == 0) {
-                        Runnable removeRow = new Runnable() {
-                            public void run() {
-                                if (jTabbedPane.getSelectedIndex() == 0) {
-                                    logModel.remove(birthdayTable.getSelectedRow());
-                                    model.removeRow(birthdayTable.getSelectedRow());
-                                } else {
-                                    if (birthdayTable.getRowCount() > 0) {
-                                        logModel.remove(birthdayTable.getRowCount()
-                                                + businessTable.getSelectedRow() - 1);
-                                    } else {
-                                        logModel.remove(businessTable.getSelectedRow());
-                                    }
-                                    model.removeRow(businessTable.getSelectedRow());
-                                }
-                            }
-                        };
-                        SwingUtilities.invokeLater(removeRow);
-                    }
-                }
-            }
-            isPushed = false;
-            return new String(label);
-        }
-
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-
-        protected void fireEditingStopped() {
-            super.fireEditingStopped();
-        }
+    public boolean getFlag() {
+        return flag;
     }
 
-    class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
-
-        //остаётся прицепить дату и время, которые загружаются из файла
-        private JSpinner spinner;
-        private int clickCountToStart;
-        private Date now;
-        private String columnName;
-
-        protected SpinnerInTable(String columnName) {
-            clickCountToStart = 2;
-            now = new Date();
-            this.columnName = columnName;
-            SpinnerDateModel sdm = new SpinnerDateModel(now, null, null, Calendar.DAY_OF_MONTH);
-            spinner = new JSpinner(sdm);
-            if (columnName.equals("Time")) {
-                spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
-            } else if (columnName.equals("Date")) {
-                spinner.setEditor(new JSpinner.DateEditor(spinner, "dd.MM.yyyy"));
-            }
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            // System.out.println(value.toString());
-            // spinner.setValue(now); //парисить value, доставать дату и время
-            return spinner;
-        }
-
-        public Object getCellEditorValue() {
-            String s = spinner.getValue().toString();
-            String[] ss;
-            ss = s.split(" ");
-            if (columnName.equals("Time")) {
-                return ss[3];
-            } else {
-                StringBuilder sb = new StringBuilder();
-                sb.append(ss[2]).append(".").append(ss[1]).append(".").append(ss[5]);
-                return sb.toString();
-            }
-        }
-
-        public boolean isCellEditable(EventObject anEvent) {
-            if (anEvent instanceof MouseEvent) {
-                return ((MouseEvent) anEvent).getClickCount() >= clickCountToStart;
-            }
-            return true;
-        }
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

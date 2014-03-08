@@ -22,25 +22,14 @@ public class SystemNotification implements Runnable {
     private Timer timer;
     private NotificationFrame notificationFrame;
 
-    class RemindTask extends TimerTask {
-
-        private Task task;
-
-        RemindTask(Task task) {
-            this.task = task;
-        }
-
-        public void run() {
-            notificationFrame = new NotificationFrame(task);
-            notificationFrame.setVisible(true);
-            timer.cancel(); //Terminate the timer thread
-        }
-    }
-
     public SystemNotification(LogImpl logModel) {
         this.logModel = logModel;
         tasks = new LogImpl();
         dateTime = new DateTime();
+    }
+
+    public void run() {
+        tasks = notification();
     }
 
     public LogImpl notification() {
@@ -65,7 +54,18 @@ public class SystemNotification implements Runnable {
         return tasks;
     }
 
-    public void run() {
-        tasks = notification();
+    class RemindTask extends TimerTask {
+
+        private Task task;
+
+        RemindTask(Task task) {
+            this.task = task;
+        }
+
+        public void run() {
+            notificationFrame = new NotificationFrame(task);
+            notificationFrame.setVisible(true);
+            timer.cancel(); //Terminate the timer thread
+        }
     }
 }
