@@ -82,6 +82,7 @@ public class MainController {
                     if (!server.isAlive()) {
                         server.start();
                     }
+                    server.setActive(true);
                     userInterface.serverIsLaunched();
                     //start server
                     break;

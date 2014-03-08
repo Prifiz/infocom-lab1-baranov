@@ -34,6 +34,7 @@ public class ChooseUserController {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
+        int usersCount = 0;
         menu:
         for (;;) {
             chooseUserUI.showAddMenu();
@@ -45,15 +46,22 @@ public class ChooseUserController {
                 case 1:
                     break menu;
                 case 2:
-                    chooseUserUI.enterUserNumber();
-                    manipulationOverUser.showUsers();
-                    enteringString = sc.nextLine();
-                    if (!manipulationOverUser.userExists(enteringString)) {
-                        //если существует пользователь с таким именем,тогда переходим к редактированию его журнала
-                        userMainController = new UserMainController(enteringString);
-                        userMainController.start();
+                    usersCount = manipulationOverUser.showUsers();
+                    if (usersCount > 0) {
+                        chooseUserUI.enterUserNumber();
+                        enteringString = sc.nextLine();
+                        if (manipulationOverUser.userExists("users\\"
+                                + enteringString)) {
+                            //если существует пользователь с таким именем,
+                            //тогда переходим к редактированию его журнала
+                            userMainController = new UserMainController(
+                                    enteringString);
+                            userMainController.start();
+                        } else {
+                            chooseUserUI.userNotExist();
+                        }
                     } else {
-                        chooseUserUI.userNotExist();
+                        chooseUserUI.usersNotExist();
                     }
                     break;
                 default:

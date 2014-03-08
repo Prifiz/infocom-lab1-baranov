@@ -17,15 +17,19 @@ public class Server extends Thread {
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.active = true;
+        this.setDaemon(true);
     }
 
+    @Override
     public void run() {
         try {
-            while (active) {
-                Socket incoming = serverSocket.accept();
-                Runnable run = new ProcessingClientThread(incoming);
-                Thread t = new Thread(run);
-                t.start();
+            while (true) {
+                while (active) {
+                    Socket incoming = serverSocket.accept();
+                    Thread t = new ProcessingClientThread(incoming);
+                    t.setDaemon(active);
+                    t.start();
+                }
             }
         } catch (IOException e) {
             //e.printStackTrace();
@@ -36,5 +40,5 @@ public class Server extends Thread {
         active = state;
     }
     private ServerSocket serverSocket;
-    private boolean active;
+    private volatile boolean active;
 }

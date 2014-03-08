@@ -16,6 +16,10 @@ public class ChooseUserConsoleUI {
                 + "\n1. Back to main menu"
                 + "\n2. Choose user\n");
     }
+    
+    public void usersNotExist() {
+        System.out.println("Users doesn't exist");
+    }
 
     public void enterUserNumber() {
         System.out.println("Enter user's number");
