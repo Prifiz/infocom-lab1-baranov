@@ -15,22 +15,22 @@ import java.util.Scanner;
  * @author Сергей
  */
 public class ServerInfoController {
-    
+
     private Thread thread;
     private boolean flag;
     private ControlEnteredInformation control;
     private ServerInfoConsoleUI serverInfoConsoleUI;
     private MainConsoleUI userInterface;
-    
-    public ServerInfoController(Thread thread){
+
+    public ServerInfoController(Thread thread) {
         flag = true;
         this.thread = thread;
         control = new ControlEnteredInformation();
         serverInfoConsoleUI = new ServerInfoConsoleUI();
         userInterface = new MainConsoleUI();
     }
-    
-    public void start() throws IOException {        
+
+    public void start() throws IOException {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
@@ -49,12 +49,12 @@ public class ServerInfoController {
                     System.out.println(thread.getThreadGroup().activeGroupCount());
                     break;
                 case 3:
-                    
+
                     break;
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
-    
 }

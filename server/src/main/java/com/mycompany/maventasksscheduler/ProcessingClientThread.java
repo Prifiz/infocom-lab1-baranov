@@ -43,13 +43,13 @@ public class ProcessingClientThread extends Thread {
     }
 
     private void synchronizeLogs() {
-        System.out.println("User - " + login + " want synchronize sogs");
+        System.out.println("User - " + login + " want synchronize logs");
         if (userLastModified.compareTo(serverLastModified) > 0) {
-            System.out.println("user have last modified");
+            System.out.println("user have last modified \n");
             serverLogModel = userLogModel;
             xml.saveData(serverLogModel, login);
         } else if (userLastModified.compareTo(serverLastModified) <= 0) {
-            System.out.println("server has last modified");
+            System.out.println("server has last modified \n");
             userLogModel = serverLogModel;
         }
     }

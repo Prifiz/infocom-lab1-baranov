@@ -108,7 +108,7 @@ public class MainController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
-
 }

@@ -30,7 +30,7 @@ public class MainConsoleUI {
     }
 
     public void chooseCorrectly() {
-        System.out.println("Please, choose correctly menu point");
+        System.out.println("Please, choose correctly menu point \n");
     }
 
     public void serverIsLaunched() {

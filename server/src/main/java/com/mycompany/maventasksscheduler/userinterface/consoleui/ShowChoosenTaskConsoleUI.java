@@ -12,7 +12,7 @@ public class ShowChoosenTaskConsoleUI {
 
     public void showFileMenu() {
         System.out.println("\n You look through a task:"
-                + "\n1. Back to"
+                + "\n1. Back"
                 + "\n2. Edit task"
                 + "\n3. Remove task\n");
     }

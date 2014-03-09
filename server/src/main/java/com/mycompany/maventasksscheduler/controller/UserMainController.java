@@ -18,7 +18,7 @@ import java.util.Scanner;
  * @author Сергей
  */
 public class UserMainController {
-    
+
     private LogImpl logModel;
     private UserMainConsoleUI userInterface;
     private FileController fileController;
@@ -111,16 +111,16 @@ public class UserMainController {
                     flag = false;
                     break;
                 case 0:
-                    xml.saveData(logModel,userName);
+                    xml.saveData(logModel, userName);
                     break menu;
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
 
     public LogImpl getLog() {
         return logModel;
     }
-    
 }

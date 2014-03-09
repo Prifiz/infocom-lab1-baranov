@@ -55,6 +55,7 @@ public class AddUserController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
 }
