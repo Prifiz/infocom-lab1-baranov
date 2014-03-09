@@ -129,6 +129,7 @@ public class AddTaskController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
 }

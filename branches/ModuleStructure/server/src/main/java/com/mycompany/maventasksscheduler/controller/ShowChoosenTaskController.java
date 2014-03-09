@@ -20,7 +20,6 @@ public class ShowChoosenTaskController {
 
     private LogImpl logModel;
     private MainConsoleUI userInterface;
-    private UserMainController mainController;// будет не маин контроллер, а контроллер выбранного пользователя
     private ShowChoosenTaskConsoleUI choosetask;
     private int taskNumber;
     private ControlEnteredInformation control;
@@ -30,7 +29,6 @@ public class ShowChoosenTaskController {
         userInterface = new MainConsoleUI();
         choosetask = new ShowChoosenTaskConsoleUI();
         this.taskNumber = taskNumber;
-        mainController = new UserMainController(this.logModel);
         control = new ControlEnteredInformation(logModel);
     }
 
@@ -50,22 +48,6 @@ public class ShowChoosenTaskController {
             }
             switch (key) {
                 case 1:
-                    nextMenu:
-                    for (;;) {
-                        choosetask.showBackTO();
-                        enteringString = sc.nextLine();
-                        if (control.checkString(enteringString)) {
-                            backTo = Integer.parseInt(enteringString);
-                        }
-                        switch (backTo) {
-                            case 1:
-                                break nextMenu;
-                            case 2:
-                                break nextMenu;
-                            default:
-                                userInterface.chooseCorrectly();
-                        }
-                    }
                     break menu;
                 case 2:
                     nextMenu:
@@ -77,7 +59,9 @@ public class ShowChoosenTaskController {
                         }
                         switch (backTo) {
                             case 1:
-                                logModel.editAllDataTask(taskNumber);
+                                System.out.println("This function in this "
+                                        + "version doesn't work");
+                                //logModel.editAllDataTask(taskNumber);
                                 break nextMenu;
                             case 2:
                                 System.out.println("This function in this "
@@ -91,30 +75,11 @@ public class ShowChoosenTaskController {
                 case 3:
                     logModel.remove(taskNumber);
                     choosetask.taskRemoved();
-                    nextMenu:
-                    for (;;) {
-                        choosetask.showBackTO();
-                        enteringString = sc.nextLine();
-                        if (control.checkString(enteringString)) {
-                            backTo = Integer.parseInt(enteringString);
-                        }
-                        switch (backTo) {
-                            case 1:
-                                break menu;
-                            case 2:
-                                break menu;
-                            default:
-                                userInterface.chooseCorrectly();
-                        }
-                    }
-
-                //break;
+                    break menu;
                 default:
                     userInterface.chooseCorrectly();
             }
-        }
-        if (backTo == 1) {
-            mainController.start();
+            key = 33;
         }
     }
 }

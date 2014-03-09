@@ -4,7 +4,6 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-
 import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
@@ -69,6 +68,7 @@ public class ChooseTaskController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
             if (foundTasks.isEmpty()) {
                 userInterface.showAll(logModel);
             } else if (foundTasks.size() > 0) {

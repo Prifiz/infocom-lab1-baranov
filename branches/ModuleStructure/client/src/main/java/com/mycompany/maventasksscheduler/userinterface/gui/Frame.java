@@ -185,7 +185,7 @@ class Frame extends JFrame {
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                connectWithServer();
+                //connectWithServer();
                 notification.run();
             }
         });
@@ -384,6 +384,15 @@ class Frame extends JFrame {
             String login = JOptionPane.showInputDialog(null,
                     "Enter your login", "Connect with server",
                     JOptionPane.OK_CANCEL_OPTION);
+            while (login.equals("")) {
+                login = JOptionPane.showInputDialog(null,
+                        "Enter correctly your login",
+                        "Connect with server",
+                        JOptionPane.OK_CANCEL_OPTION);
+                if (login == null) {
+                    break;
+                }
+            }
             if (login != null) {
                 Socket s = new Socket(InetAddress.getLocalHost(), 8189);
                 s.setSoTimeout(5000);
@@ -398,51 +407,39 @@ class Frame extends JFrame {
                         Object o;
                         o = ois.readObject();
                         if (o instanceof Boolean && (Boolean) o.equals(false)) {
-                            //цикл вывода всплывающего окна, пока не будет введён верно логин,
-                            //не будет найден свободный логин или не отменено подключение к серверу
-                            loop:
-                            while (o instanceof Boolean && (Boolean) o.equals(false)) {
-                                while (login.equals("")) {
-                                    login = JOptionPane.showInputDialog(null,
-                                            "Enter correctly your login",
-                                            "Connect with server",
-                                            JOptionPane.OK_CANCEL_OPTION);
-                                    if (login == null) {
-                                        break loop;
-                                    }
-                                }
-                                oos.writeObject(login);
-                                oos.flush();
+                            new UserNotExist("user with login - " + login
+                                    + ", does not exist").setVisible(true);
+                        } else {
+                            oos.writeObject(lastModified());
+                            oos.writeObject(logModel);
+                            oos.flush();
+                            try {
                                 o = ois.readObject();
-                                if (!login.equals("")) {//на данный момент, чтобы выйти из цикла
-                                    break;          //потом будет выходить, если сервер вернёт true
-                                }
-                            }
-                        }
+                                if (o instanceof LogImpl) {
+                                    int taskCount = modBirthdayTask.getRowCount();
+                                    for (int i = 0; i < taskCount; i++) {
+                                        modBirthdayTask.removeRow(0);
+                                    }
+                                    taskCount = modBusinessTask.getRowCount();
+                                    for (int i = 0; i < taskCount; i++) {
+                                        modBusinessTask.removeRow(0);
+                                    }
+                                    while (logModel.getSize() > 0) {
+                                        logModel.removeAll();
+                                    }
+                                    LogImpl log = (LogImpl) o;
+                                    for (int i = 0; i < log.getSize(); i++) {
+                                        logModel.add(log.get(i));
+                                    }
+                                    notification = new SystemNotification(logModel);
+                                    initializeTables();
 
-                        oos.writeObject(lastModified());
-                        // if (o instanceof Boolean && (Boolean) o.equals(true)) {
-                        oos.writeObject(logModel);
-                        oos.flush();
-                        try {
-                            o = ois.readObject();
-                            if (o instanceof LogImpl) {
-                                while (logModel.getSize() > 0) {
-                                    logModel.removeAll();
+                                    new LogsSynchronized().setVisible(true);
                                 }
-                                LogImpl log = (LogImpl) o;
-                                for (int i = 0; i < log.getSize(); i++) {
-                                    logModel.add(log.get(i));
-                                }
-                                notification = new SystemNotification(logModel);
-                                initializeTables();
-                                //logModel = (LogImpl) o;
-                                new LogsSynchronized().setVisible(true);
+                            } catch (ClassNotFoundException ex) {
+                                //Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } catch (ClassNotFoundException ex) {
-                            //Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        // }
                     } catch (ClassNotFoundException ex) {
                         // Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                     }

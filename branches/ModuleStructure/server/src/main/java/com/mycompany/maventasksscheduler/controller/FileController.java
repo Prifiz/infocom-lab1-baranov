@@ -4,7 +4,6 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-
 import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -62,12 +61,13 @@ public class FileController {
                     }
                     fileUI.allTaskRemoved();
                     break;
-                case 0:
-                    xml.saveData(logModel,userName );
-                    System.exit(0);
+//                case 0:
+//                    xml.saveData(logModel, userName);
+//                    System.exit(0);
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
         return logModel;
     }

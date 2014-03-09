@@ -61,6 +61,7 @@ public class RemoveUserController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
 }

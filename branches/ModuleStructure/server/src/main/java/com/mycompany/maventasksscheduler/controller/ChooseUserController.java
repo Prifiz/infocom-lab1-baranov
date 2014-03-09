@@ -8,6 +8,7 @@ import com.mycompany.maventasksscheduler.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.ManipulationsOverUsers;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.ChooseUserConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class ChooseUserController {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
-        int usersCount = 0;
+        File[] listOfFiles;
         menu:
         for (;;) {
             chooseUserUI.showAddMenu();
@@ -46,16 +47,29 @@ public class ChooseUserController {
                 case 1:
                     break menu;
                 case 2:
-                    usersCount = manipulationOverUser.showUsers();
-                    if (usersCount > 0) {
-                        chooseUserUI.enterUserNumber();
-                        enteringString = sc.nextLine();
+                    chooseUserUI.enterUserNumber();
+                    listOfFiles = manipulationOverUser.showUsers();
+                    if (listOfFiles.length > 0) {
+                        int menuPoint = -1;
+                        while (menuPoint < 0 || menuPoint >= listOfFiles.length) {
+                            enteringString = sc.nextLine();
+                            if (control.checkString(enteringString)) {
+                                menuPoint = Integer.parseInt(enteringString);
+                                if (menuPoint < 0 || menuPoint >= listOfFiles.length) {
+                                    userInterface.chooseCorrectly();
+                                    manipulationOverUser.showUsers();
+                                }
+                            } else {
+                                userInterface.chooseCorrectly();
+                                manipulationOverUser.showUsers();
+                            }
+                        }
                         if (manipulationOverUser.userExists("users\\"
-                                + enteringString)) {
+                                + listOfFiles[menuPoint].getName())) {
                             //если существует пользователь с таким именем,
                             //тогда переходим к редактированию его журнала
                             userMainController = new UserMainController(
-                                    enteringString);
+                                    listOfFiles[menuPoint].getName());
                             userMainController.start();
                         } else {
                             chooseUserUI.userNotExist();
@@ -67,6 +81,7 @@ public class ChooseUserController {
                 default:
                     userInterface.chooseCorrectly();
             }
+            key = 33;
         }
     }
 }

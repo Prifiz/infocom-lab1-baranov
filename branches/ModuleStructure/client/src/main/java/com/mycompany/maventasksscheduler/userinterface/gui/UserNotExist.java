@@ -15,12 +15,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  *
  * @author Сергей
  */
-public class ErrorConnectFrame extends JDialog {
+public class UserNotExist extends JDialog {
 
     private JPanel panel;
 
-    public ErrorConnectFrame(String error) {
-        super(new JFrame(), "Connecting error", true);
+    public UserNotExist(String error) {
+        super(new JFrame(), "User not exist", true);
         setSize(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         panel = new JPanel();

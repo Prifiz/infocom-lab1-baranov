@@ -25,16 +25,15 @@ public class ManipulationsOverUsers {
         return file.exists();
     }
 
-    public int showUsers() {
+    public File[] showUsers() {
         File folder = new File("users");
+        File[] listOfFiles = folder.listFiles();
         if (folder.exists()) {
-            File[] listOfFiles = folder.listFiles();
             for (int i = 0; i < listOfFiles.length; i++) {
                 System.out.println(i + " " + listOfFiles[i].getName());
             }
-            return listOfFiles.length;
         }
-        return 0;
+        return listOfFiles;
     }
 
     public void removeUser(String login) {
