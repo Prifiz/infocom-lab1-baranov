@@ -431,9 +431,8 @@ class Frame extends JFrame {
                                     for (int i = 0; i < log.getSize(); i++) {
                                         logModel.add(log.get(i));
                                     }
-                                    notification = new SystemNotification(logModel);
+                                    notification.addTaskForNotification(logModel);
                                     initializeTables();
-
                                     new LogsSynchronized().setVisible(true);
                                 }
                             } catch (ClassNotFoundException ex) {
@@ -516,8 +515,7 @@ class Frame extends JFrame {
                 for (int i = 0; i < log.getSize(); i++) {
                     logModel.add(log.get(i));
                 }
-                notification = new SystemNotification(logModel);
-                notification.run();
+                notification.addTaskForNotification(logModel);
                 initializeTables();
             }
         };
