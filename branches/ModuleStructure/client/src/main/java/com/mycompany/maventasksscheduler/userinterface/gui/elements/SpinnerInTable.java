@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler.userinterface.gui;
+package com.mycompany.maventasksscheduler.userinterface.gui.elements;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
@@ -22,7 +22,7 @@ import javax.swing.table.TableCellEditor;
 /**
  * @version 1.0 11/09/98
  */
-class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
+public class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
 
     //остаётся прицепить дату и время, которые загружаются из файла
     private JSpinner spinner;
@@ -30,7 +30,7 @@ class SpinnerInTable extends AbstractCellEditor implements TableCellEditor {
     private Date now;
     private String columnName;
 
-    protected SpinnerInTable(String columnName) {
+    public SpinnerInTable(String columnName) {
         clickCountToStart = 2;
         now = new Date();
         this.columnName = columnName;

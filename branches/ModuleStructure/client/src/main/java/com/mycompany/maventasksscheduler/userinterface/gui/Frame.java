@@ -1,9 +1,20 @@
 /*
  * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * and open the template in the editor. 
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.DayOfWeek;
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.ButtonRenderer;
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.DigitalClockLabel;
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.ButtonEditor;
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.SpinnerInTable;
+import com.mycompany.maventasksscheduler.userinterface.gui.informationframe.ErrorConnectFrame;
+import com.mycompany.maventasksscheduler.userinterface.gui.informationframe.AboutProgramFrame;
+import com.mycompany.maventasksscheduler.userinterface.gui.informationframe.LogsSynchronized;
+import com.mycompany.maventasksscheduler.userinterface.gui.informationframe.ManualFrame;
+import com.mycompany.maventasksscheduler.userinterface.gui.informationframe.UserNotExist;
+import com.mycompany.maventasksscheduler.systemnotification.MessageNotification;
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -69,7 +80,7 @@ class Frame extends JFrame {
     private void initComponents() {
         xml = new XMLStorage();
         logModel = xml.uploadData("my tasks");
-        notification = new SystemNotification(logModel);
+        notification = new MessageNotification(logModel);
         dayOfWeek = new DayOfWeek();
         dayOfWeek.setFont(new Font("Algerian", 1, 20));
         clock = new DigitalClockLabel();
@@ -343,40 +354,8 @@ class Frame extends JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jScrollPane1)
-                .addGroup(layout.createSequentialGroup()
-                .addGap(0, 459, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(submitButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(connectWithServerButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(clock, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(dayOfWeek, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap()));
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(clock)
-                .addComponent(dayOfWeek)
-                .addGap(15, 15, 15)
-                .addComponent(addButton)
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(submitButton)
-                .addGap(15, 15, 15)
-                .addComponent(connectWithServerButton)
-                .addContainerGap(64, Short.MAX_VALUE)));
+        packaging();
 
-        pack();
     }// </editor-fold>   
 
     private void connectWithServer() {
@@ -452,6 +431,42 @@ class Frame extends JFrame {
             new ErrorConnectFrame("The server doesn't respond").setVisible(true);
         }
 
+    }
+
+    private void packaging() {
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jScrollPane1)
+                .addGroup(layout.createSequentialGroup()
+                .addGap(0, 459, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(submitButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(connectWithServerButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(clock, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(dayOfWeek, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap()));
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(clock)
+                .addComponent(dayOfWeek)
+                .addGap(15, 15, 15)
+                .addComponent(addButton)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(submitButton)
+                .addGap(15, 15, 15)
+                .addComponent(connectWithServerButton)
+                .addContainerGap(64, Short.MAX_VALUE)));
+        pack();
     }
 
     private void initializeTables() {
@@ -704,7 +719,7 @@ class Frame extends JFrame {
     private JTable businessTable;
     private LogImpl logModel;
     private XMLStorage xml;
-    private SystemNotification notification;
+    private MessageNotification notification;
 }
 
 class MyFlag {

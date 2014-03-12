@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler.userinterface.gui;
+package com.mycompany.maventasksscheduler.userinterface.gui.elements;
 
 import java.awt.Component;
 import javax.swing.JButton;
@@ -13,7 +13,7 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author Сергей
  */
-class ButtonRenderer extends JButton implements TableCellRenderer {
+public class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public ButtonRenderer() {
         setOpaque(true);

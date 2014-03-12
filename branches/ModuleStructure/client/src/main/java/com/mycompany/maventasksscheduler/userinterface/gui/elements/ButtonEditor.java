@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler.userinterface.gui;
+package com.mycompany.maventasksscheduler.userinterface.gui.elements;
 
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
+import com.mycompany.maventasksscheduler.userinterface.gui.BrowsingTaskDialog;
+import com.mycompany.maventasksscheduler.userinterface.gui.EditingTaskDialog;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Сергей
  */
-class ButtonEditor extends DefaultCellEditor {
+public class ButtonEditor extends DefaultCellEditor {
 
     protected JButton buttonOk;
     private String label;

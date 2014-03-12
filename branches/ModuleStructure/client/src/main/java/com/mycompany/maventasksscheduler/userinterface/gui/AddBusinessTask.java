@@ -83,7 +83,8 @@ public class AddBusinessTask extends JDialog {
         okButton = new JButton("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (!taskNameTextField.getText().equals("")) {//проверка на правильность введённого имени
+                //проверка на правильность введённого имени
+                if (!taskNameTextField.getText().equals("")) {
                     ((BusinessTask) task).setTaskName(taskNameTextField.getText());
                     ((BusinessTask) task).setDescription(descriptionTextField.getText());
                     task.setContact(contactNameTextField.getText(),
@@ -109,9 +110,11 @@ public class AddBusinessTask extends JDialog {
                 dispose();
             }
         });
-        //setSize(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        packaging();
+    }
 
+    private void packaging() {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,9 +199,7 @@ public class AddBusinessTask extends JDialog {
                 .addComponent(okButton)
                 .addComponent(cancelButton))
                 .addContainerGap()));
-
         pack();
-
     }
 
     private DateTime buildDateTime() {
