@@ -25,7 +25,7 @@ public class ProcessingClientThread extends Thread {
         xml = new XMLStorage();
     }
 
-    public boolean userExists(String login) {
+    private boolean userExists(String login) {
         File file = new File("users\\" + login);
         return file.exists();
     }

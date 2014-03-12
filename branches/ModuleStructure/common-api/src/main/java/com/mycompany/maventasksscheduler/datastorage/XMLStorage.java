@@ -30,12 +30,12 @@ import org.joda.time.DateTime;
  */
 public class XMLStorage implements Storage {
 
-    public Document createDocument() {
+    private Document createDocument() {
         Element tasks = new Element("tasks");
         return new Document(tasks);
     }
 
-    public void outPutXML(Document tasks, String path) {
+    private void outPutXML(Document tasks, String path) {
         try {
             XMLOutputter xmlOutput = new XMLOutputter();
             xmlOutput.setFormat(Format.getPrettyFormat());
@@ -45,7 +45,7 @@ public class XMLStorage implements Storage {
         }
     }
 
-    public void createDir(String path) {
+    private void createDir(String path) {
         File file = new File(path);
         if (!file.exists()) {
             File dir = file.getParentFile();
@@ -172,7 +172,7 @@ public class XMLStorage implements Storage {
         return element;
     }
 
-    public List<Task> openAndReadXML(String path, String children) {
+    private List<Task> openAndReadXML(String path, String children) {
         SAXBuilder saxBuilder = new SAXBuilder();
         File fileBirthdays = new File(path);
         List<Task> task = new LinkedList();

@@ -196,7 +196,7 @@ public class LogImpl implements Log, Cloneable, java.io.Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this.getSize() == ((LogImpl) o).getSize()) {
+        if (o instanceof LogImpl && this.getSize() == ((LogImpl) o).getSize()) {
             for (int i = 0; i < this.getSize(); i++) {
                 if (!this.get(i).equals(((LogImpl) o).get(i))) {
                     return false;
