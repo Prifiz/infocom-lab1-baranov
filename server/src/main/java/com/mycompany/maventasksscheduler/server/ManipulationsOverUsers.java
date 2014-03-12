@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler;
+package com.mycompany.maventasksscheduler.server;
 
 import java.io.File;
 import java.io.FileWriter;

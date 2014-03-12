@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.ChooseTaskConsoleUI;

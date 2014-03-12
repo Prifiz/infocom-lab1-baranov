@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler;
+package com.mycompany.maventasksscheduler.server;
 
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
@@ -31,8 +31,10 @@ public class ProcessingClientThread extends Thread {
     }
 
     private Date lastModified(String login) {
-        File file1 = new File("users\\" + login + "\\birthdays\\birthdayTasks.xml");
-        File file2 = new File("users\\" + login + "\\business\\businessTasks.xml");
+        File file1 = new File("users\\" + login
+                + "\\birthdays\\birthdayTasks.xml");
+        File file2 = new File("users\\" + login
+                + "\\business\\businessTasks.xml");
         Date date1 = new Date(file1.lastModified());
         Date date2 = new Date(file2.lastModified());
         if (date1.compareTo(date2) >= 0) {
@@ -58,8 +60,10 @@ public class ProcessingClientThread extends Thread {
     public void run() {
         try {
             try {
-                ObjectInputStream ois = new ObjectInputStream(incoming.getInputStream());
-                ObjectOutputStream oos = new ObjectOutputStream(incoming.getOutputStream());
+                ObjectInputStream ois = new ObjectInputStream(
+                        incoming.getInputStream());
+                ObjectOutputStream oos = new ObjectOutputStream(
+                        incoming.getOutputStream());
                 Object o = null;
                 boolean userExist;
                 login = "";
@@ -67,7 +71,6 @@ public class ProcessingClientThread extends Thread {
                     try {
                         o = ois.readObject();
                     } catch (ClassNotFoundException ex) {
-                        //Logger.getLogger(ProcessingClientThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if (o instanceof String) {
                         userExist = userExists((String) o);

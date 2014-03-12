@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.BirthdayTask;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.Contact;
