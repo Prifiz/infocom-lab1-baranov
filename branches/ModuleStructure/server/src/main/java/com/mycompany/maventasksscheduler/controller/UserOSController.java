@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ClearConsole;
+import com.mycompany.maventasksscheduler.serviceinfo.ClearConsole;
 import java.io.IOException;
 
 /**

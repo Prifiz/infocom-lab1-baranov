@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler;
+package com.mycompany.maventasksscheduler.serviceinfo;
 
-import com.mycompany.maventasksscheduler.View.CLibrary;
+import com.mycompany.maventasksscheduler.serviceinfo.View.CLibrary;
 import com.sun.jna.Library;
 import java.io.IOException;
 import com.sun.jna.Native;

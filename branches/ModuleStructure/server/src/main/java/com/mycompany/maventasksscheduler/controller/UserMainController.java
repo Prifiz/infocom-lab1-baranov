@@ -4,7 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.datastorage.XMLStorage;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
@@ -27,7 +27,6 @@ public class UserMainController {
     private ControlEnteredInformation control;
     private ChooseTaskController chooseTask;
     private XMLStorage xml;
-    private NotificationController notificationController;
     private UserOSController userOSController;
     private boolean flag;
     private String userName;
@@ -38,7 +37,6 @@ public class UserMainController {
         logModel = xml.uploadData(userName);
         userInterface = new UserMainConsoleUI();
         control = new ControlEnteredInformation(logModel);
-        notificationController = new NotificationController();
         userOSController = new UserOSController();
         flag = true;
     }
@@ -48,14 +46,12 @@ public class UserMainController {
         userInterface = new UserMainConsoleUI();
         control = new ControlEnteredInformation(this.logModel);
         xml = new XMLStorage();
-        notificationController = new NotificationController();
         userOSController = new UserOSController();
         flag = true;
     }
 
     public void start() throws IOException {
         userOSController.start();
-        notificationController.start();
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";

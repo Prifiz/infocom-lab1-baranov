@@ -4,8 +4,8 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ControlEnteredInformation;
-import com.mycompany.maventasksscheduler.Server;
+import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.server.Server;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.io.IOException;
 import java.net.ServerSocket;

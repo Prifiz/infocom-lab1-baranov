@@ -4,8 +4,8 @@
  */
 package com.mycompany.maventasksscheduler.controller;
 
-import com.mycompany.maventasksscheduler.ControlEnteredInformation;
-import com.mycompany.maventasksscheduler.ManipulationsOverUsers;
+import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
+import com.mycompany.maventasksscheduler.server.ManipulationsOverUsers;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.AddUserConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import java.util.Scanner;

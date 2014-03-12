@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.maventasksscheduler;
+package com.mycompany.maventasksscheduler.controlenteredinformation;
 
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
 import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
