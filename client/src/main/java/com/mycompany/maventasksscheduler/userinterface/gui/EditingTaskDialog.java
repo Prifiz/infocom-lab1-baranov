@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.DigitalClockLabel;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -25,7 +26,7 @@ public class EditingTaskDialog extends JDialog {
         super(new JFrame(), "Editing task", true);
         setSize(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         DigitalClockLabel clock = new DigitalClockLabel();
         clock.setFont(new Font("Algerian", 1, 20));
         setBounds(200, 100, 200, 200);

@@ -41,11 +41,9 @@ public class AddBirthdayTask extends JDialog {
     private JButton cancelButton;
     private MyFlag addFlag;
     private JComboBox comboBox;
-    //private Task task;
 
     public AddBirthdayTask(MyFlag addFlag, final Task task) {
         super(new JFrame(), "Add birthday task", true);
-
         setPreferredSize(new Dimension(350, 320));
         setResizable(false);
         this.addFlag = addFlag;
@@ -76,7 +74,8 @@ public class AddBirthdayTask extends JDialog {
         okButton = new JButton("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (!contactNameTextField.getText().equals("")) {//проверка на правильность введённого имени
+                //проверка на правильность введённого имени
+                if (!contactNameTextField.getText().equals("")) {
                     task.setContact(contactNameTextField.getText(),
                             contactPhoneTextField.getText(),
                             contactEMailTextField.getText());
@@ -100,9 +99,11 @@ public class AddBirthdayTask extends JDialog {
                 dispose();
             }
         });
-        //setSize(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        packaging();
+    }
 
+    private void packaging() {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,9 +172,7 @@ public class AddBirthdayTask extends JDialog {
                 .addComponent(okButton)
                 .addComponent(cancelButton))
                 .addContainerGap(86, Short.MAX_VALUE)));
-
         pack();
-
     }
 
     private DateTime buildDateTime() {

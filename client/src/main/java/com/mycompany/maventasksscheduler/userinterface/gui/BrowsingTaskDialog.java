@@ -4,6 +4,7 @@
  */
 package com.mycompany.maventasksscheduler.userinterface.gui;
 
+import com.mycompany.maventasksscheduler.userinterface.gui.elements.DigitalClockLabel;
 import com.mycompany.maventasksscheduler.logmodel.Task;
 import java.awt.Font;
 import java.awt.GridLayout;
