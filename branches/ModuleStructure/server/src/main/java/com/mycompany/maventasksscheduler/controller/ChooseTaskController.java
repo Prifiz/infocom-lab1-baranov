@@ -62,7 +62,7 @@ public class ChooseTaskController {
                     int number = 0;
                     number = control.chooseTaskId();
                     showChoosenTask = new ShowChoosenTaskController(
-                            logModel, logModel.get(number), number);
+                            logModel, number);
                     showChoosenTask.start();
                     break;
                 default:

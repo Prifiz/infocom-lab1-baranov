@@ -35,7 +35,6 @@ public class ChooseUserController {
         Scanner sc = new Scanner(System.in);
         int key = 33;
         String enteringString = "";
-        File[] listOfFiles;
         menu:
         for (;;) {
             chooseUserUI.showAddMenu();
@@ -48,40 +47,45 @@ public class ChooseUserController {
                     break menu;
                 case 2:
                     chooseUserUI.enterUserNumber();
-                    listOfFiles = manipulationOverUser.showUsers();
-                    if (listOfFiles.length > 0) {
-                        int menuPoint = -1;
-                        while (menuPoint < 0 || menuPoint >= listOfFiles.length) {
-                            enteringString = sc.nextLine();
-                            if (control.checkString(enteringString)) {
-                                menuPoint = Integer.parseInt(enteringString);
-                                if (menuPoint < 0 || menuPoint >= listOfFiles.length) {
-                                    userInterface.chooseCorrectly();
-                                    manipulationOverUser.showUsers();
-                                }
-                            } else {
-                                userInterface.chooseCorrectly();
-                                manipulationOverUser.showUsers();
-                            }
-                        }
-                        if (manipulationOverUser.userExists("users\\"
-                                + listOfFiles[menuPoint].getName())) {
-                            //если существует пользователь с таким именем,
-                            //тогда переходим к редактированию его журнала
-                            userMainController = new UserMainController(
-                                    listOfFiles[menuPoint].getName());
-                            userMainController.start();
-                        } else {
-                            chooseUserUI.userNotExist();
-                        }
-                    } else {
-                        chooseUserUI.usersNotExist();
-                    }
+                    listOfFiles(manipulationOverUser.showUsers());
                     break;
                 default:
                     userInterface.chooseCorrectly();
             }
             key = 33;
+        }
+    }
+
+    private void listOfFiles(File[] listOfFiles) throws IOException {
+        String enteringString = "";
+        Scanner sc = new Scanner(System.in);
+        if (listOfFiles.length > 0) {
+            int menuPoint = -1;
+            while (menuPoint < 0 || menuPoint >= listOfFiles.length) {
+                enteringString = sc.nextLine();
+                if (control.checkString(enteringString)) {
+                    menuPoint = Integer.parseInt(enteringString);
+                    if (menuPoint < 0 || menuPoint >= listOfFiles.length) {
+                        userInterface.chooseCorrectly();
+                        manipulationOverUser.showUsers();
+                    }
+                } else {
+                    userInterface.chooseCorrectly();
+                    manipulationOverUser.showUsers();
+                }
+            }
+            if (manipulationOverUser.userExists("users\\"
+                    + listOfFiles[menuPoint].getName())) {
+                //если существует пользователь с таким именем,
+                //тогда переходим к редактированию его журнала
+                userMainController = new UserMainController(
+                        listOfFiles[menuPoint].getName());
+                userMainController.start();
+            } else {
+                chooseUserUI.userNotExist();
+            }
+        } else {
+            chooseUserUI.usersNotExist();
         }
     }
 }

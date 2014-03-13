@@ -6,7 +6,6 @@ package com.mycompany.maventasksscheduler.controller;
 
 import com.mycompany.maventasksscheduler.controlenteredinformation.ControlEnteredInformation;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
-import com.mycompany.maventasksscheduler.logmodel.Task;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.MainConsoleUI;
 import com.mycompany.maventasksscheduler.userinterface.consoleui.ShowChoosenTaskConsoleUI;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class ShowChoosenTaskController {
     private int taskNumber;
     private ControlEnteredInformation control;
 
-    public ShowChoosenTaskController(LogImpl logModel, Task task, int taskNumber) {
+    public ShowChoosenTaskController(LogImpl logModel, int taskNumber) {
         this.logModel = logModel;
         userInterface = new MainConsoleUI();
         choosetask = new ShowChoosenTaskConsoleUI();
