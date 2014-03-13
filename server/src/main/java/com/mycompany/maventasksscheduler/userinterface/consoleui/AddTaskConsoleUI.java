@@ -21,8 +21,8 @@ public class AddTaskConsoleUI {
     }
 
     public void enterCorrectlyDate() {
-        System.out.println("Enter correctly date, example:\n9.12.2013 or "
-                + "9-12-2013, or 9/12/2013");
+        System.out.println("Enter correctly date, example:\n9.12.2014 or "
+                + "9-12-2014, or 9/12/2014");
     }
 
     public void enterCorrectlyTime() {

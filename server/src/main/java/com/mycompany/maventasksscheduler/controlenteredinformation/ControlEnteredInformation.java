@@ -5,7 +5,6 @@
 package com.mycompany.maventasksscheduler.controlenteredinformation;
 
 import com.mycompany.maventasksscheduler.exceptions.BadEnteredDate;
-import com.mycompany.maventasksscheduler.logmodel.BusinessTask;
 import com.mycompany.maventasksscheduler.logmodel.Contact;
 import com.mycompany.maventasksscheduler.logmodel.LogImpl;
 import com.mycompany.maventasksscheduler.logmodel.Task;
@@ -35,45 +34,12 @@ public class ControlEnteredInformation implements java.io.Serializable {
         userInterface = new UserMainConsoleUI();
     }
 
-    public int[] readAndSplitDate() {
-        Scanner sc = new Scanner(System.in);
-        String date = sc.nextLine();
-        int[] intSplitDate = new int[3];
-        if (date.length() < 7) {
-            return intSplitDate;
-        }
-        String[] splitDate = new String[3];
-        if (date.contains(".") && !date.contains("-") && !date.contains("/")) {
-            splitDate = date.split("\\.");
-        } else if (date.contains("-") && !date.contains(".")
-                && !date.contains("/")) {
-            splitDate = date.split("-");
-        } else if (date.contains("/") && !date.contains(".")
-                && !date.contains("-")) {
-            splitDate = date.split("/");
-        } else {
-            return intSplitDate;
-        }
-        if (Integer.parseInt(splitDate[1]) < 2013
-                && Integer.parseInt(splitDate[1]) <= 0
-                && Integer.parseInt(splitDate[1]) >= 13
-                && Integer.parseInt(splitDate[0]) <= 0
-                && Integer.parseInt(splitDate[0]) > 31) {
-            return intSplitDate;
-        } else {
-            for (int i = 0; i < splitDate.length; i++) {
-                intSplitDate[i] = Integer.parseInt(splitDate[i]);
-            }
-            return intSplitDate;
-        }
-    }
-
     public int[] controlDate() {
         int[] splitDate = new int[3];
         while (true) {
             addConsoleUI.enterCorrectlyDate();
-            splitDate = readAndSplitDate();
-            if (splitDate[2] >= 2013 && splitDate[1] > 0
+            splitDate = ReadAndSplit.date();
+            if (splitDate[2] >= new DateTime().getYear() && splitDate[1] > 0
                     && splitDate[1] < 13 && splitDate[0] > 0
                     && splitDate[0] < 32) {
                 break;
@@ -82,28 +48,11 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return splitDate;
     }
 
-    public int[] readAndSplitTime() {
-        Scanner sc = new Scanner(System.in);
-        int[] intSplitTime = {-1, -1};
-        String time = sc.nextLine();
-        if (time.length() < 3) {
-            return intSplitTime;
-        }
-        String[] splitTime = {"-1", "-1"};
-        if (time.contains(":")) {
-            splitTime = time.split(":");
-        }
-        for (int i = 0; i < splitTime.length; i++) {
-            intSplitTime[i] = Integer.parseInt(splitTime[i]);
-        }
-        return intSplitTime;
-    }
-
     public int[] controlTime() {
         int[] splitTime = new int[2];
         while (true) {
             addConsoleUI.enterCorrectlyTime();
-            splitTime = readAndSplitTime();
+            splitTime = ReadAndSplit.time();
             if (splitTime[0] >= 0 && splitTime[0] < 25
                     && splitTime[1] >= 0 && splitTime[1] < 60) {
                 break;
@@ -144,20 +93,20 @@ public class ControlEnteredInformation implements java.io.Serializable {
             switch (key) {
                 case 1:
                     name = readContactName();
-                    contact = createContact(name);
+                    contact = new Contact(name);
                     flag = false;
                     break;
                 case 2:
                     name = readContactName();
                     phoneNumber = readContatcPhoneNumber();
-                    contact = createContact(name, phoneNumber);
+                    contact = new Contact(name, phoneNumber);
                     flag = false;
                     break;
                 case 3:
                     name = readContactName();
                     phoneNumber = readContatcPhoneNumber();
                     email = readContatcMail();
-                    contact = createContact(name, phoneNumber, email);
+                    contact = new Contact(name, phoneNumber, email);
                     flag = false;
                     break;
                 default:
@@ -257,11 +206,10 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return description;
     }
 
-    public String readContactName() {
+    private String readContactName() {
         Scanner sc = new Scanner(System.in);
         StringBuilder contactName = new StringBuilder();
         String str;
-
         for (;;) {
             addConsoleUI.enterContactName();
             contactName.append(sc.nextLine());
@@ -283,7 +231,7 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return contactName.toString();
     }
 
-    public String readContatcPhoneNumber() {
+    private String readContatcPhoneNumber() {
         Scanner sc = new Scanner(System.in);
         String phoneNumber = "";
         String enteringString = "";
@@ -300,7 +248,7 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return phoneNumber;
     }
 
-    public String readContatcMail() {
+    private String readContatcMail() {
         Scanner sc = new Scanner(System.in);
         StringBuilder contactMail = new StringBuilder();
         for (;;) {
@@ -314,19 +262,7 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return contactMail.toString();
     }
 
-    public Contact createContact(String name) {
-        return new Contact(name);
-    }
-
-    public Contact createContact(String name, String phoneNumber) {
-        return new Contact(name, phoneNumber);
-    }
-
-    public Contact createContact(String name, String phoneNumber, String email) {
-        return new Contact(name, phoneNumber, email);
-    }
-
-    public Task.Status setStatus(int read) {
+    private Task.Status setStatus(int read) {
         Task.Status status = Task.Status.ACTIVE;
         switch (read) {
             case 1:
@@ -343,7 +279,7 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return status;
     }
 
-    public Task.Priority setPriority(int read) {
+    private Task.Priority setPriority(int read) {
         Task.Priority priority = Task.Priority.URGENT_IMPORTANT;
         switch (read) {
             case 1:
@@ -360,35 +296,21 @@ public class ControlEnteredInformation implements java.io.Serializable {
         return priority;
     }
 
-    public void setTaskName(int taskId, String taskName) {
-        if (logModel.get(taskId) instanceof BusinessTask) {
-            BusinessTask bt = (BusinessTask) logModel.get(taskId);
-            bt.setTaskName(taskName);
-        }
-    }
-
-    public void setDescription(int taskId, String description) {
-        if (logModel.get(taskId) instanceof BusinessTask) {
-            BusinessTask bt = (BusinessTask) logModel.get(taskId);
-            bt.setTaskName(description);
-        }
-    }
-
     public int chooseTaskId() {
         Scanner sc = new Scanner(System.in);
         String enteringString = "";
-        int phoneNumber = -1;
+        int taskId = -1;
         for (;;) {
             userInterface.chooseTaskId();
             enteringString = sc.nextLine();
             if (checkString(enteringString)) {
-                phoneNumber = Integer.parseInt(enteringString);
+                taskId = Integer.parseInt(enteringString);
             }
-            if (phoneNumber >= 0 && phoneNumber < logModel.getSize()) {
+            if (taskId >= 0 && taskId < logModel.getSize()) {
                 break;
             }
         }
-        return phoneNumber;
+        return taskId;
     }
 
     public boolean checkString(String string) {
